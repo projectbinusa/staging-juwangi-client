@@ -215,7 +215,7 @@ export default function Register() {
                 type="submit"
                 variant="contained"
                 fullWidth
-                sx={{ mt: 2, bgcolor: '#90caf9', textTransform: 'uppercase' }}
+                sx={{ mt: 2, bgcolor: '#1976D2', textTransform: 'uppercase' }}
               >
                 Register
               </Button>

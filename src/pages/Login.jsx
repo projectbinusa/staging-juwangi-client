@@ -193,7 +193,7 @@ export default function Login() {
                 type="submit"
                 variant="contained"
                 fullWidth
-                sx={{ mt: 2, bgcolor: '#90caf9' }}
+                sx={{ mt: 2, bgcolor: '#1976D2' }}
               >
                 Login
               </Button>
