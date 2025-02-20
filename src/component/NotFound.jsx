@@ -14,7 +14,7 @@ const NotFound = () => {
         flexDirection: "column",
         justifyContent: "center", 
         alignItems: "center", 
-        height: "100vh", // Pastikan tingginya penuh viewport
+        height: "100vh", 
         textAlign: "center",
         marginLeft: "240px"
       }}
