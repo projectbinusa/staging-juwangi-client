@@ -4,7 +4,6 @@ import { Container, Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { styled } from '@mui/system';
 
-// Styling custom menggunakan styled components dari MUI
 const ErrorImage = styled('img')({
   maxWidth: '100%',
   height: 'auto',
@@ -15,9 +14,21 @@ const NotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <Container maxWidth="sm" sx={{ textAlign: 'center', mt: 10 }}>
-      {/* Gambar Ilustrasi untuk 404 */}
-      <ErrorImage src="https://static.vecteezy.com/system/resources/previews/023/404/856/original/3d-icon-yellow-robot-sad-png.pnge.com/404-illustration.png" alt="" />
+    <Container
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        height: '50vh', 
+        width: '400vh',
+        textAlign: 'center', 
+        flexDirection: 'column', 
+        marginLeft: '60px',
+      }}
+    >
+      <ErrorImage 
+        src="https://undraw.co/404.svg" 
+        alt="404 Error"
+      />
       
       <Typography variant="h3" color="error" sx={{ fontWeight: 'bold' }} gutterBottom>
         404 - Halaman Tidak Ditemukan
