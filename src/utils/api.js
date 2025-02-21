@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://jsonplaceholder.typicode.com", // Ganti dengan API backend
+  baseURL: "localhost:4322",  
   headers: {
     "Content-Type": "application/json",
   },
