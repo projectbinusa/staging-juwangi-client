@@ -1,5 +1,3 @@
-// src/pages/ProductsPage.jsx
-
 import { useState, useEffect } from 'react';
 import { Grid, Box } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';

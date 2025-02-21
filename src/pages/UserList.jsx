@@ -11,7 +11,6 @@ const UserList = () => {
   const [users, setUsers] = useState([
     { id: 1, name: 'John Doe', email: 'john.doe@example.com', contact: '+1 (123) 456-7890', status: 'Active', avatar: 'avatar-1.png' },
     { id: 1, name: 'John Doe', email: 'john.doe@example.com', contact: '+1 (123) 456-7890', status: 'Active', avatar: 'avatar-1.png' },
-    // data lainnya...
   ]);
 
   const navigate = useNavigate();
