@@ -8,10 +8,9 @@ import EditUser from './customer/Edit';
 import ViewUser from './customer/ViewUser';
 import NotFoundPage from './notfound/NotFound';
 import NotFound from './notfound/NotFound';
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Sidebar from "./sidebar/Sidebar";
-import ProfilePage from './pages/ProfilePage';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ProfilePage from './component/profil/ProfilePage';
 
 const App = () => {
   const [users, setUsers] = useState([
@@ -24,8 +23,6 @@ const App = () => {
 
   return (
     <Router>
-      <div className="flex">
-        <div className="flex-1">
           <Routes>
             <Route path="/" element={<ProductsPage />} />
             <Route path="/userlist" element={<UserList users={users} />} />
@@ -36,11 +33,8 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/sidebar" element={<Sidebar />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Routes>
-        </div>
-      </div>
     </Router>
   );
 };
