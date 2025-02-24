@@ -22,7 +22,7 @@ const NotFound = () => {
         width: '400vh',
         textAlign: 'center', 
         flexDirection: 'column', 
-        marginLeft: '60px',
+        marginLeft: '70px',
       }}
     >
       <ErrorImage 
