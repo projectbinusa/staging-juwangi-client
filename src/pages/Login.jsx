@@ -1,35 +1,64 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Box, Grid, Button, Typography, Divider, TextField, Stack, IconButton, InputAdornment 
-} from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { Container, Box, Grid, Button, Typography, Divider, TextField, Stack, IconButton, InputAdornment } from '@mui/material';
 
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
-
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import LogoImage from '../assets/logo.png';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { API_DUMMY } from '../utils/api';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSocialLogin = (platform) => {
     console.log(`Login dengan ${platform}`);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Submit login form');
-  };
-
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
   const handleMouseDownPassword = (e) => {
     e.preventDefault();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      await axios.post(`${API_DUMMY}/api/users/login`, {
+        email: email,
+        password: password,
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil Login!!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      setTimeout(() => {
+        navigate("/products");
+      }, 1500);
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Login Gagal!",
+        text: "Periksa kembali email dan password Anda.",
+      });
+    }
   };
 
   return (
@@ -48,7 +77,7 @@ export default function Login() {
     >
       <Box
         sx={{
-          width: { xs: '90%', sm: '400px' }, // Lebar responsif
+          width: { xs: '90%', sm: '400px' },
           bgcolor: '#1e1e1e',
           p: 3,
           borderRadius: 2,
@@ -145,6 +174,8 @@ export default function Login() {
                 name="email"
                 margin="normal"
                 variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 InputLabelProps={{ style: { color: '#fff' } }}
                 sx={{
                   input: { color: '#fff' },
@@ -161,8 +192,9 @@ export default function Login() {
                 name="password"
                 margin="normal"
                 variant="outlined"
-                // Ganti type jadi kondisi showPassword
                 type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 InputLabelProps={{ style: { color: '#fff' } }}
                 InputProps={{
                   endAdornment: (

@@ -1,62 +1,33 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
-import ProductCard from "../../component/ProductCard";
-import { Container, Grid, Typography, TextField, Box, Button, MenuItem, Select } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
-const products = [
-  {
-    id: 1,
-    name: "Canon EOS 1500D 24.1 Digital",
-    brand: "Canon",
-    price: "$12.99",
-    oldPrice: "$15.99",
-    discount: "30%",
-    rating: 4.5,
-    image: "/assets/canon-camera.png",
-    category: "Cameras"
-  },
-  {
-    id: 2,
-    name: "Apple MacBook Pro",
-    brand: "Apple",
-    price: "$14.59",
-    oldPrice: "$36",
-    discount: "20%",
-    rating: 4.6,
-    image: "/assets/macbook.png",
-    category: "Laptops"
-  },
-  {
-    id: 3,
-    name: "Apple iPhone 13 Mini",
-    brand: "Apple",
-    price: "$86.99",
-    oldPrice: "$399",
-    discount: "70%",
-    rating: 4.7,
-    image: "/assets/iphone-13-mini.png",
-    category: "Smartphones"
-  }
-];
+import { useNavigate } from "react-router-dom";
+import ProductCard from "../../component/ProductCard";
+import { Container, Grid, Typography, TextField, Box, Button, CircularProgress } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add"; 
+import axios from "axios";
+import { API_DUMMY } from "../../utils/api"; // Mengimpor API_DUMMY
 
 const Product = () => {
-  const [categories, setCategories] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]); 
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${API_DUMMY}/products`); // Menggunakan API_DUMMY
+        setProducts(response.data); 
+      } catch (err) {
+        setError("Failed to fetch products"); 
+      } finally {
+        setLoading(false); 
+      }
+    };
 
-  const fetchCategories = async () => {
-    // Fetch categories from backend
-    const response = await axios.get("http://localhost:4322/api/categories");
-    setCategories(response.data);
-  };
+    fetchProducts();
+  }, []);
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -121,7 +92,37 @@ const Product = () => {
         </Select>
         <Button variant="contained" color="primary" sx={{ height: "56px" }}>
           <SearchIcon />
+      <Box 
+        mb={3} 
+        display="flex" 
+        alignItems="center" 
+        justifyContent="space-between" 
+        width="80%"
+      >
+        <Button 
+          variant="contained" 
+          color="secondary" 
+          startIcon={<AddIcon />} 
+          onClick={() => navigate("/products/add")} 
+        >
+          Tambah Produk
         </Button>
+
+        <Box display="flex" alignItems="center" gap={1}>
+          <TextField
+            variant="outlined"
+            placeholder="Search product..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{
+              width: "300px",
+              bgcolor: "white",
+              borderRadius: "5px",
+            }}
+          />
+          <Button variant="contained" color="primary" sx={{ height: "56px" }}>
+            <SearchIcon />
+          </Button>
+        </Box>
       </Box>
 
       <Grid container spacing={3} justifyContent="center">
@@ -135,6 +136,23 @@ const Product = () => {
           <Typography variant="h6">Product not found</Typography>
         )}
       </Grid>
+      {loading ? (
+        <CircularProgress sx={{ mt: 2 }} />
+      ) : error ? (
+        <Typography color="error">{error}</Typography>
+      ) : (
+        <Grid container spacing={3} justifyContent="center">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+                <ProductCard product={product} />
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="h6">Product not found</Typography>
+          )}
+        </Grid>
+      )}
     </Container>
   );
 };

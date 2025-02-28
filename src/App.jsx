@@ -9,6 +9,8 @@ import CategoryPage from "./pages/e-commerce/CategoryPage";
 import Layout from "./component/sidebar/Layout";
 import ProfilePage from "./component/profil/ProfilePage";
 import ListUser from "./pages/ListUser";
+import Product from "./pages/e-commerce/product";
+import AddProduct from "./pages/e-commerce/AddProduct"
 
 const App = () => {
   return (
@@ -25,6 +27,7 @@ const App = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/user" element={<ListUser />} />
         </Route>
+        <Route path="/products/add" element={<AddProduct />} />
       </Routes>
     </Router>
   );
