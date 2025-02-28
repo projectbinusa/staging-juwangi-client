@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../../component/ProductCard";
 import { Container, Grid, Typography, TextField, Box, Button, CircularProgress } from "@mui/material";
@@ -31,7 +30,8 @@ const Product = () => {
   }, []);
 
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (selectedCategory === "" || product.category === selectedCategory)
   );
 
   return (
@@ -56,7 +56,42 @@ const Product = () => {
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
+      
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={() => navigate("/categories")}
+        sx={{ marginBottom: 2 }}
+      >
+        ADD CATEGORIES
+      </Button>
 
+      <Box mb={3} display="flex" alignItems="center" gap={2}>
+        <TextField
+          variant="outlined"
+          placeholder="Search product..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{
+            width: "300px",
+            bgcolor: "white",
+            borderRadius: "5px",
+          }}
+        />
+        <Select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          displayEmpty
+          sx={{ bgcolor: "white", borderRadius: "5px", width: "200px" }}
+        >
+          <MenuItem value="">All Categories</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.id} value={category.kategori}>
+              {category.kategori}
+            </MenuItem>
+          ))}
+        </Select>
+        <Button variant="contained" color="primary" sx={{ height: "56px" }}>
+          <SearchIcon />
       <Box 
         mb={3} 
         display="flex" 
@@ -90,6 +125,17 @@ const Product = () => {
         </Box>
       </Box>
 
+      <Grid container spacing={3} justifyContent="center">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+              <ProductCard product={product} />
+            </Grid>
+          ))
+        ) : (
+          <Typography variant="h6">Product not found</Typography>
+        )}
+      </Grid>
       {loading ? (
         <CircularProgress sx={{ mt: 2 }} />
       ) : error ? (
