@@ -1,8 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductCard from "../../component/ProductCard";
-import { Container, Grid, Typography, TextField, Box, Button } from "@mui/material";
+import { Container, Grid, Typography, TextField, Box, Button, MenuItem, Select } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const products = [
   {
@@ -14,6 +16,7 @@ const products = [
     discount: "30%",
     rating: 4.5,
     image: "/assets/canon-camera.png",
+    category: "Cameras"
   },
   {
     id: 2,
@@ -24,6 +27,7 @@ const products = [
     discount: "20%",
     rating: 4.6,
     image: "/assets/macbook.png",
+    category: "Laptops"
   },
   {
     id: 3,
@@ -34,41 +38,64 @@ const products = [
     discount: "70%",
     rating: 4.7,
     image: "/assets/iphone-13-mini.png",
-  },
+    category: "Smartphones"
+  }
 ];
 
 const Product = () => {
+  const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    // Fetch categories from backend
+    const response = await axios.get("http://localhost:4322/api/categories");
+    setCategories(response.data);
+  };
 
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (selectedCategory === "" || product.category === selectedCategory)
   );
 
   return (
     <Container
-      maxWidth={false} // Menghapus batasan bawaan Material-UI
+      maxWidth={false}
       sx={{
-        position: "absolute", // Pastikan container menutupi seluruh layar
+        position: "absolute",
         top: 0,
         left: 0,
-        width: "100vw", // Full lebar
-        height: "100vh", // Full tinggi
+        width: "100vw",
+        height: "100vh",
         bgcolor: "#121212",
         color: "white",
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "start", // Tetap di atas
-        overflowY: "auto", // Tambahkan scroll vertikal jika perlu
+        justifyContent: "start",
+        overflowY: "auto",
       }}
     >
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
+      
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={() => navigate("/categories")}
+        sx={{ marginBottom: 2 }}
+      >
+        ADD CATEGORIES
+      </Button>
 
-      {/* Input Pencarian */}
-      <Box mb={3} display="flex" alignItems="center" gap={1}>
+      <Box mb={3} display="flex" alignItems="center" gap={2}>
         <TextField
           variant="outlined"
           placeholder="Search product..."
@@ -79,12 +106,24 @@ const Product = () => {
             borderRadius: "5px",
           }}
         />
+        <Select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          displayEmpty
+          sx={{ bgcolor: "white", borderRadius: "5px", width: "200px" }}
+        >
+          <MenuItem value="">All Categories</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.id} value={category.kategori}>
+              {category.kategori}
+            </MenuItem>
+          ))}
+        </Select>
         <Button variant="contained" color="primary" sx={{ height: "56px" }}>
           <SearchIcon />
         </Button>
       </Box>
 
-      {/* Grid Produk */}
       <Grid container spacing={3} justifyContent="center">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
