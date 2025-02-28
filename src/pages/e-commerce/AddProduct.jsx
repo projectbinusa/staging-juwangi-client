@@ -46,7 +46,7 @@ export default function Add() {
         }}
       >
         <Typography variant="h4" gutterBottom align="center">
-          Form Tambah Data
+          Form Tambah Produk
         </Typography>
 
         <Box
@@ -98,6 +98,7 @@ export default function Add() {
             InputLabelProps={{ style: { color: "#fff" } }}
             sx={{
               input: { color: "#fff" },
+              "& .MuiInputBase-inputMultiline": { color: "#fff" },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: "#fff" },
                 "&:hover fieldset": { borderColor: "#90caf9" },
