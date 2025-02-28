@@ -1,104 +1,133 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Container, TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
-import Swal from "sweetalert2";
 
-export default function AddProduct() {
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    description: "",
-    imageUrl: "",
-  });
+export default function Add() {
+  const [produk, setProduk] = useState("");
+  const [harga, setHarga] = useState("");
+  const [deskripsi, setDeskripsi] = useState("");
+  const [gambar, setGambar] = useState("");
 
-  const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const addData = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post("https://api.example.com/products", product);
-      Swal.fire({
-        icon: "success",
-        title: "Produk berhasil ditambahkan!",
-        showConfirmButton: false,
-        timer: 1500,
+      await axios.post("http://localhost:5000/minumans", {
+        produk,
+        harga,
+        deskripsi,
+        gambar,
       });
-      setProduct({ name: "", price: "", description: "", imageUrl: "" });
+      window.location.reload();
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal menambahkan produk!",
-        text: error.message,
-      });
+      console.log(error);
     }
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ mt: 5, p: 3, bgcolor: "#1e1e1e", borderRadius: 2 }}>
-        <Typography variant="h5" color="white" align="center" gutterBottom>
-          Tambah Produk
+    <Box
+      sx={{
+        height: "100vh", // Full tinggi layar
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center", // Pusatkan horizontal
+        alignItems: "center", // Pusatkan vertikal
+        backgroundColor: "#121212", // Warna latar belakang gelap
+      }}
+    >
+      <Container
+        maxWidth="sm"
+        sx={{
+          p: 3,
+          bgcolor: "#1e1e1e",
+          borderRadius: 2,
+          color: "#fff",
+          boxShadow: 3,
+        }}
+      >
+        <Typography variant="h4" gutterBottom align="center">
+          Form Tambah Data
         </Typography>
-        <form onSubmit={handleSubmit}>
+
+        <Box
+          component="form"
+          onSubmit={addData}
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        >
           <TextField
-            fullWidth
             label="Nama Produk"
-            name="name"
-            value={product.name}
-            onChange={handleChange}
-            margin="normal"
-            required
+            variant="outlined"
+            fullWidth
+            value={produk}
+            onChange={(e) => setProduk(e.target.value)}
             InputLabelProps={{ style: { color: "#fff" } }}
-            sx={{ input: { color: "#fff" } }}
+            sx={{
+              input: { color: "#fff" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#fff" },
+                "&:hover fieldset": { borderColor: "#90caf9" },
+                "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+              },
+            }}
           />
           <TextField
-            fullWidth
             label="Harga"
-            name="price"
+            variant="outlined"
+            fullWidth
             type="number"
-            value={product.price}
-            onChange={handleChange}
-            margin="normal"
-            required
+            value={harga}
+            onChange={(e) => setHarga(e.target.value)}
             InputLabelProps={{ style: { color: "#fff" } }}
-            sx={{ input: { color: "#fff" } }}
+            sx={{
+              input: { color: "#fff" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#fff" },
+                "&:hover fieldset": { borderColor: "#90caf9" },
+                "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+              },
+            }}
           />
           <TextField
-            fullWidth
             label="Deskripsi"
-            name="description"
-            value={product.description}
-            onChange={handleChange}
-            margin="normal"
-            required
+            variant="outlined"
+            fullWidth
             multiline
             rows={3}
+            value={deskripsi}
+            onChange={(e) => setDeskripsi(e.target.value)}
             InputLabelProps={{ style: { color: "#fff" } }}
-            sx={{ input: { color: "#fff" } }}
+            sx={{
+              input: { color: "#fff" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#fff" },
+                "&:hover fieldset": { borderColor: "#90caf9" },
+                "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+              },
+            }}
           />
           <TextField
+            label="Gambar"
+            variant="outlined"
             fullWidth
-            label="URL Gambar"
-            name="imageUrl"
-            value={product.imageUrl}
-            onChange={handleChange}
-            margin="normal"
-            required
+            type="file"
+            value={gambar}
+            onChange={(e) => setGambar(e.target.value)}
             InputLabelProps={{ style: { color: "#fff" } }}
-            sx={{ input: { color: "#fff" } }}
+            sx={{
+              input: { color: "#fff" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#fff" },
+                "&:hover fieldset": { borderColor: "#90caf9" },
+                "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+              },
+            }}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{ mt: 2, bgcolor: "#1976D2", textTransform: "uppercase" }}
-          >
-            Tambah Produk
+
+          <Button type="submit" variant="contained" sx={{ bgcolor: "#1976D2" }}>
+            Submit
           </Button>
-        </form>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </Box>
   );
 }
