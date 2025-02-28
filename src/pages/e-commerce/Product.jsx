@@ -6,6 +6,7 @@ import { Container, Grid, Typography, TextField, Box, Button, CircularProgress }
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add"; 
 import axios from "axios";
+import { API_DUMMY } from "../../utils/api"; // Mengimpor API_DUMMY
 
 const Product = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Product = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("https://api.example.com/products"); 
+        const response = await axios.get(`${API_DUMMY}/products`); // Menggunakan API_DUMMY
         setProducts(response.data); 
       } catch (err) {
         setError("Failed to fetch products"); 
