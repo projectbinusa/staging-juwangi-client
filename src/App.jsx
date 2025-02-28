@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NotFound from "./notfound/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Product from "./pages/e-commerce/Product";
+import Product from "./pages/e-commerce/product";
 import AddProduct from "./pages/e-commerce/AddProduct"
 
 const App = () => {
