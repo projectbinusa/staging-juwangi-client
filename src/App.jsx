@@ -4,13 +4,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NotFound from "./notfound/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Product from "./pages/e-commerce/Product";
 import CategoryPage from "./pages/e-commerce/CategoryPage";
 import Layout from "./component/sidebar/Layout";
 import ProfilePage from "./component/profil/ProfilePage";
 import ListUser from "./pages/ListUser";
 import Product from "./pages/e-commerce/product";
-import AddProduct from "./pages/e-commerce/AddProduct"
+import AddProduct from "./pages/e-commerce/AddProduct";
 
 const App = () => {
   return (
