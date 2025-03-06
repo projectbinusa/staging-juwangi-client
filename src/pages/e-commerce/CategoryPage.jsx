@@ -1,100 +1,87 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Grid, Typography, TextField, Box, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
-export default function CategoryManager() {
+export default function Categories() {
     const [categories, setCategories] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const navigate = useNavigate();
-    
+    const [kategori, setKategori] = useState("");
+    const [editId, setEditId] = useState(null);
+
     useEffect(() => {
         fetchCategories();
     }, []);
-    
+
     const fetchCategories = async () => {
-        const response = await axios.get("http://localhost:8080/api/categories");
-        setCategories(response.data);
+        try {
+            const res = await axios.get("http://localhost:4322/api/categories");
+            setCategories(res.data);
+        } catch (error) {
+            console.error("Error fetching categories", error);
+        }
     };
-    
-    const handleDelete = async (id) => {
-        await axios.delete(`http://localhost:8080/api/categories/${id}`);
-        fetchCategories();
+
+    const addCategory = async () => {
+        try {
+            await axios.post("http://localhost:4322/api/categories", { kategori });
+            setKategori("");
+            fetchCategories();
+        } catch (error) {
+            console.error("Error adding category", error);
+        }
     };
-    
-    const filteredCategories = categories.filter((category) =>
-        category.kategori.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    
+
+    const editCategory = async (id, kategori) => {
+        setEditId(id);
+        setKategori(kategori);
+    };
+
+    const updateCategory = async () => {
+        try {
+            await axios.put(`http://localhost:4322/api/categories/${editId}`, { kategori });
+            setEditId(null);
+            setKategori("");
+            fetchCategories();
+        } catch (error) {
+            console.error("Error updating category", error);
+        }
+    };
+
+    const deleteCategory = async (id) => {
+        try {
+            await axios.delete(`http://localhost:4322/api/categories/${id}`);
+            fetchCategories();
+        } catch (error) {
+            console.error("Error deleting category", error);
+        }
+    };
+
     return (
-        <Container
-            maxWidth={false}
-            sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100vw",
-                height: "100vh",
-                bgcolor: "#121212",
-                color: "white",
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "start",
-                overflowY: "auto",
-            }}
-        >
-            <Typography variant="h4" gutterBottom>
-                Categories
-            </Typography>
-            
-            <Button 
-                variant="contained" 
-                color="primary" 
-                onClick={() => navigate("/products")}
-                sx={{ marginBottom: 2 }}
-            >
-                View Products
-            </Button>
-
-            <Box mb={3} display="flex" alignItems="center" gap={1}>
-                <TextField
-                    variant="outlined"
-                    placeholder="Search category..."
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    sx={{ width: "300px", bgcolor: "white", borderRadius: "5px" }}
+        <div className="max-w-2xl mx-auto p-4">
+            <h1 className="text-xl font-bold mb-4">Manage Categories</h1>
+            <div className="flex gap-2 mb-4">
+                <input
+                    type="text"
+                    className="border p-2 w-full"
+                    placeholder="Enter category"
+                    value={kategori}
+                    onChange={(e) => setKategori(e.target.value)}
                 />
-            </Box>
-            
-            <Button 
-                variant="contained" 
-                color="success" 
-                onClick={() => navigate("/add-category")}
-                sx={{ marginBottom: 3 }}
-            >
-                Add Category
-            </Button>
-
-            <Grid container spacing={3} justifyContent="center">
-                {filteredCategories.length > 0 ? (
-                    filteredCategories.map((category) => (
-                        <Grid item key={category.id} xs={12} sm={6} md={4} lg={3}>
-                            <Box sx={{ border: "1px solid white", padding: 2, borderRadius: "8px", textAlign: "center" }}>
-                                <Typography>{category.kategori}</Typography>
-                                <Button onClick={() => navigate(`/edit-category/${category.id}`)} variant="contained" color="warning" sx={{ marginRight: 1 }}>
-                                    Edit
-                                </Button>
-                                <Button onClick={() => handleDelete(category.id)} variant="contained" color="error">
-                                    Delete
-                                </Button>
-                            </Box>
-                        </Grid>
-                    ))
+                {editId ? (
+                    <button onClick={updateCategory} className="bg-yellow-500 text-white p-2">Update</button>
                 ) : (
-                    <Typography variant="h6">Category not found</Typography>
+                    <button onClick={addCategory} className="bg-blue-500 text-white p-2">Add</button>
                 )}
-            </Grid>
-        </Container>
+            </div>
+            <ul className="list-disc pl-5">
+                {categories.map((cat) => (
+                    <li key={cat.id} className="flex justify-between items-center p-2 border-b">
+                        {cat.kategori}
+                        <div>
+                            <button onClick={() => editCategory(cat.id, cat.kategori)} className="text-yellow-500 mr-2">Edit</button>
+                            <button onClick={() => deleteCategory(cat.id)} className="text-red-500">Delete</button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }
