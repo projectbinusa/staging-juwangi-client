@@ -5,7 +5,7 @@ import { uploadImageToS3 } from "../../utils/UploadToS3";
 import { API_DUMMY } from "../../utils/api";
 
 export default function Add() {
-  const [produk, setProduk] = useState("");
+  const [nama, setNama] = useState("");
   const [harga, setHarga] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [gambar, setGambar] = useState(null);
@@ -20,7 +20,7 @@ export default function Add() {
       }
 
       await axios.post(`${API_DUMMY}/api/products`, {
-        produk,
+        nama,
         harga,
         deskripsi,
         gambar: image,
@@ -53,7 +53,7 @@ export default function Add() {
         }}
       >
         <Typography variant="h4" gutterBottom align="center">
-          Form Tambah Produk
+          Form Tambah nama
         </Typography>
 
         <Box
@@ -65,8 +65,8 @@ export default function Add() {
             label="Nama Produk"
             variant="outlined"
             fullWidth
-            value={produk}
-            onChange={(e) => setProduk(e.target.value)}
+            value={nama}
+            onChange={(e) => setNama(e.target.value)}
             InputLabelProps={{ style: { color: "#fff" } }}
             sx={{
               input: { color: "#fff" },
