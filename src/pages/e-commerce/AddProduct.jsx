@@ -1,22 +1,29 @@
 import { useState } from "react";
 import { Container, TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
+import { uploadImageToS3 } from "../../utils/UploadToS3";
+import { API_DUMMY } from "../../utils/api";
 
 export default function Add() {
   const [produk, setProduk] = useState("");
   const [harga, setHarga] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
-  const [gambar, setGambar] = useState("");
+  const [gambar, setGambar] = useState(null);
 
   const addData = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/minumans", {
+      let image = gambar;
+      if(gambar) {
+        image = await uploadImageToS3(gambar);
+      }
+
+      await axios.post(`${API_DUMMY}/api/products`, {
         produk,
         harga,
         deskripsi,
-        gambar,
+        gambar: image,
       });
       window.location.reload();
     } catch (error) {
@@ -111,8 +118,7 @@ export default function Add() {
             variant="outlined"
             fullWidth
             type="file"
-            value={gambar}
-            onChange={(e) => setGambar(e.target.value)}
+            onChange={(e) => setGambar(e.target.files[0])}
             InputLabelProps={{ style: { color: "#fff" } }}
             sx={{
               input: { color: "#fff" },
