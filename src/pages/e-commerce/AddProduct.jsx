@@ -3,6 +3,7 @@ import { Container, TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
 import { uploadImageToS3 } from "../../utils/UploadToS3";
 import { API_DUMMY } from "../../utils/api";
+import Swal from "sweetalert2";
 
 export default function Add() {
   const [nama, setNama] = useState("");
@@ -15,7 +16,7 @@ export default function Add() {
 
     try {
       let image = gambar;
-      if(gambar) {
+      if (gambar) {
         image = await uploadImageToS3(gambar);
       }
 
@@ -25,9 +26,22 @@ export default function Add() {
         deskripsi,
         gambar: image,
       });
-      window.location.reload();
+
+      Swal.fire({
+        icon: "success",
+        title: "Produk berhasil ditambahkan",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        window.location.reload();
+      });
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal menambahkan produk",
+        text: error.message || "Terjadi kesalahan",
+      });
     }
   };
 
@@ -39,7 +53,7 @@ export default function Add() {
         display: "flex",
         justifyContent: "center", // Pusatkan horizontal
         alignItems: "center", // Pusatkan vertikal
-        backgroundColor: "#121212", // Warna latar belakang gelap
+        backgroundColor: "#121212",
       }}
     >
       <Container
@@ -53,7 +67,7 @@ export default function Add() {
         }}
       >
         <Typography variant="h4" gutterBottom align="center">
-          Form Tambah nama
+          Form Tambah Produk
         </Typography>
 
         <Box
@@ -113,22 +127,25 @@ export default function Add() {
               },
             }}
           />
-          <TextField
-            label="Gambar"
-            variant="outlined"
-            fullWidth
-            type="file"
-            onChange={(e) => setGambar(e.target.files[0])}
-            InputLabelProps={{ style: { color: "#fff" } }}
-            sx={{
-              input: { color: "#fff" },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#fff" },
-                "&:hover fieldset": { borderColor: "#90caf9" },
-                "&.Mui-focused fieldset": { borderColor: "#90caf9" },
-              },
-            }}
-          />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0 }}>
+            <h5 style={{ margin: 0 }}>Gambar</h5>
+            <TextField
+              label=""
+              variant="outlined"
+              fullWidth
+              type="file"
+              onChange={(e) => setGambar(e.target.files[0])}
+              InputLabelProps={{ style: { color: "#fff" } }}
+              sx={{
+                input: { color: "#fff" },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#fff" },
+                  "&:hover fieldset": { borderColor: "#90caf9" },
+                  "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+                },
+              }}
+            />
+          </Box>
 
           <Button type="submit" variant="contained" sx={{ bgcolor: "#1976D2" }}>
             Submit
