@@ -12,18 +12,18 @@ import { API_DUMMY } from "../../utils/api";
 
 const Product = () => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]); 
+  const [nama, setNama] = useState([]); 
   const [searchTerm, setSearchTerm] = useState(""); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
-  const [selectedCategory, setSelectedCategory] = useState(""); 
+  const [selectedCategories, setSelectedCategories] = useState(""); 
   const [categories, setCategories] = useState([]); 
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchNama = async () => {
       try {
-        const response = await axios.get(`${API_DUMMY}/products`);
-        setProducts(response.data);
+        const response = await axios.get(`${API_DUMMY}/api/products`);
+        setNama(response.data);
       } catch (err) {
         setError("Failed to fetch products");
       } finally {
@@ -33,20 +33,20 @@ const Product = () => {
 
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`${API_DUMMY}/categories`);
+        const response = await axios.get(`${API_DUMMY}/api/categories`);
         setCategories(response.data);
       } catch (err) {
         console.error("Failed to fetch categories");
       }
     };
 
-    fetchProducts();
+    fetchNama();
     fetchCategories();
   }, []);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategory === "" || product.category === selectedCategory)
+  const filteredNama = nama.filter((nama) =>
+    nama.name?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (selectedCategories === "" || nama.categories === selectedCategories)
   );
 
   return (
@@ -73,7 +73,7 @@ const Product = () => {
         Products
       </Typography>
 
-      {/* Baris atas untuk tambah produk, pencarian, dan kategori */}
+      
       <Box 
         display="flex" 
         justifyContent="space-between" 
@@ -85,7 +85,7 @@ const Product = () => {
         {/* Tombol Tambah Produk di kiri */}
         <Button 
           variant="contained" 
-          color="secondary" 
+          color="primary" 
           startIcon={<AddIcon />} 
           onClick={() => navigate("/products/add")} 
         >
@@ -113,8 +113,8 @@ const Product = () => {
           <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
             {/* Dropdown Kategori */}
             <Select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              value={selectedCategories}
+              onChange={(e) => setSelectedCategories(e.target.value)}
               displayEmpty
               sx={{ bgcolor: "white", borderRadius: "5px", width: "200px" }}
             >
@@ -126,7 +126,7 @@ const Product = () => {
               ))}
             </Select>
 
-            {/* Tombol ADD CATEGORIES, sekarang tepat di bawah dropdown */}
+            {/* Tombol ADD CATEGORIES */}
             <Button 
               variant="contained" 
               color="primary" 
@@ -145,10 +145,10 @@ const Product = () => {
         <Typography color="error">{error}</Typography>
       ) : (
         <Grid container spacing={3} justifyContent="center">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-                <ProductCard product={product} />
+          {filteredNama.length > 0 ? (
+            filteredNama.map((nama) => (
+              <Grid item key={nama.id} xs={12} sm={6} md={4} lg={3}>
+                <ProductCard nama={nama} />
               </Grid>
             ))
           ) : (
