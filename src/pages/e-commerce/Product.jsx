@@ -44,9 +44,10 @@ const Product = () => {
     fetchCategories();
   }, []);
 
-  const filteredNama = nama.filter((nama) =>
-    nama.name?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategories === "" || nama.categories === selectedCategories)
+  // ✅ Perbaikan filtering data
+  const filteredNama = nama.filter((item) =>
+    item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (selectedCategories === "" || item.kategori === selectedCategories)
   );
 
   return (
@@ -73,7 +74,6 @@ const Product = () => {
         Products
       </Typography>
 
-      
       <Box 
         display="flex" 
         justifyContent="space-between" 
@@ -146,9 +146,9 @@ const Product = () => {
       ) : (
         <Grid container spacing={3} justifyContent="center">
           {filteredNama.length > 0 ? (
-            filteredNama.map((nama) => (
-              <Grid item key={nama.id} xs={12} sm={6} md={4} lg={3}>
-                <ProductCard nama={nama} />
+            filteredNama.map((item) => (
+              <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
+                <ProductCard id={item.id} />  {/* ✅ Perbaikan: kirim id ke ProductCard */}
               </Grid>
             ))
           ) : (
