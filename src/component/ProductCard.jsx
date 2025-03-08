@@ -1,154 +1,75 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import ProductCard from "./ProductCard";
-import { 
-  Container, Grid, Typography, TextField, Box, Button, CircularProgress, Select, MenuItem 
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add"; 
+import React, { useEffect, useState } from "react";
+import { Card, CardMedia, CardContent, Typography, Button } from "@mui/material";
 import axios from "axios";
-import { API_DUMMY } from "../utils/api"
+import { API_DUMMY } from "../utils/api"; 
 
-const Product = () => {
-  const navigate = useNavigate();
-  const [products, setProducts] = useState([]); 
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [selectedCategory, setSelectedCategory] = useState(""); // Tambahkan state kategori
-  const [categories, setCategories] = useState([]); // Tambahkan state untuk kategori
+const ProductCard = ({ id }) => {  
+  const [nama, setNama] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch produk
-    const fetchProducts = async () => {
+    const fetchNama = async () => {
       try {
-        const response = await axios.get($/{API_DUMMY}/products);
-        setProducts(response.data);
+        const response = await axios.get($/{API_DUMMY}/api/products/$,{id}); // Tambah /
+        setNama(response.data);
       } catch (err) {
-        setError("Failed to fetch products");
+        setError("Failed to fetch product");
       } finally {
         setLoading(false);
       }
     };
 
-    // Fetch kategori
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get($/{API_DUMMY}/categories);
-        setCategories(response.data);
-      } catch (err) {
-        console.error("Failed to fetch categories");
-      }
-    };
+    fetchNama();
+  }, [id]);
 
-    fetchProducts();
-    fetchCategories();
-  }, []);
-
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategory === "" || product.category === selectedCategory)
-  );
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-    <Container
-      maxWidth={false}
-      sx={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        bgcolor: "#121212",
-        color: "white",
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "start",
-        overflowY: "auto",
-      }}
-    >
-      <Typography variant="h4" gutterBottom>
-        Products
-      </Typography>
-      
-      {/* Tombol Tambah Kategori */}
-      <Button 
-        variant="contained" 
-        color="primary" 
-        onClick={() => navigate("/categories")}
-        sx={{ marginBottom: 2 }}
-      >
-        ADD CATEGORIES
-      </Button>
+    <Card sx={{ maxWidth: 300, bgcolor: "#fff", color: "#000", p: 1, boxShadow: 3 }}>
+      {/* Gambar Produk */}
+      <CardMedia
+        component="img"
+        height="200"
+        image={nama?.gambar  ""}
+        alt={nama?.nama  "Product Image"}
+        sx={{ borderRadius: "10px" }}
+      />
 
-      <Box mb={3} display="flex" alignItems="center" gap={2}>
-        {/* Input Pencarian */}
-        <TextField
-          variant="outlined"
-          placeholder="Search product..."
-          onChange={(e) => setSearchTerm(e.target.value)}
+      <CardContent>
+        {/* Nama Produk */}
+        <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
+          {nama?.nama  "Nama Produk"}
+        </Typography>
+
+        {/* Harga Produk */}
+        <Typography variant="body1" sx={{ fontWeight: "bold", color: "#4caf50", mt: 1 }}>
+          Rp {nama?.harga?.toLocaleString("id-ID")  "0"}
+        </Typography>
+
+        {/* Deskripsi Produk */}
+        <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>
+          {nama?.deskripsi || "Tidak ada deskripsi"}
+        </Typography>
+
+        {/* Tombol Add to Cart */}
+        <Button
+          variant="contained"
+          fullWidth
           sx={{
-            width: "300px",
-            bgcolor: "white",
-            borderRadius: "5px",
+            bgcolor: "#2196f3",
+            color: "white",
+            mt: 2,
+            ":hover": { bgcolor: "#1976d2" },
           }}
-        />
-
-        {/* Pilihan Kategori */}
-        <Select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          displayEmpty
-          sx={{ bgcolor: "white", borderRadius: "5px", width: "200px" }}
         >
-          <MenuItem value="">All Categories</MenuItem>
-          {categories.map((category) => (
-            <MenuItem key={category.id} value={category.kategori}>
-              {category.kategori}
-            </MenuItem>
-          ))}
-        </Select>
-
-        {/* Tombol Cari */}
-        <Button variant="contained" color="primary" sx={{ height: "56px" }}>
-          <SearchIcon />
+          Add To Cart
         </Button>
-      </Box>
-
-      {/* Tombol Tambah Produk */}
-      <Box mb={3} display="flex" justifyContent="center">
-        <Button 
-          variant="contained" 
-          color="secondary" 
-          startIcon={<AddIcon />} 
-          onClick={() => navigate("/products/add")} 
-        >
-          Tambah Produk
-        </Button>
-      </Box>
-      {/* Loading dan Error */}
-      {loading ? (
-        <CircularProgress sx={{ mt: 2 }} />
-      ) : error ? (
-        <Typography color="error">{error}</Typography>
-      ) : (
-        <Grid container spacing={3} justifyContent="center">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-                <ProductCard product={product} />
-              </Grid>
-            ))
-          ) : (
-            <Typography variant="h6">Product not found</Typography>
-          )}
-        </Grid>
-      )}
-    </Container>
+      </CardContent>
+    </Card>
   );
 };
 
-export default Product;
+export default ProductCard;
