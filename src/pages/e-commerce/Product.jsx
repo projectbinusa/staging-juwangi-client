@@ -44,7 +44,6 @@ const Product = () => {
     fetchCategories();
   }, []);
 
-  // ✅ Filtering data
   const filteredNama = nama.filter((item) =>
     item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedCategories === "" || item.kategori === selectedCategories)
@@ -82,7 +81,6 @@ const Product = () => {
         maxWidth="1200px"
         mb={2}
       >
-        {/* Tombol Tambah Produk di kiri */}
         <Button 
           variant="contained" 
           color="primary" 
@@ -92,9 +90,7 @@ const Product = () => {
           Tambah Produk
         </Button>
 
-        {/* Pencarian dan Kategori */}
         <Box display="flex" alignItems="center" gap={2}>
-          {/* Input Pencarian */}
           <TextField
             variant="outlined"
             placeholder="Search product..."
@@ -109,9 +105,7 @@ const Product = () => {
             <SearchIcon />
           </Button>
 
-          {/* Box untuk Kategori + Tombol Add Category */}
           <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
-            {/* Dropdown Kategori */}
             <Select
               value={selectedCategories}
               onChange={(e) => setSelectedCategories(e.target.value)}
@@ -126,7 +120,6 @@ const Product = () => {
               ))}
             </Select>
 
-            {/* Tombol ADD CATEGORIES */}
             <Button 
               variant="contained" 
               color="primary" 
@@ -138,7 +131,6 @@ const Product = () => {
         </Box>
       </Box>
 
-      {/* Loading dan Error */}
       {loading ? (
         <CircularProgress sx={{ mt: 2 }} />
       ) : error ? (
@@ -148,7 +140,7 @@ const Product = () => {
           {filteredNama.length > 0 ? (
             filteredNama.map((item) => (
               <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
-                <ProductCard id={item.id} />  {/* ✅ Perbaikan: kirim id ke ProductCard */}
+                <ProductCard id={item.id} /> 
               </Grid>
             ))
           ) : (

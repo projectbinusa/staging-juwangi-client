@@ -157,7 +157,7 @@ export default function Login() {
               <Typography variant="h5">Login</Typography>
               <Typography
                 component={Link}
-                to="/"
+                to="/register"
                 variant="body2"
                 sx={{ textDecoration: 'none', color: '#90caf9' }}
               >

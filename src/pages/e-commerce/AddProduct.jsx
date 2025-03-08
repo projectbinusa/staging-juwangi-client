@@ -61,16 +61,16 @@ export default function Add() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff", // Warna latar belakang putih
+        backgroundColor: "#fff", 
       }}
     >
       <Container
         maxWidth="sm"
         sx={{
           p: 3,
-          bgcolor: "#f5f5f5", // Ubah menjadi warna abu-abu terang agar terlihat lebih rapi
+          bgcolor: "#f5f5f5", 
           borderRadius: 2,
-          color: "#000", // Ubah warna teks menjadi hitam
+          color: "#000", 
           boxShadow: 3,
         }}
       >
@@ -83,25 +83,23 @@ export default function Add() {
           onSubmit={addData}
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
-          {/* Input Nama Produk */}
           <TextField
             label="Nama Produk"
             variant="outlined"
             fullWidth
             value={nama}
             onChange={(e) => setNama(e.target.value)}
-            InputLabelProps={{ style: { color: "#000" } }} // Ubah warna label menjadi hitam
+            InputLabelProps={{ style: { color: "#000" } }} 
             sx={{
-              input: { color: "#000" }, // Ubah warna teks input menjadi hitam
+              input: { color: "#000" }, 
               "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#333" }, // Border lebih gelap
-                "&:hover fieldset": { borderColor: "#1976D2" }, // Hover tetap biru
+                "& fieldset": { borderColor: "#333" }, 
+                "&:hover fieldset": { borderColor: "#1976D2" }, 
                 "&.Mui-focused fieldset": { borderColor: "#1976D2" },
               },
             }}
           />
 
-          {/* Input Harga */}
           <TextField
             label="Harga"
             variant="outlined"
@@ -120,7 +118,6 @@ export default function Add() {
             }}
           />
 
-          {/* Input Deskripsi */}
           <TextField
             label="Deskripsi"
             variant="outlined"
@@ -140,7 +137,6 @@ export default function Add() {
             }}
           />
 
-          {/* Upload Gambar */}
           <Box>
             <Typography variant="body1" sx={{ mb: 1, color: "#000" }}>
               Gambar Produk
@@ -153,8 +149,8 @@ export default function Add() {
                 padding: "10px",
                 backgroundColor: "#fff",
                 borderRadius: "5px",
-                border: "1px solid #333", // Border lebih gelap untuk mode putih
-                "&:hover": { borderColor: "#1976D2" }, // Hover tetap biru
+                border: "1px solid #333", 
+                "&:hover": { borderColor: "#1976D2" }, 
               }}
             >
               <input
@@ -162,7 +158,7 @@ export default function Add() {
                 accept="image/*"
                 onChange={(e) => setGambar(e.target.files[0])}
                 style={{
-                  color: "#000", // Ubah warna teks menjadi hitam
+                  color: "#000", 
                   cursor: "pointer",
                 }}
               />
