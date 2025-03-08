@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Container, Box, Grid, Button, Typography, Divider, TextField, Stack, IconButton, InputAdornment } from "@mui/material";
+import { 
+  Container, Box, Grid, Button, Typography, Divider, TextField, Stack, IconButton, InputAdornment 
+} from "@mui/material";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../utils/api";
@@ -48,29 +50,36 @@ export default function Register() {
       console.log(error);
     }
   };
-  
+
   return (
     <Container
       maxWidth={false}
       disableGutters
       sx={{
-        width: "99vw",
-        height: "50vw",
-        margin: 0,
-        padding: 0,
-        bgcolor: "#121212",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        py: 2,
-        color: "#fff",
+        marginLeft: "300px",
+        bgcolor: "#fff",
+        minHeight: "100vh",
+        py: 5, 
       }}
     >
-      <Box sx={{ width: { xs: "90%", sm: "400px" }, bgcolor: "#1e1e1e", p: 3, borderRadius: 2, boxShadow: 3 }}>
+      <Box 
+        sx={{ 
+          width: "100%",
+          maxWidth: { xs: "90%", sm: "400px" }, 
+          bgcolor: "#f5f5f5",
+          px: 3, 
+          py: 4, 
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Box sx={{ textAlign: "center" }}>
-              <img src={LogoImage} alt="Logo" style={{ maxWidth: "80px", height: "auto" }} />
+              <img src={LogoImage} alt="Logo" style={{ maxWidth: "70px", height: "auto" }} />
             </Box>
           </Grid>
 
@@ -82,7 +91,13 @@ export default function Register() {
                   fullWidth
                   startIcon={<FacebookIcon />}
                   onClick={() => handleSocialLogin("Facebook")}
-                  sx={{ borderColor: "#fff", color: "#fff", "&:hover": { borderColor: "#ccc" }, textTransform: "uppercase" }}
+                  sx={{ 
+                    borderColor: "#000", 
+                    color: "#000", 
+                    "&:hover": { borderColor: "#555" }, 
+                    textTransform: "uppercase",
+                    fontSize: { xs: "12px", sm: "14px" }, 
+                  }}
                 >
                   Sign Up with Facebook
                 </Button>
@@ -93,7 +108,13 @@ export default function Register() {
                   fullWidth
                   startIcon={<TwitterIcon />}
                   onClick={() => handleSocialLogin("Twitter")}
-                  sx={{ borderColor: "#fff", color: "#fff", "&:hover": { borderColor: "#ccc" }, textTransform: "uppercase" }}
+                  sx={{ 
+                    borderColor: "#000", 
+                    color: "#000", 
+                    "&:hover": { borderColor: "#555" }, 
+                    textTransform: "uppercase",
+                    fontSize: { xs: "12px", sm: "14px" }, 
+                  }}
                 >
                   Sign Up with Twitter
                 </Button>
@@ -104,7 +125,13 @@ export default function Register() {
                   fullWidth
                   startIcon={<GoogleIcon />}
                   onClick={() => handleSocialLogin("Google")}
-                  sx={{ borderColor: "#fff", color: "#fff", "&:hover": { borderColor: "#ccc" }, textTransform: "uppercase" }}
+                  sx={{ 
+                    borderColor: "#000", 
+                    color: "#000", 
+                    "&:hover": { borderColor: "#555" }, 
+                    textTransform: "uppercase",
+                    fontSize: { xs: "12px", sm: "14px" }, 
+                  }}
                 >
                   Sign Up with Google
                 </Button>
@@ -113,13 +140,18 @@ export default function Register() {
           </Grid>
 
           <Grid item xs={12}>
-            <Divider sx={{ borderColor: "#fff", color: "#fff" }}>OR</Divider>
+            <Divider sx={{ borderColor: "#000", color: "#000" }}>OR</Divider>
           </Grid>
 
           <Grid item xs={12}>
             <Stack direction="row" justifyContent="space-between" alignItems="baseline">
-              <Typography variant="h5">Register</Typography>
-              <Typography component={Link} to="/login" variant="body2" sx={{ textDecoration: "none", color: "#90caf9" }}>
+              <Typography variant="h6">Register</Typography>
+              <Typography 
+                component={Link} 
+                to="/login" 
+                variant="body2" 
+                sx={{ textDecoration: "none", color: "#1976D2", fontSize: { xs: "12px", sm: "14px" } }}
+              >
                 Already have an account?
               </Typography>
             </Stack>
@@ -135,15 +167,6 @@ export default function Register() {
                 variant="outlined"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                InputLabelProps={{ style: { color: "#fff" } }}
-                sx={{
-                  input: { color: "#fff" },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#fff" },
-                    "&:hover fieldset": { borderColor: "#90caf9" },
-                    "&.Mui-focused fieldset": { borderColor: "#90caf9" },
-                  },
-                }}
               />
               <TextField
                 fullWidth
@@ -153,15 +176,6 @@ export default function Register() {
                 variant="outlined"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                InputLabelProps={{ style: { color: "#fff" } }}
-                sx={{
-                  input: { color: "#fff" },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#fff" },
-                    "&:hover fieldset": { borderColor: "#90caf9" },
-                    "&.Mui-focused fieldset": { borderColor: "#90caf9" },
-                  },
-                }}
               />
               <TextField
                 fullWidth
@@ -172,27 +186,28 @@ export default function Register() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                InputLabelProps={{ style: { color: "#fff" } }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end" sx={{ color: "#fff" }}>
+                      <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
-                sx={{
-                  input: { color: "#fff" },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#fff" },
-                    "&:hover fieldset": { borderColor: "#90caf9" },
-                    "&.Mui-focused fieldset": { borderColor: "#90caf9" },
-                  },
-                }}
               />
 
-              <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, bgcolor: "#1976D2", textTransform: "uppercase" }}>
+              <Button 
+                type="submit" 
+                variant="contained" 
+                fullWidth 
+                sx={{ 
+                  mt: 2, 
+                  bgcolor: "#1976D2", 
+                  textTransform: "uppercase",
+                  fontSize: { xs: "14px", sm: "16px" }, 
+                }}
+              >
                 Register
               </Button>
             </Box>
