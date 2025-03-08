@@ -22,7 +22,7 @@ const Product = () => {
   useEffect(() => {
     const fetchNama = async () => {
       try {
-        const response = await axios.get(`${API_DUMMY}/api/products`);
+        const response = await axios.get($/{API_DUMMY}/api/products);
         setNama(response.data);
       } catch (err) {
         setError("Failed to fetch products");
@@ -33,7 +33,7 @@ const Product = () => {
 
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`${API_DUMMY}/api/categories`);
+        const response = await axios.get(${API_DUMMY}/api/categories);
         setCategories(response.data);
       } catch (err) {
         console.error("Failed to fetch categories");
@@ -44,7 +44,7 @@ const Product = () => {
     fetchCategories();
   }, []);
 
-  // ✅ Perbaikan filtering data
+  // ✅ Filtering data
   const filteredNama = nama.filter((item) =>
     item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedCategories === "" || item.kategori === selectedCategories)
@@ -59,8 +59,8 @@ const Product = () => {
         left: 0,
         width: "100vw",
         height: "100vh",
-        bgcolor: "#121212",
-        color: "white",
+        bgcolor: "#fff",
+        color: "#000",
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
@@ -87,7 +87,7 @@ const Product = () => {
           variant="contained" 
           color="primary" 
           startIcon={<AddIcon />} 
-          onClick={() => navigate("/products/add")} 
+          onClick={() => navigate("/addproduct")} 
         >
           Tambah Produk
         </Button>
@@ -101,7 +101,7 @@ const Product = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             sx={{
               width: "300px",
-              bgcolor: "white",
+              bgcolor: "#f0f0f0",
               borderRadius: "5px",
             }}
           />
@@ -116,7 +116,7 @@ const Product = () => {
               value={selectedCategories}
               onChange={(e) => setSelectedCategories(e.target.value)}
               displayEmpty
-              sx={{ bgcolor: "white", borderRadius: "5px", width: "200px" }}
+              sx={{ bgcolor: "#f0f0f0", borderRadius: "5px", width: "200px" }}
             >
               <MenuItem value="">All Categories</MenuItem>
               {categories.map((category) => (

@@ -12,7 +12,7 @@ const ProductCard = ({ id }) => {
   useEffect(() => {
     const fetchNama = async () => {
       try {
-        const response = await axios.get(`${API_DUMMY}/api/products/${id}`); // Tambah /
+        const response = await axios.get($/{API_DUMMY}/api/products/$,{id}); // Tambah /
         setNama(response.data);
       } catch (err) {
         setError("Failed to fetch product");
@@ -28,29 +28,29 @@ const ProductCard = ({ id }) => {
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-    <Card sx={{ maxWidth: 300, bgcolor: "#1e1e1e", color: "white", p: 1 }}>
+    <Card sx={{ maxWidth: 300, bgcolor: "#fff", color: "#000", p: 1, boxShadow: 3 }}>
       {/* Gambar Produk */}
       <CardMedia
         component="img"
         height="200"
-        image={nama?.gambar || ""}
-        alt={nama?.nama || "Product Image"}
+        image={nama?.gambar  ""}
+        alt={nama?.nama  "Product Image"}
         sx={{ borderRadius: "10px" }}
       />
 
       <CardContent>
         {/* Nama Produk */}
         <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
-          {nama?.nama || "Nama Produk"}
+          {nama?.nama  "Nama Produk"}
         </Typography>
 
         {/* Harga Produk */}
         <Typography variant="body1" sx={{ fontWeight: "bold", color: "#4caf50", mt: 1 }}>
-          Rp {nama?.harga?.toLocaleString("id-ID") || "0"}
+          Rp {nama?.harga?.toLocaleString("id-ID")  "0"}
         </Typography>
 
         {/* Deskripsi Produk */}
-        <Typography variant="body2" sx={{ color: "#aaa", mt: 1 }}>
+        <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>
           {nama?.deskripsi || "Tidak ada deskripsi"}
         </Typography>
 
