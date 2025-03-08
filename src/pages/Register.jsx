@@ -54,8 +54,8 @@ export default function Register() {
       maxWidth={false}
       disableGutters
       sx={{
-        width: "210vh",
-        minHeight: "100vh",
+        width: "99vw",
+        height: "50vw",
         margin: 0,
         padding: 0,
         bgcolor: "#121212",

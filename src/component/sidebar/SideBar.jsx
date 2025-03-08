@@ -8,11 +8,12 @@ const Sidebar = ({ open, onClose }) => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { text: "Home", path: "/" },
+    { text: "Home", path: "/register" },
     { text: "Products", path: "/products" },
+    { text: "Add Product", path: "/addproduct" },  
     { text: "Categories", path: "/categories" }, 
     { text: "Profile", path: "/profile" }, 
-    { text: "user", path: "/user" },    
+    { text: "User", path: "/user" },  
   ];
 
   return (
