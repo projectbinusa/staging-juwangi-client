@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom"; 
 import Sidebar from "./SideBar";
@@ -8,12 +7,22 @@ const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <Box display="flex">
+    <Box display="flex" minHeight="100vh" bgcolor="#fff" color="#000"> 
+      {/* Sidebar */}
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <Box flexGrow={1} p={2}>
-        <Button variant="contained" onClick={() => setSidebarOpen(true)}>
+
+      {/* Konten utama */}
+      <Box flexGrow={1} p={6} display="flex" flexDirection="column">
+        {/* Tombol Buka Sidebar */}
+        <Button
+          variant="contained"
+          sx={{ alignSelf: "start", mb: 2 }}
+          onClick={() => setSidebarOpen(true)}
+        >
           Open Sidebar
         </Button>
+
+        {/* Halaman Konten */}
         <Outlet />
       </Box>
     </Box>

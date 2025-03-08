@@ -22,7 +22,7 @@ const Product = () => {
   useEffect(() => {
     const fetchNama = async () => {
       try {
-        const response = await axios.get($/{API_DUMMY}/api/products);
+        const response = await axios.get(`${API_DUMMY}/api/products`);
         setNama(response.data);
       } catch (err) {
         setError("Failed to fetch products");
@@ -33,7 +33,7 @@ const Product = () => {
 
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(${API_DUMMY}/api/categories);
+        const response = await axios.get(`${API_DUMMY}/api/categories`);
         setCategories(response.data);
       } catch (err) {
         console.error("Failed to fetch categories");
