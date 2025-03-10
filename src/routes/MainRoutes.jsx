@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { lazy} from "react";
+import { lazy } from "react";
 import Layout from "../component/sidebar/Layout"; 
 
 const Login = lazy(() => import("../pages/Login"));
@@ -11,21 +11,15 @@ const ListUser = lazy(() => import("../pages/ListUser"));
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Layout />, 
+        element: <Layout />, // Semua halaman di sini akan punya Sidebar
         children: [
             { path: "products", element: <Product /> },
-            { path: "*" ,element: <ErrorPage/>},
+            { path: "user", element: <ListUser /> },
+            { path: "*", element: <ErrorPage /> }, // Error Page tanpa sidebar? Pindahkan ke luar
         ],
     },
-    {
-        path: "/",
-        children: [
-            { path: "login", element: <Login /> },
-            { path: "register", element: <Register /> },
-            { path: "user", element: <ListUser/>}
-        ]
-    }
+    { path: "login", element: <Login /> }, // Login dan Register di luar Layout (tanpa Sidebar)
+    { path: "register", element: <Register /> },
 ]);
 
 export default router;
-
