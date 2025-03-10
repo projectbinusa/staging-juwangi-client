@@ -2,6 +2,7 @@
 import React from "react";
 import { Box, Button, IconButton, Typography, Avatar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { Delete, Visibility } from "@mui/icons-material";
+import Sidebar from "../component/sidebar/Sidebar";
 
 const customers = [
   { id: 1, name: "Joe Schilder", email: "sip@gmail.com", contact: "+1 (731) 342-9783", age: 39, country: "Canada", status: "Rejected" },
