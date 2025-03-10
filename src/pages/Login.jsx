@@ -1,18 +1,29 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Container, Box, Grid, Button, Typography, Divider, TextField, Stack, IconButton, InputAdornment } from '@mui/material';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Container,
+  Box,
+  Grid,
+  Button,
+  Typography,
+  Divider,
+  TextField,
+  Stack,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import GoogleIcon from '@mui/icons-material/Google';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import GoogleIcon from "@mui/icons-material/Google";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import LogoImage from '../assets/logo.png';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import { API_DUMMY } from '../utils/api';
+import LogoImage from "../assets/logo.png";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { API_DUMMY } from "../utils/api";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,29 +45,32 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     try {
-      await axios.post(`${API_DUMMY}/api/users/login`, {
+      const response = await axios.post(`${API_DUMMY}/api/users/login`, {
         email: email,
         password: password,
       });
-
+  
+      console.log("Response Data:", response.data); // Tambahkan ini
+  
       Swal.fire({
         icon: "success",
         title: "Berhasil Login!!",
         showConfirmButton: false,
         timer: 1500,
       });
-
+  
       setTimeout(() => {
         navigate("/products");
       }, 1500);
     } catch (error) {
-      console.log(error);
+      console.log("Error:", error.response?.data || error.message); // Tambahkan ini
+      
       Swal.fire({
         icon: "error",
         title: "Login Gagal!",
-        text: "Periksa kembali email dan password Anda.",
+        text: error.response?.data?.message || "Periksa kembali email dan password Anda.",
       });
     }
   };
@@ -66,33 +80,33 @@ export default function Login() {
       maxWidth={false}
       disableGutters
       sx={{
-        width: '100vw',
-        height: '100vh',
-        bgcolor: '#121212',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#fff'
+        width: "100vw",
+        height: "100vh",
+        bgcolor: "#fff", // Mode terang (putih)
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#000", // Teks hitam
       }}
     >
       <Box
         sx={{
-          width: { xs: '90%', sm: '400px' },
-          bgcolor: '#1e1e1e',
+          width: { xs: "90%", sm: "400px" },
+          bgcolor: "#f5f5f5", // Background form abu muda
           p: 3,
           borderRadius: 2,
-          boxShadow: 3
+          boxShadow: 3,
         }}
       >
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Box sx={{ textAlign: 'center' }}>
+            <Box sx={{ textAlign: "center" }}>
               <img
                 src={LogoImage}
                 alt="Logo"
                 style={{
-                  maxWidth: '80px',
-                  height: 'auto'
+                  maxWidth: "80px",
+                  height: "auto",
                 }}
               />
             </Box>
@@ -105,11 +119,11 @@ export default function Login() {
                   variant="outlined"
                   fullWidth
                   startIcon={<FacebookIcon />}
-                  onClick={() => handleSocialLogin('Facebook')}
+                  onClick={() => handleSocialLogin("Facebook")}
                   sx={{
-                    borderColor: '#fff',
-                    color: '#fff',
-                    '&:hover': { borderColor: '#ccc' }
+                    borderColor: "#000",
+                    color: "#000",
+                    "&:hover": { borderColor: "#1976D2" },
                   }}
                 >
                   Sign In with Facebook
@@ -120,11 +134,11 @@ export default function Login() {
                   variant="outlined"
                   fullWidth
                   startIcon={<TwitterIcon />}
-                  onClick={() => handleSocialLogin('Twitter')}
+                  onClick={() => handleSocialLogin("Twitter")}
                   sx={{
-                    borderColor: '#fff',
-                    color: '#fff',
-                    '&:hover': { borderColor: '#ccc' }
+                    borderColor: "#000",
+                    color: "#000",
+                    "&:hover": { borderColor: "#1976D2" },
                   }}
                 >
                   Sign In with Twitter
@@ -135,11 +149,11 @@ export default function Login() {
                   variant="outlined"
                   fullWidth
                   startIcon={<GoogleIcon />}
-                  onClick={() => handleSocialLogin('Google')}
+                  onClick={() => handleSocialLogin("Google")}
                   sx={{
-                    borderColor: '#fff',
-                    color: '#fff',
-                    '&:hover': { borderColor: '#ccc' }
+                    borderColor: "#000",
+                    color: "#000",
+                    "&:hover": { borderColor: "#1976D2" },
                   }}
                 >
                   Sign In with Google
@@ -149,7 +163,7 @@ export default function Login() {
           </Grid>
 
           <Grid item xs={12}>
-            <Divider sx={{ borderColor: '#fff', color: '#fff' }}>OR</Divider>
+            <Divider sx={{ borderColor: "#000", color: "#000" }}>OR</Divider>
           </Grid>
 
           <Grid item xs={12}>
@@ -159,7 +173,7 @@ export default function Login() {
                 component={Link}
                 to="/register"
                 variant="body2"
-                sx={{ textDecoration: 'none', color: '#90caf9' }}
+                sx={{ textDecoration: "none", color: "#1976D2" }}
               >
                 Don&apos;t have an account?
               </Typography>
@@ -176,14 +190,14 @@ export default function Login() {
                 variant="outlined"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                InputLabelProps={{ style: { color: '#fff' } }}
+                InputLabelProps={{ style: { color: "#333" } }} // Label abu gelap
                 sx={{
-                  input: { color: '#fff' },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': { borderColor: '#fff' },
-                    '&:hover fieldset': { borderColor: '#90caf9' },
-                    '&.Mui-focused fieldset': { borderColor: '#90caf9' }
-                  }
+                  input: { color: "#000" }, // Teks hitam
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "#333" }, // Border abu gelap
+                    "&:hover fieldset": { borderColor: "#1976D2" }, // Hover biru standar
+                    "&.Mui-focused fieldset": { borderColor: "#1976D2" }, // Fokus biru standar
+                  },
                 }}
               />
               <TextField
@@ -192,10 +206,10 @@ export default function Login() {
                 name="password"
                 margin="normal"
                 variant="outlined"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                InputLabelProps={{ style: { color: '#fff' } }}
+                InputLabelProps={{ style: { color: "#333" } }} // Label abu gelap
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -204,29 +218,24 @@ export default function Login() {
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
-                        sx={{ color: '#fff' }}
+                        sx={{ color: "#000" }}
                       >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
-                  )
+                  ),
                 }}
                 sx={{
-                  input: { color: '#fff' },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': { borderColor: '#fff' },
-                    '&:hover fieldset': { borderColor: '#90caf9' },
-                    '&.Mui-focused fieldset': { borderColor: '#90caf9' }
-                  }
+                  input: { color: "#000" }, // Teks hitam
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "#333" }, // Border abu gelap
+                    "&:hover fieldset": { borderColor: "#1976D2" }, // Hover biru standar
+                    "&.Mui-focused fieldset": { borderColor: "#1976D2" }, // Fokus biru standar
+                  },
                 }}
               />
 
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{ mt: 2, bgcolor: '#1976D2' }}
-              >
+              <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, bgcolor: "#1976D2" }}>
                 Login
               </Button>
             </Box>

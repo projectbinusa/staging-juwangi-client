@@ -15,13 +15,13 @@ const Layout = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 0,
           transition: "margin 0.3s ease-in-out",
-          marginLeft: openDrawer ? "240px" : "60px", // Geser konten
+          marginRight: openDrawer ? "210px" : "280px", // Geser konten
         }}
       >
         <Toolbar />
-        <Outlet />
+        <Outlet context={{ openDrawer }} />
       </Box>
     </Box>
   );
