@@ -14,6 +14,14 @@ export default function Add() {
   const addData = async (e) => {
     e.preventDefault();
 
+    if (!nama || !harga || !deskripsi) {
+      Swal.fire({
+        icon: "warning",
+        title: "Mohon isi semua field!",
+      });
+      return;
+    }
+
     try {
       let image = gambar;
       if (gambar) {
@@ -48,26 +56,26 @@ export default function Add() {
   return (
     <Box
       sx={{
-        height: "100vh", // Full tinggi layar
-        width: "100vw",
+        height: "75vh",
+        width: "93vw",
         display: "flex",
-        justifyContent: "center", // Pusatkan horizontal
-        alignItems: "center", // Pusatkan vertikal
-        backgroundColor: "#121212",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#fff", 
       }}
     >
       <Container
         maxWidth="sm"
         sx={{
           p: 3,
-          bgcolor: "#1e1e1e",
+          bgcolor: "#f5f5f5", 
           borderRadius: 2,
-          color: "#fff",
+          color: "#000", 
           boxShadow: 3,
         }}
       >
         <Typography variant="h4" gutterBottom align="center">
-          Form Tambah Produk
+          Tambah Produk
         </Typography>
 
         <Box
@@ -81,16 +89,17 @@ export default function Add() {
             fullWidth
             value={nama}
             onChange={(e) => setNama(e.target.value)}
-            InputLabelProps={{ style: { color: "#fff" } }}
+            InputLabelProps={{ style: { color: "#000" } }} 
             sx={{
-              input: { color: "#fff" },
+              input: { color: "#000" }, 
               "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#fff" },
-                "&:hover fieldset": { borderColor: "#90caf9" },
-                "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+                "& fieldset": { borderColor: "#333" }, 
+                "&:hover fieldset": { borderColor: "#1976D2" }, 
+                "&.Mui-focused fieldset": { borderColor: "#1976D2" },
               },
             }}
           />
+
           <TextField
             label="Harga"
             variant="outlined"
@@ -98,16 +107,17 @@ export default function Add() {
             type="number"
             value={harga}
             onChange={(e) => setHarga(e.target.value)}
-            InputLabelProps={{ style: { color: "#fff" } }}
+            InputLabelProps={{ style: { color: "#000" } }}
             sx={{
-              input: { color: "#fff" },
+              input: { color: "#000" },
               "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#fff" },
-                "&:hover fieldset": { borderColor: "#90caf9" },
-                "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+                "& fieldset": { borderColor: "#333" },
+                "&:hover fieldset": { borderColor: "#1976D2" },
+                "&.Mui-focused fieldset": { borderColor: "#1976D2" },
               },
             }}
           />
+
           <TextField
             label="Deskripsi"
             variant="outlined"
@@ -116,35 +126,43 @@ export default function Add() {
             rows={3}
             value={deskripsi}
             onChange={(e) => setDeskripsi(e.target.value)}
-            InputLabelProps={{ style: { color: "#fff" } }}
+            InputLabelProps={{ style: { color: "#000" } }}
             sx={{
-              input: { color: "#fff" },
-              "& .MuiInputBase-inputMultiline": { color: "#fff" },
+              textarea: { color: "#000" },
               "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#fff" },
-                "&:hover fieldset": { borderColor: "#90caf9" },
-                "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+                "& fieldset": { borderColor: "#333" },
+                "&:hover fieldset": { borderColor: "#1976D2" },
+                "&.Mui-focused fieldset": { borderColor: "#1976D2" },
               },
             }}
           />
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            <h5 style={{ margin: 0 }}>Gambar</h5>
-            <TextField
-              label=""
-              variant="outlined"
-              fullWidth
-              type="file"
-              onChange={(e) => setGambar(e.target.files[0])}
-              InputLabelProps={{ style: { color: "#fff" } }}
+
+          <Box>
+            <Typography variant="body1" sx={{ mb: 1, color: "#000" }}>
+              Gambar Produk
+            </Typography>
+            <Box
               sx={{
-                input: { color: "#fff" },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "#fff" },
-                  "&:hover fieldset": { borderColor: "#90caf9" },
-                  "&.Mui-focused fieldset": { borderColor: "#90caf9" },
-                },
+                display: "flex",
+                alignItems: "left",
+                justifyContent: "left",
+                padding: "10px",
+                backgroundColor: "#fff",
+                borderRadius: "5px",
+                border: "1px solid #333", 
+                "&:hover": { borderColor: "#1976D2" }, 
               }}
-            />
+            >
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setGambar(e.target.files[0])}
+                style={{
+                  color: "#000", 
+                  cursor: "pointer",
+                }}
+              />
+            </Box>
           </Box>
 
           <Button type="submit" variant="contained" sx={{ bgcolor: "#1976D2" }}>

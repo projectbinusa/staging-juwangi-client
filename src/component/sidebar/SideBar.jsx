@@ -37,10 +37,20 @@ const Sidebar = () => {
   // const [openPendukung, setOpenPendukung] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.body.style.backgroundColor = darkMode ? "#fff" : "#121212";
   };
+  const menuItems = [
+    { text: "Home", path: "/register" },
+    { text: "Products", path: "/products" },
+    { text: "Add Product", path: "/addproduct" },  
+    { text: "Categories", path: "/categories" }, 
+    { text: "Profile", path: "/profile" }, 
+    { text: "User", path: "/user" },  
+  ];
+
 
   return (
     <>
