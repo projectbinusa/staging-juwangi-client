@@ -34,7 +34,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
     <Drawer
       variant="permanent"
       sx={{
-        width: openDrawer ? 240 : 60,
+        width: openDrawer ? 240 : 0,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: openDrawer ? 240 : 60,
