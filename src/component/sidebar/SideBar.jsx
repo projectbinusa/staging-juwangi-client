@@ -91,6 +91,11 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
                   </ListItemIcon>
                   <ListItemText primary="Edit Produk" />
                 </ListItemButton>
+                <ListItemButton onClick={() => navigate("/cart")}>
+                  <ListItemIcon sx={{ color: "white" }}>
+                  </ListItemIcon>
+                  <ListItemText primary="cart" />
+                </ListItemButton>
               </List>
             </Collapse>
           </List>

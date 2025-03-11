@@ -7,6 +7,7 @@ const Register = lazy(() => import("../pages/Register"));
 const Product = lazy(() => import("../pages/e-commerce/Product"));
 const ErrorPage = lazy(() => import("../notfound/NotFound"));
 const ListUser = lazy(() => import("../pages/ListUser"));
+const Cart = lazy(() => import("../pages/e-commerce/Cart"))
 const AddProduct = lazy(() => import("../pages/e-commerce/AddProduct"))
 
 const router = createBrowserRouter([
@@ -16,6 +17,9 @@ const router = createBrowserRouter([
         children: [
             { path: "products", element: <Product /> },
             { path: "user", element: <ListUser /> },
+            { path: "cart", element: <Cart/>},
+            // { path: "profile", element: <ProfilePage /> },
+            { path: "*", element: <ErrorPage /> },
             { path: "*", element: <ErrorPage /> }, // Error Page tanpa sidebar? Pindahkan ke luar
         ],
     },

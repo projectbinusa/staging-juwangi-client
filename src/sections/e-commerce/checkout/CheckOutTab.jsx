@@ -1,50 +1,64 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
-import { Box, Typography, Button, Card, CardContent, Divider } from "@mui/material";
+import { Paper, Typography, Button, Box, Divider, List, ListItem, ListItemText } from "@mui/material";
 
-// Komponen untuk menampilkan daftar item dalam keranjang
-const CheckoutTab = ({ cart }) => {
-    return (
-        <Box sx={{ maxWidth: "800px", margin: "auto", mt: 4, p: 3, boxShadow: 3, borderRadius: 2, backgroundColor: "white" }}>
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold", textAlign: "center" }}>
-                Keranjang Belanja
+export default function CheckoutTab({ cart }) {
+  const total = Array.isArray(cart) 
+    ? cart.reduce((sum, item) => sum + (item.harga || 0), 0)
+    : 0;
+
+  return (
+    <Paper 
+      sx={{ 
+        p: 3, 
+        boxShadow: 4, 
+        borderRadius: 2, 
+        backgroundColor: "#f9f9f9",
+        height: "77vh",
+        display: "flex", 
+        flexDirection: "column",
+      }}
+    >
+      <Typography variant="h5" fontWeight="bold" textAlign="center">
+        Checkout
+      </Typography>
+      
+      <Box sx={{ flexGrow: 1, overflowY: "auto", maxHeight: "65vh", mt: 2 }}>
+        <List>
+          {cart.length === 0 ? (
+            <Typography variant="body1" color="textSecondary" textAlign="center">
+              Tidak ada produk di keranjang.
             </Typography>
+          ) : (
+            cart.map((item, index) => (
+              <div key={index}>
+                <ListItem>
+                  <ListItemText 
+                    primary={`${item.nama} (x1)`}
+                    secondary={`Rp${(item.harga || 0).toLocaleString()}`}
+                  />
+                </ListItem>
+                <Divider />
+              </div>
+            ))
+          )}
+        </List>
+      </Box>
 
-            {/* Jika keranjang kosong */}
-            {cart.length === 0 ? (
-                <Typography variant="body1" sx={{ textAlign: "center", color: "gray" }}>
-                    Keranjang Anda masih kosong.
-                </Typography>
-            ) : (
-                cart.map((item, index) => (
-                    <Card key={index} sx={{ mb: 2 }}>
-                        <CardContent>
-                            <Typography variant="h6">{item.name}</Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                Harga: Rp {item.price.toLocaleString()}
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                Jumlah: {item.quantity}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                ))
-            )}
 
-            <Divider sx={{ my: 2 }} />
+      <Typography variant="body1" color="textSecondary" mt={2} textAlign="center">
+        Total:
+      </Typography>
+      <Typography variant="h4" color="primary" fontWeight="bold" textAlign="center">
+        Rp{total.toLocaleString()}
+      </Typography>
 
-            {/* Tombol Checkout */}
-            <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                disabled={cart.length === 0}
-                onClick={() => alert("Melanjutkan ke pembayaran...")}
-            >
-                Checkout Sekarang
-            </Button>
-        </Box>
-    );
-};
-
-export default CheckoutTab;
+      <Button 
+        variant="contained" 
+        color="primary" 
+        fullWidth 
+        sx={{ mt: 2, borderRadius: 2 }}
+      >
+        CHECKOUT
+      </Button>
+    </Paper>
+  );
+}
