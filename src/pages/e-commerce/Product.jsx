@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import ProductCard from "../../component/ProductCard";
 import { 
   Container, Grid, Typography, TextField, Box, Button, CircularProgress, Select, MenuItem 
@@ -12,6 +11,8 @@ import { API_DUMMY } from "../../utils/api";
 
 const Product = () => {
   const navigate = useNavigate();
+  const outletContext = useOutletContext() || {};
+  const { openDrawer = true } = outletContext;
   const [nama, setNama] = useState([]); 
   const [searchTerm, setSearchTerm] = useState(""); 
   const [loading, setLoading] = useState(true); 
@@ -44,53 +45,58 @@ const Product = () => {
     fetchCategories();
   }, []);
 
-  const filteredNama = nama.filter((item) =>
-    item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategories === "" || item.kategori === selectedCategories)
-  );
+  const filteredNama = useMemo(() => {
+    return nama.filter((item) =>
+      item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedCategories === "" || item.kategori?.toLowerCase() === selectedCategories.toLowerCase())
+    );
+  }, [nama, searchTerm, selectedCategories]);
 
   return (
     <Container
       maxWidth={false}
       sx={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        bgcolor: "#fff",
-        color: "#000",
-        textAlign: "center",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "start",
+        justifyContent: "center",
+        bgcolor: "#fff",
+        color: "#000",
         overflowY: "auto",
-        padding: 3,
+        transition: "all 0.3s ease-in-out",
+        ml: openDrawer ? "30px" : "120px",
+        width: openDrawer ? "calc(130% - 220px)" : "calc(130% - 50px)",
+        padding: 2,
       }}
     >
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
 
+      {/* Bagian atas dengan tombol dan filter */}
       <Box 
         display="flex" 
-        justifyContent="space-between" 
+        flexDirection="column"
         alignItems="center" 
+        justifyContent="center" 
         width="100%"
         maxWidth="1200px"
-        mb={2}
+        gap={3}
+        mb={3}
       >
+        {/* Tombol tambah produk */}
         <Button 
           variant="contained" 
           color="primary" 
           startIcon={<AddIcon />} 
           onClick={() => navigate("/addproduct")} 
+          sx={{ width: "200px", fontWeight: "bold" }}
         >
           Tambah Produk
         </Button>
 
-        <Box display="flex" alignItems="center" gap={2}>
+        {/* Search dan Filter */}
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2} width="100%">
           <TextField
             variant="outlined"
             placeholder="Search product..."
@@ -99,54 +105,83 @@ const Product = () => {
               width: "300px",
               bgcolor: "#f0f0f0",
               borderRadius: "5px",
+              transition: "all 0.2s ease-in-out",
+              "&:focus-within": {
+                bgcolor: "#e0e0e0",
+              },
             }}
           />
-          <Button variant="contained" color="primary">
+          <Button 
+            variant="contained" 
+            color="primary"
+            sx={{ 
+              minWidth: "50px", 
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                transform: "scale(1.05)",
+              },
+            }}
+          >
             <SearchIcon />
           </Button>
 
-          <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
-            <Select
-              value={selectedCategories}
-              onChange={(e) => setSelectedCategories(e.target.value)}
-              displayEmpty
-              sx={{ bgcolor: "#f0f0f0", borderRadius: "5px", width: "200px" }}
-            >
-              <MenuItem value="">All Categories</MenuItem>
-              {categories.map((category) => (
-                <MenuItem key={category.id} value={category.kategori}>
-                  {category.kategori}
-                </MenuItem>
-              ))}
-            </Select>
+          <Select
+            value={selectedCategories}
+            onChange={(e) => setSelectedCategories(e.target.value)}
+            displayEmpty
+            sx={{
+              bgcolor: "#f0f0f0",
+              borderRadius: "5px",
+              width: "200px",
+              transition: "all 0.2s ease-in-out",
+              "&:focus-within": {
+                bgcolor: "#e0e0e0",
+              },
+            }}
+          >
+            <MenuItem value="">All Categories</MenuItem>
+            {categories.map((category) => (
+              <MenuItem key={category.id} value={category.kategori}>
+                {category.kategori}
+              </MenuItem>
+            ))}
+          </Select>
 
-            <Button 
-              variant="contained" 
-              color="primary" 
-              onClick={() => navigate("/categories")}
-            >
-              ADD CATEGORIES
-            </Button>
-          </Box>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={() => navigate("/categories")}
+            sx={{
+              width: "200px",
+              fontWeight: "bold",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                transform: "scale(1.05)",
+              },
+            }}
+          >
+            ADD CATEGORIES
+          </Button>
         </Box>
       </Box>
 
+      {/* Daftar Produk */}
       {loading ? (
         <CircularProgress sx={{ mt: 2 }} />
       ) : error ? (
         <Typography color="error">{error}</Typography>
-      ) : (
-        <Grid container spacing={3} justifyContent="center">
-          {filteredNama.length > 0 ? (
-            filteredNama.map((item) => (
-              <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
-                <ProductCard id={item.id} /> 
-              </Grid>
-            ))
-          ) : (
-            <Typography variant="h6">Product not found</Typography>
-          )}
+      ) : filteredNama.length > 0 ? (
+        <Grid container spacing={4} justifyContent="center">
+          {filteredNama.map((item) => (
+            <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
+              <ProductCard id={item.id} />
+            </Grid>
+          ))}
         </Grid>
+      ) : (
+        <Typography variant="h6" sx={{ mt: 3, textAlign: "center" }}>
+          Tidak ada produk tersedia
+        </Typography>
       )}
     </Container>
   );

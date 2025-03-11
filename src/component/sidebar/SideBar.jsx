@@ -21,7 +21,7 @@ import {
   ChevronLeft,
   ExpandLess,
   ExpandMore,
-  Storefront, // Ikon untuk e-commerce
+  Storefront,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -34,7 +34,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
     <Drawer
       variant="permanent"
       sx={{
-        width: openDrawer ? 240 : 60,
+        width: openDrawer ? 240 : 0,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: openDrawer ? 240 : 60,
@@ -76,15 +76,20 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             </ListItemButton>
             <Collapse in={openEcommerce} timeout="auto" unmountOnExit>
               <List component="div" disablePadding sx={{ pl: 4 }}>
-                <ListItemButton onClick={() => navigate("/dashboard/ecommerce/products")}>
+                <ListItemButton onClick={() => navigate("/products")}>
                   <ListItemIcon sx={{ color: "white" }}>
                   </ListItemIcon>
                   <ListItemText primary="Produk" />
                 </ListItemButton>
-                <ListItemButton onClick={() => navigate("/dashboard/ecommerce/orders")}>
+                <ListItemButton onClick={() => navigate("/")}>
                   <ListItemIcon sx={{ color: "white" }}>
                   </ListItemIcon>
-                  <ListItemText primary="Edit Product" />
+                  <ListItemText primary="Tambah Produk" />
+                </ListItemButton>
+                <ListItemButton onClick={() => navigate("/")}>
+                  <ListItemIcon sx={{ color: "white" }}>
+                  </ListItemIcon>
+                  <ListItemText primary="Edit Produk" />
                 </ListItemButton>
                 <ListItemButton onClick={() => navigate("/cart")}>
                   <ListItemIcon sx={{ color: "white" }}>
