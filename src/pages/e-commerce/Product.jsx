@@ -85,7 +85,7 @@ const Product = () => {
         mb={3}
       >
         {/* Tombol tambah produk */}
-        <Button 
+        {/* <Button 
           variant="contained" 
           color="primary" 
           startIcon={<AddIcon />} 
@@ -93,7 +93,7 @@ const Product = () => {
           sx={{ width: "200px", fontWeight: "bold" }}
         >
           Tambah Produk
-        </Button>
+        </Button> */}
 
         {/* Search dan Filter */}
         <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2} width="100%">
