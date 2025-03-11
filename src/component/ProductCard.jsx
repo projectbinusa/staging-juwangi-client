@@ -1,53 +1,77 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { Card, CardMedia, CardContent, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
-import { API_DUMMY } from "../utils/api"; 
+import { API_DUMMY } from "../utils/api";
 
 const ProductCard = ({ id }) => {  
-  const [nama, setNama] = useState(null);
+  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Untuk navigasi ke halaman edit
 
   useEffect(() => {
-    const fetchNama = async () => {
+    const fetchProduct = async () => {
       try {
         const response = await axios.get(`${API_DUMMY}/api/products/${id}`);
-        setNama(response.data);
+        setProduct(response.data);
       } catch (err) {
         setError("Failed to fetch product");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchNama();
+    fetchProduct();
   }, [id]);
+
+  const handleEdit = () => {
+    navigate(`/editproduct/${id}`); // Arahkan ke halaman edit
+  };
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-    <Card sx={{ maxWidth: 300, bgcolor: "#fff", color: "#000", p: 1, boxShadow: 3 }}>
+    <Card 
+      sx={{ 
+        maxWidth: 200, 
+        bgcolor: "#fff", 
+        color: "#000", 
+        p: 1, 
+        boxShadow: 3,
+        borderRadius: "10px",
+        transition: "all 0.3s ease-in-out",
+        "&:hover": {
+          boxShadow: 6,
+          transform: "scale(1.02)",
+        }
+      }}
+    >
       <CardMedia
         component="img"
-        height="200"
-        image={nama?.gambar || ""}
-        alt={nama?.nama || "Product Image"}
-        sx={{ borderRadius: "10px" }}
+        height="150"
+        image={product?.gambar || ""}
+        alt={product?.nama || "Product Image"}
+        sx={{ 
+          borderRadius: "10px", 
+          transition: "transform 0.3s ease-in-out",
+          "&:hover": {
+            transform: "scale(1.08)",
+          },
+        }}
       />
 
       <CardContent>
-        <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
-          {nama?.nama || "Nama Produk"}
+        <Typography variant="body1" component="div" sx={{ fontWeight: "bold" }}>
+          {product?.nama || "Nama Produk"}
         </Typography>
 
-        <Typography variant="body1" sx={{ fontWeight: "bold", color: "#4caf50", mt: 1 }}>
-          Rp {nama?.harga?.toLocaleString("id-ID") || "0"}
+        <Typography variant="body2" sx={{ fontWeight: "bold", color: "#4caf50", mt: 1 }}>
+          Rp {product?.harga?.toLocaleString("id-ID") || "0"}
         </Typography>
 
         <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>
-          {nama?.deskripsi || "Tidak ada deskripsi"}
+          {product?.deskripsi || "Tidak ada deskripsi"}
         </Typography>
 
         <Button
@@ -56,11 +80,34 @@ const ProductCard = ({ id }) => {
           sx={{
             bgcolor: "#2196f3",
             color: "white",
-            mt: 2,
-            ":hover": { bgcolor: "#1976d2" },
+            mt: 1,
+            borderRadius: "8px",
+            fontSize: "12px",
+            padding: "6px 10px",
+            transition: "all 0.3s ease-in-out",
+            "&:hover": { bgcolor: "#1976d2", transform: "scale(1.05)" },
           }}
         >
           Add To Cart
+        </Button>
+
+        {/* Tombol Edit */}
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={handleEdit} // Fungsi edit
+          sx={{
+            bgcolor: "#ff9800",
+            color: "white",
+            mt: 1,
+            borderRadius: "8px",
+            fontSize: "12px",
+            padding: "6px 10px",
+            transition: "all 0.3s ease-in-out",
+            "&:hover": { bgcolor: "#f57c00", transform: "scale(1.05)" },
+          }}
+        >
+          Edit
         </Button>
       </CardContent>
     </Card>

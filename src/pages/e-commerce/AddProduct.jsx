@@ -28,7 +28,7 @@ export default function Add() {
         image = await uploadImageToS3(gambar);
       }
 
-      await axios.post(`${API_DUMMY}/api/products`, {
+      await axios.post(`${API_DUMMY}/api/products/add`, {
         nama,
         harga,
         deskripsi,
@@ -56,11 +56,11 @@ export default function Add() {
   return (
     <Box
       sx={{
-        height: "75vh",
-        width: "93vw",
+        height: "100vh",
+        width: "100vw",
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
+        justifyContent: "center",
         backgroundColor: "#fff", 
       }}
     >
