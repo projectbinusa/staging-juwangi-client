@@ -1,36 +1,27 @@
-import { Container, Grid } from "@mui/material";
-import CartTab from "../../component/CartTab";
-import CheckoutTab from "../../sections/e-commerce/checkout/CheckOutTab";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Container, Typography, Button } from "@mui/material";
 import axios from "axios";
+import CartTab from "../../component/CartTab";
 import { API_DUMMY } from "../../utils/api";
 
-export default function Cart() {
-  const [cart, setCart] = useState([]);
+const Cart = () => {
+  const [cartItems, setCartItems] = useState([]);
 
+  
   useEffect(() => {
-    axios
-      .get(`${API_DUMMY}/api/products`)
-      .then((response) => {
-        setCart(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching cart:", error);
-      });
+    axios.get(`${API_DUMMY}/api/cart`)
+      .then(response => setCartItems(response.data))
+      .catch(error => console.error("Error fetching cart items:", error));
   }, []);
 
+
   return (
-    <Container sx={{ marginTop: 3 }}>
-      <Grid container spacing={3} justifyContent="center">
-
-        <Grid item xs={12} md={8}>
-          <CartTab cart={cart} />
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <CheckoutTab cart={cart} />
-        </Grid>
-      </Grid>
+    <Container>
+      <Typography variant="h5" gutterBottom>Keranjang Belanja</Typography>
+      <CartTab cart={cartItems} />
+      <Button variant="contained" color="primary" fullWidth>Checkout</Button>
     </Container>
   );
-}
+};
+
+export default Cart;
