@@ -1,8 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import { TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 import { API_DUMMY } from "../../utils/api";
 
 const EditProduct = () => {
@@ -13,7 +14,7 @@ const EditProduct = () => {
     nama: "",
     harga: "",
     deskripsi: "",
-    gambar: "",
+    gambar: null,
   });
 
   const [loading, setLoading] = useState(true);
@@ -34,15 +35,28 @@ const EditProduct = () => {
   }, [id]);
 
   const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
+    if (e.target.name === "gambar") {
+      setProduct({ ...product, gambar: e.target.files[0] });
+    } else {
+      setProduct({ ...product, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${API_DUMMY}/api/products/${id}`, product);
+      const formData = new FormData();
+      formData.append("nama", product.nama);
+      formData.append("harga", product.harga);
+      formData.append("deskripsi", product.deskripsi);
+      if (product.gambar) {
+        formData.append("gambar", product.gambar);
+      }
 
-      // Menampilkan popup SweetAlert2 dengan tombol OK
+      await axios.put(`${API_DUMMY}/api/products/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       Swal.fire({
         title: "Berhasil!",
         text: "Produk berhasil diperbarui",
@@ -50,10 +64,9 @@ const EditProduct = () => {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate("/products"); // Redirect ke halaman produk setelah klik OK
+          navigate("/products");
         }
       });
-
     } catch (err) {
       Swal.fire({
         title: "Gagal!",
@@ -68,21 +81,23 @@ const EditProduct = () => {
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-    <Container
-      maxWidth="sm"
+    <Box
       sx={{
+        minHeight: "100vh", 
+        width: "100vw",
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
-        height: "100vh", // Pusatkan vertikal
-        marginLeft: "380px",
+        justifyContent: "center",
+        background: "linear-gradient(to right, #74ebd5, #acb6e5)",
+        overflowY: "auto", 
+        padding: 4, 
       }}
     >
       <Box
         sx={{
           width: "100%",
-          maxWidth: 500,
-          p: 3,
+          maxWidth: 600,
+          p: 4,
           boxShadow: 3,
           bgcolor: "white",
           borderRadius: 2,
@@ -122,15 +137,32 @@ const EditProduct = () => {
             multiline
             rows={3}
           />
-          <TextField
-            label="URL Gambar"
-            name="gambar"
-            value={product.gambar}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-          />
+
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="body1" fontWeight="bold">
+              Gambar Produk
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                padding: "10px",
+                backgroundColor: "#f8f9fa",
+                borderRadius: "5px",
+                border: "1px dashed #333",
+              }}
+            >
+              <input
+                type="file"
+                name="gambar"
+                accept="image/*"
+                onChange={handleChange}
+                style={{ marginBottom: "10px" }}
+              />
+            </Box>
+          </Box>
+
           <Button
             type="submit"
             variant="contained"
@@ -141,7 +173,7 @@ const EditProduct = () => {
           </Button>
         </form>
       </Box>
-    </Container>
+    </Box>
   );
 };
 
