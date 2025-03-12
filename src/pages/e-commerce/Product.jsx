@@ -65,7 +65,7 @@ const Product = () => {
         overflowY: "auto",
         transition: "all 0.3s ease-in-out",
         ml: openDrawer ? "30px" : "120px",
-        width: openDrawer ? "calc(130% - 220px)" : "calc(130% - 50px)",
+        width: openDrawer ? "calc(130% - 100px)" : "calc(130% - 190px)",
         padding: 2,
       }}
     >
@@ -73,7 +73,6 @@ const Product = () => {
         Products
       </Typography>
 
-      {/* Bagian atas dengan tombol dan filter */}
       <Box 
         display="flex" 
         flexDirection="column"
@@ -84,8 +83,7 @@ const Product = () => {
         gap={3}
         mb={3}
       >
-        {/* Tombol tambah produk */}
-        <Button 
+        {/* <Button 
           variant="contained" 
           color="primary" 
           startIcon={<AddIcon />} 
@@ -93,9 +91,8 @@ const Product = () => {
           sx={{ width: "200px", fontWeight: "bold" }}
         >
           Tambah Produk
-        </Button>
+        </Button> */}
 
-        {/* Search dan Filter */}
         <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2} width="100%">
           <TextField
             variant="outlined"
@@ -171,13 +168,13 @@ const Product = () => {
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : filteredNama.length > 0 ? (
-        <Grid container spacing={4} justifyContent="center">
+      <Grid container rowSpacing={2} justifyContent="center">
           {filteredNama.map((item) => (
-            <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
-              <ProductCard id={item.id} />
-            </Grid>
-          ))}
+          <Grid item key={item.id} xs={12} sm={6} md={3} lg={3}>
+          <ProductCard id={item.id} />
         </Grid>
+        ))}
+      </Grid>
       ) : (
         <Typography variant="h6" sx={{ mt: 3, textAlign: "center" }}>
           Tidak ada produk tersedia
