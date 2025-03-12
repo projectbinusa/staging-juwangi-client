@@ -1,6 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { Card, CardMedia, CardContent, Typography, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { API_DUMMY } from "../utils/api";
 
@@ -25,7 +26,7 @@ const ProductCard = ({ id }) => {
   }, [id]);
 
   const handleEdit = () => {
-    navigate(`/editproduct/${id}`); // Arahkan ke halaman edit
+    navigate(`/editproduct/${id}`); 
   };
 
   if (loading) return <Typography>Loading...</Typography>;
@@ -34,7 +35,7 @@ const ProductCard = ({ id }) => {
   return (
     <Card 
       sx={{ 
-        maxWidth: 200, 
+        maxWidth: 230, 
         bgcolor: "#fff", 
         color: "#000", 
         p: 1, 

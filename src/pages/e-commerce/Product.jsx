@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import ProductCard from "../../component/ProductCard";
@@ -5,7 +6,7 @@ import {
   Container, Grid, Typography, TextField, Box, Button, CircularProgress, Select, MenuItem 
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add"; 
+// import AddIcon from "@mui/icons-material/Add"; 
 import axios from "axios";
 import { API_DUMMY } from "../../utils/api";
 
@@ -63,10 +64,10 @@ const Product = () => {
         bgcolor: "#fff",
         color: "#000",
         overflowY: "auto",
-        transition: "all 0.3s ease-in-out",
-        ml: openDrawer ? "30px" : "120px",
-        width: openDrawer ? "calc(130% - 100px)" : "calc(130% - 190px)",
-        padding: 2,
+        // transition: "all 0.3s ease-in-out",
+        // ml: openDrawer ? "30px" : "120px",
+        // width: openDrawer ? "calc(160% - 50px)" : "calc(130% - 390px)",
+        padding: 1,
       }}
     >
       <Typography variant="h4" gutterBottom>
@@ -93,7 +94,7 @@ const Product = () => {
           Tambah Produk
         </Button> */}
 
-        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2} width="100%">
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={3} width="100%">
           <TextField
             variant="outlined"
             placeholder="Search product..."
