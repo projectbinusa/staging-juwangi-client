@@ -21,6 +21,7 @@ import {
   ExitToApp,
   Menu,
   ChevronLeft,
+  AccountCircle,
   ExpandLess,
   ExpandMore,
   Storefront,
@@ -39,11 +40,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
     <Drawer
       variant="permanent"
       sx={{
-
         width: openDrawer ? 240 : 60,
-
-        width: openDrawer ? 0 : 0,
-
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: openDrawer ? 240 : 60,
@@ -64,7 +61,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
 
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate("/products")}>
+          <ListItemButton onClick={() => navigate("/products")}> 
             <ListItemIcon sx={{ color: "white" }}>
               <AssessmentOutlined />
             </ListItemIcon>
@@ -74,22 +71,22 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
 
         {/* Submenu E-commerce */}
         <List component="div" disablePadding>
-          <ListItemButton onClick={() => setOpenEcommerce(!openEcommerce)} sx={{ pl: 2 }}>
+          <ListItemButton onClick={() => setOpenEcommerce(!openEcommerce)} sx={{ pl: openDrawer ? 2 : 1.5 }}>
             <ListItemIcon sx={{ color: "white" }}>
               <Storefront />
             </ListItemIcon>
-            <ListItemText primary="E-commerce" />
-            {openEcommerce ? <ExpandLess /> : <ExpandMore />}
+            {openDrawer && <ListItemText primary="E-commerce" />}
+            {openDrawer && (openEcommerce ? <ExpandLess /> : <ExpandMore />)}
           </ListItemButton>
-          <Collapse in={openEcommerce} timeout="auto" unmountOnExit>
+          <Collapse in={openEcommerce && openDrawer} timeout="auto" unmountOnExit>
             <List component="div" disablePadding sx={{ pl: 4 }}>
-              <ListItemButton onClick={() => navigate("/products")}>
+              <ListItemButton onClick={() => navigate("/products")}> 
                 <ListItemText primary="Produk" />
               </ListItemButton>
-              <ListItemButton onClick={() => navigate("/addproduct")}>
+              <ListItemButton onClick={() => navigate("/addproduct")}> 
                 <ListItemText primary="Tambah Produk" />
               </ListItemButton>
-              <ListItemButton onClick={() => navigate("/cart")}>
+              <ListItemButton onClick={() => navigate("/cart")}> 
                 <ListItemText primary="Cart" />
               </ListItemButton>
             </List>
@@ -108,7 +105,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
         <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/profile")}>
             <ListItemIcon sx={{ color: "white" }}>
-              <Person />
+              <AccountCircle />
             </ListItemIcon>
             {openDrawer && <ListItemText primary="Profil" />}
           </ListItemButton>
@@ -129,8 +126,17 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             <ListItemIcon sx={{ color: "white" }}>
               <Brightness4 />
             </ListItemIcon>
-            <Typography sx={{ flexGrow: 1 }}>Mode</Typography>
+            {openDrawer && <Typography sx={{ flexGrow: 1 }}>Mode</Typography>}
             <Switch checked={mode === "dark"} onChange={toggleTheme} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/admin")}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <Person />
+            </ListItemIcon>
+            {openDrawer && <ListItemText primary="Admin" />}
           </ListItemButton>
         </ListItem>
 

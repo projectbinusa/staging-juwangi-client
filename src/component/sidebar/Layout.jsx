@@ -20,10 +20,6 @@ const Layout = () => {
 
           marginleft: openDrawer ? "240px" : "60px", 
           // overflow: "auto" ,
-
-          marginLeft: openDrawer ? "240px" : "60px", 
-          overflow: "auto", 
-
         }}
       >
         <Toolbar />

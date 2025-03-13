@@ -33,7 +33,6 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validasi input tidak boleh kosong
     if (!user.name || !user.contact || !user.age || !user.country) {
       setError("Semua field wajib diisi!");
       return;
@@ -98,9 +97,9 @@ const AddUser = () => {
         <FormControl fullWidth margin="normal">
           <InputLabel>Status</InputLabel>
           <Select name="status" value={user.status} onChange={handleChange}>
-            <MenuItem value="Pending">Pending</MenuItem>
-            <MenuItem value="Verified">Verified</MenuItem>
-            <MenuItem value="Rejected">Rejected</MenuItem>
+            <MenuItem value="Pending">Pelajar</MenuItem>
+            <MenuItem value="Verified">Remaja</MenuItem>
+            <MenuItem value="Rejected">Lansia</MenuItem>
           </Select>
         </FormControl>
 

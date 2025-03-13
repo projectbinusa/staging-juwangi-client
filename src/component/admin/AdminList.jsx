@@ -13,7 +13,7 @@ const AdminList = () => {
 
   const fetchAdmins = async () => {
     try {
-      const response = await axios.get("http://localhost:4322/admins");
+      const response = await axios.get("https://jsonplaceholder.typicode.com/users");
       setAdmins(response.data);
     } catch (error) {
       console.error("Error fetching admins:", error);
@@ -30,8 +30,8 @@ const AdminList = () => {
 
   const handleAddAdmin = async () => {
     try {
-      await axios.post("http://localhost:4322/admins", newAdmin);
-      fetchAdmins();
+      const newEntry = { ...newAdmin, id: admins.length + 1 };
+      setAdmins([...admins, newEntry]);
       setNewAdmin({ name: "", email: "" });
     } catch (error) {
       console.error("Error adding admin:", error);
