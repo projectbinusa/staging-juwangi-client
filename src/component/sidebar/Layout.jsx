@@ -17,6 +17,10 @@ const Layout = () => {
           flexGrow: 1,
           p: 0,
           transition: "margin 0.3s ease-in-out",
+
+          marginleft: openDrawer ? "240px" : "60px", 
+          // overflow: "auto" ,
+
           marginLeft: openDrawer ? "240px" : "60px", 
           overflow: "auto", 
 
