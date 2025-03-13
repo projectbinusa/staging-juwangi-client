@@ -10,6 +10,7 @@ export default function Add() {
   const [harga, setHarga] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [gambar, setGambar] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   const addData = async (e) => {
     e.preventDefault();
@@ -37,9 +38,8 @@ export default function Add() {
 
       Swal.fire({
         icon: "success",
-        title: "Produk berhasil ditambahkan",
-        showConfirmButton: false,
-        timer: 1500,
+        title: "Produk berhasil ditambahkan!",
+        confirmButtonText: "OK",
       }).then(() => {
         window.location.reload();
       });
@@ -47,41 +47,62 @@ export default function Add() {
       console.log(error);
       Swal.fire({
         icon: "error",
-        title: "Gagal menambahkan produk",
-        text: error.message || "Terjadi kesalahan",
+        title: "Gagal menambahkan produk!",
+        text: error.message || "Terjadi kesalahan.",
       });
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setGambar(file);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   return (
     <Box
       sx={{
-        height: "100vh",
+        minHeight: "100vh", 
         width: "100vw",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#fff", 
+        background: "linear-gradient(to right, #74ebd5, #acb6e5)",
+        overflowY: "auto",
+        padding: 4, 
       }}
     >
       <Container
-        maxWidth="sm"
+        maxWidth="md"
         sx={{
-          p: 3,
-          bgcolor: "#f5f5f5", 
-          borderRadius: 2,
-          color: "#000", 
-          boxShadow: 3,
+          p: 4,
+          bgcolor: "#fff",
+          borderRadius: 3,
+          boxShadow: 4,
+          textAlign: "center",
+          animation: "fadeIn 0.5s ease-in-out",
         }}
       >
-        <Typography variant="h4" gutterBottom align="center">
+        <Typography variant="h4" fontWeight="bold" gutterBottom color="#333">
           Tambah Produk
         </Typography>
 
         <Box
           component="form"
           onSubmit={addData}
-          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            textAlign: "left",
+          }}
         >
           <TextField
             label="Nama Produk"
@@ -89,15 +110,6 @@ export default function Add() {
             fullWidth
             value={nama}
             onChange={(e) => setNama(e.target.value)}
-            InputLabelProps={{ style: { color: "#000" } }} 
-            sx={{
-              input: { color: "#000" }, 
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#333" }, 
-                "&:hover fieldset": { borderColor: "#1976D2" }, 
-                "&.Mui-focused fieldset": { borderColor: "#1976D2" },
-              },
-            }}
           />
 
           <TextField
@@ -107,15 +119,6 @@ export default function Add() {
             type="number"
             value={harga}
             onChange={(e) => setHarga(e.target.value)}
-            InputLabelProps={{ style: { color: "#000" } }}
-            sx={{
-              input: { color: "#000" },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#333" },
-                "&:hover fieldset": { borderColor: "#1976D2" },
-                "&.Mui-focused fieldset": { borderColor: "#1976D2" },
-              },
-            }}
           />
 
           <TextField
@@ -126,47 +129,58 @@ export default function Add() {
             rows={3}
             value={deskripsi}
             onChange={(e) => setDeskripsi(e.target.value)}
-            InputLabelProps={{ style: { color: "#000" } }}
-            sx={{
-              textarea: { color: "#000" },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#333" },
-                "&:hover fieldset": { borderColor: "#1976D2" },
-                "&.Mui-focused fieldset": { borderColor: "#1976D2" },
-              },
-            }}
           />
 
           <Box>
-            <Typography variant="body1" sx={{ mb: 1, color: "#000" }}>
+            <Typography variant="body1" fontWeight="bold">
               Gambar Produk
             </Typography>
             <Box
               sx={{
                 display: "flex",
-                alignItems: "left",
-                justifyContent: "left",
+                flexDirection: "column",
+                alignItems: "center",
                 padding: "10px",
-                backgroundColor: "#fff",
+                backgroundColor: "#f8f9fa",
                 borderRadius: "5px",
-                border: "1px solid #333", 
-                "&:hover": { borderColor: "#1976D2" }, 
+                border: "1px dashed #333",
               }}
             >
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setGambar(e.target.files[0])}
-                style={{
-                  color: "#000", 
-                  cursor: "pointer",
-                }}
+                onChange={handleImageChange}
+                style={{ marginBottom: "10px" }}
               />
+              {preview && (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  style={{
+                    width: "100%",
+                    maxHeight: "200px",
+                    objectFit: "cover",
+                    borderRadius: "5px",
+                    marginTop: "10px",
+                  }}
+                />
+              )}
             </Box>
           </Box>
 
-          <Button type="submit" variant="contained" sx={{ bgcolor: "#1976D2" }}>
-            Submit
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              bgcolor: "#1976D2",
+              fontSize: "16px",
+              fontWeight: "bold",
+              borderRadius: "8px",
+              "&:hover": { bgcolor: "#1565C0" },
+            }}
+          >
+            Tambah Produk
           </Button>
         </Box>
       </Container>
