@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Drawer,
   List,
@@ -11,8 +11,10 @@ import {
   Toolbar,
   Divider,
   Collapse,
+  Switch,
+  Typography,
 } from "@mui/material";
-import {  
+import {
   Person,
   ShoppingCart,
   AssessmentOutlined,
@@ -22,41 +24,42 @@ import {
   ExpandLess,
   ExpandMore,
   Storefront,
+  Brightness4,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { ThemeContext } from "../../ThemeContext"; // Import ThemeContext
 
 const Sidebar = ({ openDrawer, setOpenDrawer }) => {
   const navigate = useNavigate();
   const [openEcommerce, setOpenEcommerce] = useState(false);
+  const { mode, toggleTheme } = useContext(ThemeContext); // Gunakan ThemeContext
 
   return (
     <Drawer
       variant="permanent"
       sx={{
-        width: openDrawer ? 240 : 0,
+        width: openDrawer ? 240 : 60,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: openDrawer ? 240 : 60,
           transition: "width 0.3s ease-in-out",
           overflowX: "hidden",
-          backgroundColor: "#1976D2",
+          backgroundColor: mode === "dark" ? "#333" : "#1976D2",
           color: "#fff",
         },
       }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: openDrawer ? "space-between" : "center" }}>
-        {openDrawer && <h3 style={{ margin: 0 }}>Menu</h3>}
+        {openDrawer && <Typography variant="h6">Menu</Typography>}
         <IconButton onClick={() => setOpenDrawer(!openDrawer)} sx={{ color: "white" }}>
           {openDrawer ? <ChevronLeft /> : <Menu />}
         </IconButton>
       </Toolbar>
       <Divider />
 
-      <List>    
-
-       {/* Menu Dashboard */}
-       <ListItem disablePadding>
+      <List>
+        <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/products")}>
             <ListItemIcon sx={{ color: "white" }}>
               <AssessmentOutlined />
@@ -65,42 +68,31 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
           </ListItemButton>
         </ListItem>
 
-          {/* Submenu e-commerce */}
-          <List component="div" disablePadding>
-            <ListItemButton onClick={() => setOpenEcommerce(!openEcommerce)} sx={{ pl: 2 }}>
-              <ListItemIcon sx={{ color: "white" }}>
-                <Storefront />
-              </ListItemIcon>
-              <ListItemText primary="E-commerce" />
-              {openEcommerce ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Collapse in={openEcommerce} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
-                <ListItemButton onClick={() => navigate("/products")}>
-                  <ListItemIcon sx={{ color: "white" }}>
-                  </ListItemIcon>
-                  <ListItemText primary="Produk" />
-                </ListItemButton>
-                <ListItemButton onClick={() => navigate("/addproduct")}>
-                  <ListItemIcon sx={{ color: "white" }}>
-                  </ListItemIcon>
-                  <ListItemText primary="Tambah Produk" />
-                </ListItemButton>
-                <ListItemButton onClick={() => navigate("/")}>
-                  <ListItemIcon sx={{ color: "white" }}>
-                  </ListItemIcon>
-                  <ListItemText primary="Edit Produk" />
-                </ListItemButton>
-                <ListItemButton onClick={() => navigate("/cart")}>
-                  <ListItemIcon sx={{ color: "white" }}>
-                  </ListItemIcon>
-                  <ListItemText primary="cart" />
-                </ListItemButton>
-              </List>
-            </Collapse>
-          </List>
+        {/* Submenu E-commerce */}
+        <List component="div" disablePadding>
+          <ListItemButton onClick={() => setOpenEcommerce(!openEcommerce)} sx={{ pl: 2 }}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <Storefront />
+            </ListItemIcon>
+            <ListItemText primary="E-commerce" />
+            {openEcommerce ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={openEcommerce} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding sx={{ pl: 4 }}>
+              <ListItemButton onClick={() => navigate("/products")}>
+                <ListItemText primary="Produk" />
+              </ListItemButton>
+              <ListItemButton onClick={() => navigate("/addproduct")}>
+                <ListItemText primary="Tambah Produk" />
+              </ListItemButton>
+              <ListItemButton onClick={() => navigate("/cart")}>
+                <ListItemText primary="Cart" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+        </List>
 
-          <ListItem disablePadding>
+        <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/user")}>
             <ListItemIcon sx={{ color: "white" }}>
               <ShoppingCart />
@@ -109,7 +101,6 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
           </ListItemButton>
         </ListItem>
 
-        {/* Menu lainnya */}
         <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/profile")}>
             <ListItemIcon sx={{ color: "white" }}>
@@ -127,6 +118,18 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             {openDrawer && <ListItemText primary="Logout" />}
           </ListItemButton>
         </ListItem>
+
+        {/* Light/Dark Mode Toggle */}
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon sx={{ color: "white" }}>
+              <Brightness4 />
+            </ListItemIcon>
+            <Typography sx={{ flexGrow: 1 }}>Mode</Typography>
+            <Switch checked={mode === "dark"} onChange={toggleTheme} />
+          </ListItemButton>
+        </ListItem>
+
       </List>
     </Drawer>
   );

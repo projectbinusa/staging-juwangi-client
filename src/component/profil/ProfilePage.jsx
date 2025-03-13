@@ -1,59 +1,95 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
-import { useLocation, Link, Outlet } from 'react-router-dom';
-import { Box, Tab, Tabs } from '@mui/material';
-import MainCard from '../MainCard';
-import Breadcrumbs from '../Breadcrumbs';
+import React from "react";
+import { Container, Typography, Tabs, Tab, Box, Avatar, Grid, TextField, Button } from "@mui/material";
+import { AccountCircle, Lock, Settings, Person, People } from "@mui/icons-material";
 
-export default function ProfilePage() {
-  const { pathname } = useLocation();
-  let selectedTab = 0;
-
-  // Menentukan tab yang aktif berdasarkan URL
-  switch (pathname) {
-    case '/profile/personal':
-      selectedTab = 1;
-      break;
-    case '/profile/my-account':
-      selectedTab = 2;
-      break;
-    case '/profile/password':
-      selectedTab = 3;
-      break;
-    case '/profile/role':
-      selectedTab = 4;
-      break;
-    case '/profile/settings':
-      selectedTab = 5;
-      break;
-    default:
-      selectedTab = 0;
-  }
-
-  const [value, setValue] = useState(selectedTab);
+function AccountProfile() {
+  const [tabValue, setTabValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTabValue(newValue);
   };
 
   return (
-    <>
-      <Breadcrumbs heading="User Profile" />
-      <MainCard>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
-          <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto">
-            <Tab label="Profile" component={Link} to="/profile/basic" />
-            <Tab label="Personal" component={Link} to="/profile/personal" />
-            <Tab label="My Account" component={Link} to="/profile/my-account" />
-            <Tab label="Change Password" component={Link} to="/profile/password" />
-            <Tab label="Role" component={Link} to="/profile/role" />
-            <Tab label="Settings" component={Link} to="/profile/settings" />
-          </Tabs>
+    <Container maxWidth="md" sx={{ marginLeft: "100px"}}>
+      <Box sx={{ mt: 4, mb: 2 }}>
+        <Typography variant="h4" fontWeight="bold">
+          Basic Account
+        </Typography>
+        <Tabs value={tabValue} onChange={handleChange} aria-label="account profile tabs">
+          <Tab icon={<Person />} label="Profile" />
+          <Tab icon={<People />} label="Personal" />
+          <Tab icon={<AccountCircle />} label="My Account" />
+          <Tab icon={<Lock />} label="Change Password" />
+          <Tab icon={<Settings />} label="Role" />
+          <Tab icon={<Settings />} label="Settings" />
+        </Tabs>
+      </Box>
+
+      {tabValue === 0 && (
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={4} display="flex" flexDirection="column" alignItems="center">
+            <Avatar
+              src="/path-to-your-image.png" // Ganti dengan URL atau path gambar
+              sx={{ width: 100, height: 100, mb: 2 }}
+            />
+            <Typography variant="h6">Anshan H.</Typography>
+            <Typography variant="body2" color="textSecondary">
+              Project Manager
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <Typography variant="body1">
+              Hello, I&apos;m Anshan Handgun, Creative Graphic Designer &amp; User Experience Developer.
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+
+      {tabValue === 1 && (
+        <Box>
+          <Typography variant="h6">Personal Information</Typography>
+          <TextField fullWidth label="Full Name" margin="normal" />
+          <TextField fullWidth label="Phone Number" margin="normal" />
+          <Button variant="contained" color="primary">Save</Button>
         </Box>
-        <Box sx={{ mt: 2.5 }}>
-          <Outlet />
+      )}
+
+      {tabValue === 2 && (
+        <Box>
+          <Typography variant="h6">Account Details</Typography>
+          <TextField fullWidth label="Email" margin="normal" />
+          <TextField fullWidth label="Username" margin="normal" />
+          <Button variant="contained" color="primary">Update Account</Button>
         </Box>
-      </MainCard>
-    </>
+      )}
+
+      {tabValue === 3 && (
+        <Box>
+          <Typography variant="h6">Change Password</Typography>
+          <TextField fullWidth label="Current Password" type="password" margin="normal" />
+          <TextField fullWidth label="New Password" type="password" margin="normal" />
+          <TextField fullWidth label="Confirm New Password" type="password" margin="normal" />
+          <Button variant="contained" color="primary">Change Password</Button>
+        </Box>
+      )}
+
+      {tabValue === 4 && (
+        <Box>
+          <Typography variant="h6">Role Management</Typography>
+          <TextField fullWidth label="User Role" margin="normal" />
+          <Button variant="contained" color="primary">Update Role</Button>
+        </Box>
+      )}
+
+      {tabValue === 5 && (
+        <Box>
+          <Typography variant="h6">Settings</Typography>
+          <TextField fullWidth label="Notification Preferences" margin="normal" />
+          <Button variant="contained" color="primary">Save Settings</Button>
+        </Box>
+      )}
+    </Container>
   );
 }
+
+export default AccountProfile;

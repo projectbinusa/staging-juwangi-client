@@ -17,7 +17,8 @@ const Layout = () => {
           flexGrow: 1,
           p: 0,
           transition: "margin 0.3s ease-in-out",
-          marginRight: openDrawer ? "210px" : "280px", // Geser konten
+          marginleft: openDrawer ? "240px" : "60px", 
+          // overflow: "auto" ,
         }}
       >
         <Toolbar />
