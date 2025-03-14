@@ -41,8 +41,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
       sx={{
 
         width: openDrawer ? 240 : 60,
-
-        width: openDrawer ? 0 : 0,
+        
 
         flexShrink: 0,
         "& .MuiDrawer-paper": {

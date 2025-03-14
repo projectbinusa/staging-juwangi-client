@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import Sidebar from "./SideBar";
 import { Box, Toolbar } from "@mui/material";
 
 const Layout = () => {
@@ -20,9 +20,6 @@ const Layout = () => {
 
           marginleft: openDrawer ? "240px" : "60px", 
           // overflow: "auto" ,
-
-          marginLeft: openDrawer ? "240px" : "60px", 
-          overflow: "auto", 
 
         }}
       >

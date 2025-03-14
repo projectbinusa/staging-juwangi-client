@@ -13,14 +13,17 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_DUMMY } from "../../utils/api";
 
 const AddUser = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
-    name: "",
-    contact: "",
-    age: "",
-    country: "",
+    username: "",
+    email: "",
+    password: "",
+    kontak: "",
+    umur: "",
+    negara: "",
     status: "Pending",
   });
 
@@ -33,14 +36,13 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validasi input tidak boleh kosong
-    if (!user.name || !user.contact || !user.age || !user.country) {
+    if (!user.username || !user.email || !user.password || !user.kontak || !user.umur || !user.negara ) {
       setError("Semua field wajib diisi!");
       return;
     }
 
     try {
-      await axios.post("http://localhost:4322/customers", user);
+      await axios.post(`${API_DUMMY}/api/users/register`, user);
       navigate("/user"); 
     } catch (err) {
       console.error("Error adding user:", err);
@@ -59,39 +61,59 @@ const AddUser = () => {
       <form onSubmit={handleSubmit}>
         <TextField
           label="Name"
-          name="name"
+          name="username"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={user.name}
+          value={user.username}
           onChange={handleChange}
         />
         <TextField
-          label="Contact"
-          name="contact"
+          label="Email"
+          type="email"
+          name="email"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={user.contact}
+          value={user.email}
           onChange={handleChange}
         />
         <TextField
-          label="Age"
-          name="age"
+          label="Password"
+          type="password"
+          name="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={user.password}
+          onChange={handleChange}
+        />
+        <TextField
+          label="kontak"
+          name="kontak"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={user.kontak}
+          onChange={handleChange}
+        />
+        <TextField
+          label="umur"
+          name="umur"
           type="number"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={user.age}
+          value={user.umur}
           onChange={handleChange}
         />
         <TextField
-          label="Country"
-          name="country"
+          label="negara"
+          name="negara"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={user.country}
+          value={user.negara}
           onChange={handleChange}
         />
 
