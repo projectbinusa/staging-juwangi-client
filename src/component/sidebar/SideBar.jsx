@@ -40,7 +40,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
       variant="permanent"
       sx={{
 
-        width: openDrawer ? 240 : 60,
+        // width: openDrawer ? 240 : 60,
 
         width: openDrawer ? 0 : 0,
 
