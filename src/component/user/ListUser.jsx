@@ -14,9 +14,10 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { Edit, Delete, Visibility } from "@mui/icons-material";
+import { Delete, Visibility } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_DUMMY } from "../../utils/api";
 
 const ListUser = () => {
   const [users, setUsers] = useState([]);
@@ -27,31 +28,29 @@ const ListUser = () => {
     fetchUsers();
   }, []);
 
-  // Fetch Users
+
   const fetchUsers = async () => {
     try {
-        const token = localStorage.getItem("token"); // Ambil token dari localStorage
-        const response = await axios.get("http://localhost:4322/customers", {
+        const token = localStorage.getItem("token"); 
+        const response = await axios.get(`${API_DUMMY}/api/users`, {
             headers: {
-                Authorization: `Bearer ${token}` // Tambahkan token ke header
+                Authorization: `Bearer ${token}`
             }
         });
+        console.log("Data dari API:", response.data); 
+
+  
+      if (Array.isArray(response.data)) {
         setUsers(response.data);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-    }
-};
-
-
-  // Handle Delete User
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await axios.delete(`http://localhost:4322/customers/${id}`);
-        fetchUsers();
-      } catch (error) {
-        console.error("Error deleting user:", error);
+      } else if (Array.isArray(response.data.data)) {
+        setUsers(response.data.data);
+      } else {
+        console.error("Format data API tidak sesuai");
+        setUsers([]); 
       }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setUsers([]); 
     }
   };
 
@@ -84,6 +83,7 @@ const ListUser = () => {
             <TableRow>
               <TableCell>#</TableCell>
               <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>Contact</TableCell>
               <TableCell>Age</TableCell>
               <TableCell>Country</TableCell>
@@ -94,15 +94,16 @@ const ListUser = () => {
           <TableBody>
             {users
               .filter((user) =>
-                user.name.toLowerCase().includes(search.toLowerCase())
+                user.username.toLowerCase().includes(search.toLowerCase())
               )
               .map((user, index) => (
                 <TableRow key={user.id}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.contact}</TableCell>
-                  <TableCell>{user.age}</TableCell>
-                  <TableCell>{user.country}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.kontak}</TableCell>
+                  <TableCell>{user.umur}</TableCell>
+                  <TableCell>{user.negara}</TableCell>
                   <TableCell>{user.status}</TableCell>
                   <TableCell>
                     <IconButton
@@ -114,12 +115,6 @@ const ListUser = () => {
                     <IconButton
                       color="warning"
                       onClick={() => navigate(`/edituser/${user.id}`)}
-                    >
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      color="error"
-                      onClick={() => handleDelete(user.id)}
                     >
                       <Delete />
                     </IconButton>

@@ -5,8 +5,9 @@ import ProductCard from "../../component/ProductCard";
 import { 
   Container, Grid, Typography, TextField, Box, Button, CircularProgress, Select, MenuItem 
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete"; 
 import SearchIcon from "@mui/icons-material/Search";
-// import AddIcon from "@mui/icons-material/Add"; 
+import Swal from "sweetalert2";
 import axios from "axios";
 import { API_DUMMY } from "../../utils/api";
 
@@ -20,6 +21,8 @@ const Product = () => {
   const [error, setError] = useState(null); 
   const [selectedCategories, setSelectedCategories] = useState(""); 
   const [categories, setCategories] = useState([]); 
+  const [selectedProducts, setSelectedProducts] = useState([]); 
+  const [deleteMode, setDeleteMode] = useState(false); // Mode hapus produk
 
   useEffect(() => {
     const fetchNama = async () => {
@@ -53,133 +56,117 @@ const Product = () => {
     );
   }, [nama, searchTerm, selectedCategories]);
 
+  const handleSelectProduct = (id) => {
+    setSelectedProducts((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedProducts.length === 0) {
+      Swal.fire("Oops!", "Pilih produk terlebih dahulu!", "warning");
+      return;
+    }
+
+    const confirmDelete = await Swal.fire({
+      title: "Yakin ingin menghapus?",
+      text: "Produk yang dihapus tidak dapat dikembalikan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Batal",
+    });
+
+    if (!confirmDelete.isConfirmed) return;
+
+    try {
+      await Promise.all(
+        selectedProducts.map((id) => axios.delete(`${API_DUMMY}/api/products/${id}`))
+      );
+      setNama(nama.filter((item) => !selectedProducts.includes(item.id)));
+      setSelectedProducts([]);
+      setDeleteMode(false); // Keluar dari mode hapus setelah selesai
+
+      Swal.fire("Terhapus!", "Produk berhasil dihapus!", "success");
+    } catch (error) {
+      console.error("Gagal menghapus produk:", error);
+      Swal.fire("Error!", "Gagal menghapus produk!", "error");
+    }
+  };
+
   return (
-    <Container
-      maxWidth={false}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: "#fff",
-        color: "#000",
-        overflowY: "auto",
-        // transition: "all 0.3s ease-in-out",
-        // ml: openDrawer ? "30px" : "120px",
-        // width: openDrawer ? "calc(160% - 50px)" : "calc(130% - 390px)",
-        padding: 1,
-      }}
-    >
+    <Container maxWidth={false} sx={{ textAlign: "center", padding: 2 }}>
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
 
-      <Box 
-        display="flex" 
-        flexDirection="column"
-        alignItems="center" 
-        justifyContent="center" 
-        width="100%"
-        maxWidth="1200px"
-        gap={3}
-        mb={3}
-      >
-        {/* <Button 
-          variant="contained" 
-          color="primary" 
-          startIcon={<AddIcon />} 
-          onClick={() => navigate("/addproduct")} 
-          sx={{ width: "200px", fontWeight: "bold" }}
+      <Box display="flex" justifyContent="center" gap={3} mb={3}>
+        <TextField
+          variant="outlined"
+          placeholder="Search product..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ width: "300px", bgcolor: "#f0f0f0", borderRadius: "5px" }}
+        />
+        <Button variant="contained" color="primary">
+          <SearchIcon />
+        </Button>
+        <Select
+          value={selectedCategories}
+          onChange={(e) => setSelectedCategories(e.target.value)}
+          displayEmpty
+          sx={{ width: "200px", bgcolor: "#f0f0f0", borderRadius: "5px" }}
         >
-          Tambah Produk
-        </Button> */}
+          <MenuItem value="">All Categories</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.id} value={category.kategori}>
+              {category.kategori}
+            </MenuItem>
+          ))}
+        </Select>
 
-        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={3} width="100%">
-          <TextField
-            variant="outlined"
-            placeholder="Search product..."
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{
-              width: "300px",
-              bgcolor: "#f0f0f0",
-              borderRadius: "5px",
-              transition: "all 0.2s ease-in-out",
-              "&:focus-within": {
-                bgcolor: "#e0e0e0",
-              },
-            }}
-          />
+        {/* Tombol untuk masuk/keluar dari mode hapus */}
+        <Button 
+          variant="contained" 
+          color={deleteMode ? "secondary" : "error"} 
+          startIcon={<DeleteIcon />} 
+          onClick={() => setDeleteMode(!deleteMode)}
+          sx={{ fontWeight: "bold" }}
+        >
+          {deleteMode ? "Batal Hapus" : "Hapus Produk"}
+        </Button>
+
+        {/* Tombol untuk menghapus jika ada produk yang dipilih */}
+        {deleteMode && selectedProducts.length > 0 && (
           <Button 
             variant="contained" 
-            color="primary"
-            sx={{ 
-              minWidth: "50px", 
-              transition: "all 0.2s ease-in-out",
-              "&:hover": {
-                transform: "scale(1.05)",
-              },
-            }}
+            color="error" 
+            onClick={handleDeleteSelected}
+            sx={{ fontWeight: "bold" }}
           >
-            <SearchIcon />
+            Hapus {selectedProducts.length} Produk
           </Button>
-
-          <Select
-            value={selectedCategories}
-            onChange={(e) => setSelectedCategories(e.target.value)}
-            displayEmpty
-            sx={{
-              bgcolor: "#f0f0f0",
-              borderRadius: "5px",
-              width: "200px",
-              transition: "all 0.2s ease-in-out",
-              "&:focus-within": {
-                bgcolor: "#e0e0e0",
-              },
-            }}
-          >
-            <MenuItem value="">All Categories</MenuItem>
-            {categories.map((category) => (
-              <MenuItem key={category.id} value={category.kategori}>
-                {category.kategori}
-              </MenuItem>
-            ))}
-          </Select>
-
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={() => navigate("/categories")}
-            sx={{
-              width: "200px",
-              fontWeight: "bold",
-              transition: "all 0.2s ease-in-out",
-              "&:hover": {
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            ADD CATEGORIES
-          </Button>
-        </Box>
+        )}
       </Box>
 
-      {/* Daftar Produk */}
       {loading ? (
-        <CircularProgress sx={{ mt: 2 }} />
+        <CircularProgress />
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : filteredNama.length > 0 ? (
-      <Grid container rowSpacing={2} justifyContent="center">
+        <Grid container rowSpacing={2} justifyContent="center">
           {filteredNama.map((item) => (
-          <Grid item key={item.id} xs={12} sm={6} md={3} lg={3}>
-          <ProductCard id={item.id} />
+            <Grid item key={item.id} xs={12} sm={6} md={3}>
+              <ProductCard 
+                id={item.id} 
+                onSelect={handleSelectProduct} 
+                selected={selectedProducts.includes(item.id)} 
+                showCheckbox={deleteMode} 
+              />
+            </Grid>
+          ))}
         </Grid>
-        ))}
-      </Grid>
       ) : (
-        <Typography variant="h6" sx={{ mt: 3, textAlign: "center" }}>
-          Tidak ada produk tersedia
-        </Typography>
+        <Typography variant="h6">Tidak ada produk tersedia</Typography>
       )}
     </Container>
   );

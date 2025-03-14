@@ -1,15 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-import { Card, CardMedia, CardContent, Typography, Button } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Button, Checkbox, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { API_DUMMY } from "../utils/api";
 
-const ProductCard = ({ id }) => {  
+const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {  
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Untuk navigasi ke halaman edit
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -42,12 +42,19 @@ const ProductCard = ({ id }) => {
         boxShadow: 3,
         borderRadius: "10px",
         transition: "all 0.3s ease-in-out",
-        "&:hover": {
-          boxShadow: 6,
-          transform: "scale(1.02)",
-        }
+        position: "relative",
+        "&:hover": { boxShadow: 6, transform: "scale(1.02)" }
       }}
     >
+      {/* Checkbox untuk hapus produk */}
+      {showCheckbox && (
+        <Checkbox
+          checked={selected}
+          onChange={() => onSelect(id)}
+          sx={{ position: "absolute", top: 5, left: 5 }}
+        />
+      )}
+
       <CardMedia
         component="img"
         height="150"
@@ -56,14 +63,12 @@ const ProductCard = ({ id }) => {
         sx={{ 
           borderRadius: "10px", 
           transition: "transform 0.3s ease-in-out",
-          "&:hover": {
-            transform: "scale(1.08)",
-          },
+          "&:hover": { transform: "scale(1.08)" },
         }}
       />
 
       <CardContent>
-        <Typography variant="body1" component="div" sx={{ fontWeight: "bold" }}>
+        <Typography variant="body1" sx={{ fontWeight: "bold" }}>
           {product?.nama || "Nama Produk"}
         </Typography>
 
@@ -75,41 +80,42 @@ const ProductCard = ({ id }) => {
           {product?.deskripsi || "Tidak ada deskripsi"}
         </Typography>
 
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            bgcolor: "#2196f3",
-            color: "white",
-            mt: 1,
-            borderRadius: "8px",
-            fontSize: "12px",
-            padding: "6px 10px",
-            transition: "all 0.3s ease-in-out",
-            "&:hover": { bgcolor: "#1976d2", transform: "scale(1.05)" },
-          }}
-        >
-          Add To Cart
-        </Button>
+        <Box mt={1}>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              bgcolor: "#2196f3",
+              color: "white",
+              borderRadius: "8px",
+              fontSize: "12px",
+              padding: "6px 10px",
+              transition: "all 0.3s ease-in-out",
+              "&:hover": { bgcolor: "#1976d2", transform: "scale(1.05)" },
+            }}
+          >
+            Add To Cart
+          </Button>
 
-        {/* Tombol Edit */}
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={handleEdit} // Fungsi edit
-          sx={{
-            bgcolor: "#ff9800",
-            color: "white",
-            mt: 1,
-            borderRadius: "8px",
-            fontSize: "12px",
-            padding: "6px 10px",
-            transition: "all 0.3s ease-in-out",
-            "&:hover": { bgcolor: "#f57c00", transform: "scale(1.05)" },
-          }}
-        >
-          Edit
-        </Button>
+          {/* Tombol Edit tetap ada */}
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleEdit}
+            sx={{
+              bgcolor: "#ff9800",
+              color: "white",
+              mt: 1,
+              borderRadius: "8px",
+              fontSize: "12px",
+              padding: "6px 10px",
+              transition: "all 0.3s ease-in-out",
+              "&:hover": { bgcolor: "#f57c00", transform: "scale(1.05)" },
+            }}
+          >
+            Edit
+          </Button>
+        </Box>
       </CardContent>
     </Card>
   );

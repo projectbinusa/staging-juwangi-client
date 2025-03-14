@@ -18,6 +18,7 @@ import {
   Person,
   ShoppingCart,
   AssessmentOutlined,
+  Accessibility,
   ExitToApp,
   Menu,
   ChevronLeft,
@@ -40,6 +41,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
     <Drawer
       variant="permanent"
       sx={{
+
         width: openDrawer ? 240 : 60,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
@@ -94,7 +96,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
         </List>
 
         <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate("/user")}>
+          <ListItemButton onClick={() => navigate("/")}>
             <ListItemIcon sx={{ color: "white" }}>
               <ShoppingCart />
             </ListItemIcon>
@@ -103,20 +105,11 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
         </ListItem>
 
         <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate("/profile")}>
+          <ListItemButton onClick={() => navigate("/user")}>
             <ListItemIcon sx={{ color: "white" }}>
-              <AccountCircle />
+              <Accessibility />
             </ListItemIcon>
-            {openDrawer && <ListItemText primary="Profil" />}
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate("/login")}>
-            <ListItemIcon sx={{ color: "white" }}>
-              <ExitToApp />
-            </ListItemIcon>
-            {openDrawer && <ListItemText primary="Logout" />}
+            {openDrawer && <ListItemText primary="User" />}
           </ListItemButton>
         </ListItem>
 
@@ -137,6 +130,25 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
               <Person />
             </ListItemIcon>
             {openDrawer && <ListItemText primary="Admin" />}
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/login")}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <ExitToApp />
+            </ListItemIcon>
+            {openDrawer && <ListItemText primary="Logout" />}
+          </ListItemButton>
+        </ListItem>
+
+
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/profile")}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <AccountCircle />
+            </ListItemIcon>
+            {openDrawer && <ListItemText primary="Profil" />}
           </ListItemButton>
         </ListItem>
 

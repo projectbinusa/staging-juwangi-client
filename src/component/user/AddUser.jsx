@@ -13,18 +13,20 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { API_DUMMY } from "../../utils/api";
 
 const AddUser = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
-    name: "",
-    contact: "",
-    age: "",
-    country: "",
+    username: "",
+    email: "",
+    password: "",
+    kontak: "",
+    umur: "",
+    negara: "",
     status: "Pending",
   });
-
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -33,64 +35,103 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user.name || !user.contact || !user.age || !user.country) {
-      setError("Semua field wajib diisi!");
+    if (!user.username || !user.email || !user.password || !user.kontak || !user.umur || !user.negara) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "Semua field wajib diisi!",
+      });
       return;
     }
 
     try {
-      await axios.post("http://localhost:4322/customers", user);
-      navigate("/user"); 
+      await axios.post(`${API_DUMMY}/api/users/register`, user);
+
+      Swal.fire({
+        icon: "success",
+        title: "User Berhasil Ditambahkan!",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      setTimeout(() => {
+        navigate("/user"); 
+      }, 2000);
+      
     } catch (err) {
       console.error("Error adding user:", err);
-      setError("Gagal menambahkan user!");
+
+   
+      Swal.fire({
+        icon: "error",
+        title: "Gagal menambahkan user!",
+        text: "Coba lagi nanti.",
+      });
     }
   };
 
   return (
-    <Container maxWidth="sm" sx={{marginLeft: "100px"}}>
+    <Container maxWidth="sm" sx={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", mt: 4 }}>
       <Typography variant="h4" sx={{ marginBottom: 2 }}>
         Add New User
       </Typography>
 
-      {error && <Typography color="error">{error}</Typography>}
-
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ width: "100%" }}>
         <TextField
           label="Name"
-          name="name"
+          name="username"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={user.name}
+          value={user.username}
           onChange={handleChange}
         />
         <TextField
-          label="Contact"
-          name="contact"
+          label="Email"
+          type="email"
+          name="email"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={user.contact}
+          value={user.email}
           onChange={handleChange}
         />
         <TextField
-          label="Age"
-          name="age"
+          label="Password"
+          type="password"
+          name="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={user.password}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Kontak"
+          name="kontak"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={user.kontak}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Umur"
+          name="umur"
           type="number"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={user.age}
+          value={user.umur}
           onChange={handleChange}
         />
         <TextField
-          label="Country"
-          name="country"
+          label="Negara"
+          name="negara"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={user.country}
+          value={user.negara}
           onChange={handleChange}
         />
 
@@ -103,7 +144,7 @@ const AddUser = () => {
           </Select>
         </FormControl>
 
-        <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
+        <Box sx={{ display: "flex", gap: 2, justifyContent: "center", marginTop: 2 }}>
           <Button variant="contained" color="primary" type="submit">
             Save User
           </Button>
