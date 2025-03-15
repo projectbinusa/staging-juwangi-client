@@ -4,12 +4,30 @@ import { Card, CardMedia, CardContent, Typography, Button, Checkbox, Box } from 
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { API_DUMMY } from "../utils/api";
+import Swal from "sweetalert2";
 
 const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {  
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate(); 
+
+  const addToCart = async (produtsId) => {
+    try {
+      await axios.post(`${API_DUMMY}/api/cart/add/${produtsId}`);
+      Swal.fire ({
+        icon: "success",
+        title: "Berhasil menambahkan peoduct ke keranjang",
+        timer: 1500
+      });
+    } catch (err) {
+      Swal.fire ({
+        icon: "warning",
+        title: "Gagal menambahkan product ke keranjang",
+        timer: 1500
+      })
+    }
+  }
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -46,7 +64,6 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
         "&:hover": { boxShadow: 6, transform: "scale(1.02)" }
       }}
     >
-      {/* Checkbox untuk hapus produk */}
       {showCheckbox && (
         <Checkbox
           checked={selected}
@@ -84,6 +101,7 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
           <Button
             variant="contained"
             fullWidth
+            onClick={() => addToCart(product.id)}
             sx={{
               bgcolor: "#2196f3",
               color: "white",
@@ -97,7 +115,6 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
             Add To Cart
           </Button>
 
-          {/* Tombol Edit tetap ada */}
           <Button
             variant="contained"
             fullWidth
