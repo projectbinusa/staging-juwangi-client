@@ -18,6 +18,7 @@ const ProfilePage = lazy(() => import("../component/profil/ProfilePage"));
 const AdminList = lazy(() => import("../component/admin/AdminList"));
 const AddAdmin = lazy(() => import("../component/admin/AddAdmin"));
 const EditAdmin = lazy(() => import("../component/admin/EditAdmin"));
+const Category = lazy(() => import("../component/category/Category"));
 
 const router = createBrowserRouter([
     {
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
             { path: "admin", element: <AdminList /> },
             { path: "addadmin", element: <AddAdmin /> },
             { path: "editadmin/:id", element: <EditAdmin /> },
+            { path: "category", element: <Category /> },
             { path: "*", element: <ErrorPage /> },
         ],
     },

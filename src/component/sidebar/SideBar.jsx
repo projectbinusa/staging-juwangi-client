@@ -30,12 +30,12 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { ThemeContext } from "../../ThemeContext"; // Import ThemeContext
+import { ThemeContext } from "../../ThemeContext"; 
 
 const Sidebar = ({ openDrawer, setOpenDrawer }) => {
   const navigate = useNavigate();
   const [openEcommerce, setOpenEcommerce] = useState(false);
-  const { mode, toggleTheme } = useContext(ThemeContext); // Gunakan ThemeContext
+  const { mode, toggleTheme } = useContext(ThemeContext); 
 
   return (
     <Drawer
