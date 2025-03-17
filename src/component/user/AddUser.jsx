@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { API_DUMMY } from "../../utils/api";
 
 const AddUser = () => {
@@ -27,8 +28,6 @@ const AddUser = () => {
     status: "Pending",
   });
 
-  const [error, setError] = useState("");
-
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -36,29 +35,48 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user.username || !user.email || !user.password || !user.kontak || !user.umur || !user.negara ) {
-      setError("Semua field wajib diisi!");
+    if (!user.username || !user.email || !user.password || !user.kontak || !user.umur || !user.negara) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "Semua field wajib diisi!",
+      });
       return;
     }
 
     try {
       await axios.post(`${API_DUMMY}/api/users/register`, user);
-      navigate("/user"); 
+
+      Swal.fire({
+        icon: "success",
+        title: "User Berhasil Ditambahkan!",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      setTimeout(() => {
+        navigate("/user"); 
+      }, 2000);
+      
     } catch (err) {
       console.error("Error adding user:", err);
-      setError("Gagal menambahkan user!");
+
+   
+      Swal.fire({
+        icon: "error",
+        title: "Gagal menambahkan user!",
+        text: "Coba lagi nanti.",
+      });
     }
   };
 
   return (
-    <Container maxWidth="sm" sx={{marginLeft: "100px"}}>
+    <Container maxWidth="sm" sx={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", mt: 4 }}>
       <Typography variant="h4" sx={{ marginBottom: 2 }}>
         Add New User
       </Typography>
 
-      {error && <Typography color="error">{error}</Typography>}
-
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ width: "100%" }}>
         <TextField
           label="Name"
           name="username"
@@ -89,7 +107,7 @@ const AddUser = () => {
           onChange={handleChange}
         />
         <TextField
-          label="kontak"
+          label="Kontak"
           name="kontak"
           variant="outlined"
           fullWidth
@@ -98,7 +116,7 @@ const AddUser = () => {
           onChange={handleChange}
         />
         <TextField
-          label="umur"
+          label="Umur"
           name="umur"
           type="number"
           variant="outlined"
@@ -108,7 +126,7 @@ const AddUser = () => {
           onChange={handleChange}
         />
         <TextField
-          label="negara"
+          label="Negara"
           name="negara"
           variant="outlined"
           fullWidth
@@ -120,13 +138,13 @@ const AddUser = () => {
         <FormControl fullWidth margin="normal">
           <InputLabel>Status</InputLabel>
           <Select name="status" value={user.status} onChange={handleChange}>
-            <MenuItem value="Pending">Pending</MenuItem>
-            <MenuItem value="Verified">Verified</MenuItem>
-            <MenuItem value="Rejected">Rejected</MenuItem>
+            <MenuItem value="Pending">Pelajar</MenuItem>
+            <MenuItem value="Verified">Remaja</MenuItem>
+            <MenuItem value="Rejected">Lansia</MenuItem>
           </Select>
         </FormControl>
 
-        <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
+        <Box sx={{ display: "flex", gap: 2, justifyContent: "center", marginTop: 2 }}>
           <Button variant="contained" color="primary" type="submit">
             Save User
           </Button>

@@ -14,7 +14,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { Edit, Delete, Visibility } from "@mui/icons-material";
+import { Delete, Visibility } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_DUMMY } from "../../utils/api";
@@ -51,18 +51,6 @@ const ListUser = () => {
     } catch (error) {
       console.error("Error fetching users:", error);
       setUsers([]); 
-    }
-  };
-
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await axios.delete(`${API_DUMMY}/api/users/${id}`);
-        fetchUsers();
-      } catch (error) {
-        console.error("Error deleting user:", error);
-      }
     }
   };
 
@@ -127,12 +115,6 @@ const ListUser = () => {
                     <IconButton
                       color="warning"
                       onClick={() => navigate(`/edituser/${user.id}`)}
-                    >
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      color="error"
-                      onClick={() => handleDelete(user.id)}
                     >
                       <Delete />
                     </IconButton>

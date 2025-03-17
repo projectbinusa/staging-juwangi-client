@@ -2,29 +2,20 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./SideBar";
+import Navbar from "./Navbar";  // 🔥 Import Navbar
 import { Box, Toolbar } from "@mui/material";
 
 const Layout = () => {
-  const [openDrawer, setOpenDrawer] = useState(true); 
+  const [openDrawer, setOpenDrawer] = useState(true);
 
   return (
     <Box display="flex">
-      <Sidebar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} /> 
+      <Sidebar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
       
-      <Box
-        component="main"
-        sx={{ 
-          flexGrow: 1,
-          p: 0,
-          transition: "margin 0.3s ease-in-out",
-
-          marginLeft: openDrawer ? "240px" : "60px",
-          overflow: "auto" ,
-
-        }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
+        <Navbar toggleDrawer={() => setOpenDrawer(!openDrawer)} /> 
         <Toolbar />
-        <Outlet context={{ openDrawer }} />
+        <Outlet />
       </Box>
     </Box>
   );

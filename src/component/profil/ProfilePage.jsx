@@ -29,7 +29,7 @@ function AccountProfile() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4} display="flex" flexDirection="column" alignItems="center">
             <Avatar
-              src="/path-to-your-image.png" // Ganti dengan URL atau path gambar
+              src="https://tse4.mm.bing.net/th?id=OIP.dErkv765aE3IKCmV9q5dPQHaHa&pid=Api&P=0&h=180" 
               sx={{ width: 100, height: 100, mb: 2 }}
             />
             <Typography variant="h6">Anshan H.</Typography>

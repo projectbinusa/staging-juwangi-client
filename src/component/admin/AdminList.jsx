@@ -1,11 +1,27 @@
 import { useEffect, useState } from "react";
-import { Container, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+} from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { API_DUMMY } from "../../utils/api";
 
 const AdminList = () => {
   const [admins, setAdmins] = useState([]);
   const [search, setSearch] = useState("");
-  const [newAdmin, setNewAdmin] = useState({ name: "", email: "" });
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAdmins();
@@ -13,61 +29,96 @@ const AdminList = () => {
 
   const fetchAdmins = async () => {
     try {
-      const response = await axios.get("http://localhost:4322/admins");
-      setAdmins(response.data);
+      const response = await axios.get(`${API_DUMMY}/api/admin`);
+      if (Array.isArray(response.data.data)) {
+        setAdmins(response.data.data);
+      } else {
+        setAdmins([]);
+        console.error("Format data API tidak sesuai");
+      }
     } catch (error) {
       console.error("Error fetching admins:", error);
+      setAdmins([]);
     }
   };
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Yakin ingin menghapus admin ini?",
+      text: "Data akan dihapus secara permanen!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${API_DUMMY}/api/admin/${id}`);
+          
+          // Hapus dari state tanpa fetch ulang
+          setAdmins((prevAdmins) => prevAdmins.filter((admin) => admin.id !== id));
 
-  const handleChange = (e) => {
-    setNewAdmin({ ...newAdmin, [e.target.name]: e.target.value });
-  };
-
-  const handleAddAdmin = async () => {
-    try {
-      await axios.post("http://localhost:4322/admins", newAdmin);
-      fetchAdmins();
-      setNewAdmin({ name: "", email: "" });
-    } catch (error) {
-      console.error("Error adding admin:", error);
-    }
+          Swal.fire("Dihapus!", "Admin berhasil dihapus.", "success");
+        } catch (error) {
+          console.error("Error deleting admin:", error);
+          Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus.", "error");
+        }
+      }
+    });
   };
 
   return (
     <Container maxWidth="lg" sx={{ marginLeft: "100px" }}>
       <h2>Daftar Admin</h2>
-      <TextField label="Cari Admin" variant="outlined" fullWidth margin="normal" value={search} onChange={handleSearch} />
-      
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ marginBottom: 2 }}
+        onClick={() => navigate("/addadmin")}
+      >
+        + Tambah Admin
+      </Button>
+
+      <TextField
+        label="Cari Admin"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>#</TableCell>
               <TableCell>Nama</TableCell>
               <TableCell>Email</TableCell>
+              <TableCell>Aksi</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {admins.filter((admin) => admin.name.toLowerCase().includes(search.toLowerCase())).map((admin) => (
-              <TableRow key={admin.id}>
-                <TableCell>{admin.name}</TableCell>
-                <TableCell>{admin.email}</TableCell>
-              </TableRow>
-            ))}
+            {admins
+              .filter((admin) => admin.username.toLowerCase().includes(search.toLowerCase()))
+              .map((admin, index) => (
+                <TableRow key={admin.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{admin.username}</TableCell>
+                  <TableCell>{admin.email}</TableCell>
+                  <TableCell>
+                    <IconButton color="warning" onClick={() => navigate(`/editadmin/${admin.id}`)}>
+                      <Edit />
+                    </IconButton>
+                    <IconButton color="error" onClick={() => handleDelete(admin.id)}>
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
-      
-      <h3>Tambah Admin</h3>
-      <TextField label="Nama" name="name" value={newAdmin.name} onChange={handleChange} fullWidth margin="normal" />
-      <TextField label="Email" name="email" value={newAdmin.email} onChange={handleChange} fullWidth margin="normal" />
-      <Button variant="contained" color="primary" onClick={handleAddAdmin}>
-        Tambah Admin
-      </Button>
     </Container>
   );
 };

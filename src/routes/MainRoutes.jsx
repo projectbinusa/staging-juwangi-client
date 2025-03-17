@@ -3,24 +3,28 @@ import { lazy } from "react";
 import Layout from "../component/sidebar/Layout";
 import { ThemeContextProvider } from "../ThemeContext";
 
+// Lazy-loaded pages
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Product = lazy(() => import("../pages/e-commerce/Product"));
 const ErrorPage = lazy(() => import("../notfound/NotFound"));
 const ListUser = lazy(() => import("../component/user/ListUser"));
+const AddUser = lazy(() => import("../component/user/AddUser"));
+const ViewUser = lazy(() => import("../component/user/ViewUser"));
 const Cart = lazy(() => import("../pages/e-commerce/Cart"));
 const AddProduct = lazy(() => import("../pages/e-commerce/AddProduct"));
 const EditProduct = lazy(() => import("../pages/e-commerce/EditProduct"));
 const ProfilePage = lazy(() => import("../component/profil/ProfilePage"));
 const AdminList = lazy(() => import("../component/admin/AdminList"));
-const AddUser = lazy(() => import("../component/user/AddUser"));
-const ViewUser = lazy(() => import("../component/user/ViewUser"));
+const AddAdmin = lazy(() => import("../component/admin/AddAdmin"));
+const EditAdmin = lazy(() => import("../component/admin/EditAdmin"));
+const Category = lazy(() => import("../component/category/Category"));
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            <ThemeContextProvider> {/* Tambahkan ThemeContextProvider di sini */}
+            <ThemeContextProvider>
                 <Layout />
             </ThemeContextProvider>
         ),
@@ -32,6 +36,9 @@ const router = createBrowserRouter([
             { path: "cart", element: <Cart /> },
             { path: "profile", element: <ProfilePage /> },
             { path: "admin", element: <AdminList /> },
+            { path: "addadmin", element: <AddAdmin /> },
+            { path: "editadmin/:id", element: <EditAdmin /> },
+            { path: "category", element: <Category /> },
             { path: "*", element: <ErrorPage /> },
         ],
     },
