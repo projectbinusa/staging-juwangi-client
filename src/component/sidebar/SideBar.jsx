@@ -42,7 +42,9 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
       variant="permanent"
       sx={{
 
+
         width: openDrawer ? 240 : 60,
+
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: openDrawer ? 240 : 60,

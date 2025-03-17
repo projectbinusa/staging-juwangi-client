@@ -22,7 +22,7 @@ const Product = () => {
   const [selectedCategories, setSelectedCategories] = useState(""); 
   const [categories, setCategories] = useState([]); 
   const [selectedProducts, setSelectedProducts] = useState([]); 
-  const [deleteMode, setDeleteMode] = useState(false); // Mode hapus produk
+  const [deleteMode, setDeleteMode] = useState(false); 
 
   useEffect(() => {
     const fetchNama = async () => {
@@ -85,7 +85,7 @@ const Product = () => {
       );
       setNama(nama.filter((item) => !selectedProducts.includes(item.id)));
       setSelectedProducts([]);
-      setDeleteMode(false); // Keluar dari mode hapus setelah selesai
+      setDeleteMode(false); 
 
       Swal.fire("Terhapus!", "Produk berhasil dihapus!", "success");
     } catch (error) {
@@ -95,7 +95,7 @@ const Product = () => {
   };
 
   return (
-    <Container maxWidth={false} sx={{ textAlign: "center", padding: 2 }}>
+    <Container maxWidth={false} sx={{ textAlign: "center", padding: 1, marginLeft: 5 }}>
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
@@ -123,8 +123,7 @@ const Product = () => {
             </MenuItem>
           ))}
         </Select>
-
-        {/* Tombol untuk masuk/keluar dari mode hapus */}
+       
         <Button 
           variant="contained" 
           color={deleteMode ? "secondary" : "error"} 
@@ -135,7 +134,6 @@ const Product = () => {
           {deleteMode ? "Batal Hapus" : "Hapus Produk"}
         </Button>
 
-        {/* Tombol untuk menghapus jika ada produk yang dipilih */}
         {deleteMode && selectedProducts.length > 0 && (
           <Button 
             variant="contained" 
