@@ -18,15 +18,16 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2';
+import { API_DUMMY } from '../../../utils/api';
+import CartEmpty from './CartEmpty';
 
-const API_URL = 'http://localhost:4322/api/cart';
 
 function CartTable() {
   const [products, setProducts] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
-    fetch(API_URL)
+    fetch()
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error('Error fetching cart:', error));
@@ -34,7 +35,7 @@ function CartTable() {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      await fetch(`${API_DUMMY}/api/cart/${id}`, { method: 'DELETE' });
       setProducts(products.filter((item) => item.id !== id));
       setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
       Swal.fire({ icon: 'success', title: 'Barang berhasil dihapus!', timer: 1500 });
@@ -56,7 +57,7 @@ function CartTable() {
     );
   };
 
-  if (!products.length) return <Typography align="center">Cart is empty</Typography>;
+  if (!products.length) return <CartEmpty/>;
 
   return (
     <TableContainer component={Paper} sx={{ marginTop: 2, boxShadow: 3, width: '100%' }}>
