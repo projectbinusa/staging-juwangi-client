@@ -21,6 +21,7 @@ import {
   TablePagination
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
+import { API_DUMMY } from "../../utils/api";
 
 const API_URL = "https://jsonplaceholder.typicode.com/posts";
 
@@ -33,13 +34,14 @@ const CategoryPage = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+
   useEffect(() => {
     fetchCategories();
   }, []);
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get(`${API_DUMMY}/api/categories`);
       setCategories(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -113,9 +115,9 @@ const CategoryPage = () => {
             {categories.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((cat) => (
               <TableRow key={cat.id}>
                 <TableCell>{cat.id}</TableCell>
-                <TableCell>{cat.title}</TableCell>
+                <TableCell>{cat.kategori}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleOpen(cat.title, cat.id)}>
+                  <IconButton color="primary" onClick={() => handleOpen(cat.kategori, cat.id)}>
                     <Edit />
                   </IconButton>
                   <IconButton color="secondary" onClick={() => handleDelete(cat.id)}>
