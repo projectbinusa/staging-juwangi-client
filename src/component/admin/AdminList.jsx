@@ -55,7 +55,7 @@ const AdminList = () => {
         try {
           await axios.delete(`${API_DUMMY}/api/admin/${id}`);
           
-          // Hapus dari state tanpa fetch ulang
+      
           setAdmins((prevAdmins) => prevAdmins.filter((admin) => admin.id !== id));
 
           Swal.fire("Dihapus!", "Admin berhasil dihapus.", "success");

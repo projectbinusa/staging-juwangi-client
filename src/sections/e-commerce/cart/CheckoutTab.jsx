@@ -6,7 +6,7 @@ import CircularLoader from '../../../component/CircularLoader';
 import Cart from './Cart';
 import { API_DUMMY } from '../../../utils/api';
 // import CartEmpty from './CartEmpty';
-// import ShippingInfo from './ShippingInfo';
+import ShippingInfo from './ShippingInfo';
 // import Payment from './Payment';
 
 const CheckoutTab = () => {
@@ -56,8 +56,8 @@ const CheckoutTab = () => {
             
           />
         )}
-        {/* {tabIndex === 1 && <ShippingInfo />}
-        {tabIndex === 2 && <Payment />} */}
+        {tabIndex === 1 && <ShippingInfo />}
+        {/* {tabIndex === 2 && <Payment />} */}
       </Box>
     </Container>
   );

@@ -41,7 +41,7 @@ const CategoryList = () => {
     return (
         <div>
             <h2>Category Management</h2>
-            <Button variant="contained" color="primary" onClick={() => setOpenAdd(true)}>
+            <Button variant="contained" color="primary" onClick={() => navigator()}>
                 Add Category
             </Button>
             <TableContainer component={Paper}>

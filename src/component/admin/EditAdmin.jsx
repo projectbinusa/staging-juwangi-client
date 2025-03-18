@@ -20,7 +20,7 @@ const EditAdmin = () => {
       const adminData = response.data.data.find((item) => item.id === parseInt(id));
 
       if (adminData) {
-        setAdmin({ ...adminData, password: "" }); // Kosongkan password saat load
+        setAdmin({ ...adminData, password: "" }); 
       } else {
         Swal.fire("Gagal!", "Data admin tidak ditemukan.", "error").then(() => {
           navigate("/admin");

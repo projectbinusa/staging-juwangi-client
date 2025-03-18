@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
 import axios from 'axios';
+import { API_DUMMY } from '../../utils/api';
 
 const AddCategory = ({ open, onClose, refresh }) => {
     const [kategori, setKategori] = useState('');
 
     const handleAdd = async () => {
         try {
-            await axios.post('http://localhost:4322/api/categories', { kategori });
+            await axios.post(`${API_DUMMY}/api/categories, { kategori }`);
             refresh();
             onClose();
         } catch (error) {
