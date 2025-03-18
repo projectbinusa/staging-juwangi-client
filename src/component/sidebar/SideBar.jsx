@@ -98,7 +98,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
         </List>
 
         <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate("/")}>
+          <ListItemButton onClick={() => navigate("/orders")}>
             <ListItemIcon sx={{ color: "white" }}>
               <ShoppingCart />
             </ListItemIcon>
