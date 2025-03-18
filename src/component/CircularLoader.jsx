@@ -1,12 +1,27 @@
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
+import PropTypes from 'prop-types';
+import { Box, CircularProgress, Typography } from "@mui/material";
 
-const CircularLoader = () => {
+const CircularLoader = ({ size = 60, color = "primary", text = "Loading..." }) => {
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-      <CircularProgress />
+    <Box 
+      display="flex" 
+      flexDirection="column" 
+      alignItems="center" 
+      justifyContent="center" 
+      height="100vh"
+    >
+      <CircularProgress size={size} color={color} />
+      <Typography mt={2} fontSize="1.1rem" color="textSecondary">
+        {text}
+      </Typography>
     </Box>
   );
+};
+
+CircularLoader.propTypes = {
+  size: PropTypes.number,
+  color: PropTypes.string,
+  text: PropTypes.string
 };
 
 export default CircularLoader;
