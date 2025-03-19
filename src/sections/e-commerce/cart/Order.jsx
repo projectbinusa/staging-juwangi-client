@@ -1,96 +1,114 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Box, Button, Card, CardContent, Divider, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-
-
-const product = {
-  name: "Canon EOS 1500D 24.1 Digital",
-  description: "512GB ROM, MLLH3HN/A...",
-  price: 399.00,
-  quantity: 1,
-  image: "https://example.com/camera.jpg" 
-};
+import { API_DUMMY } from "../../../utils/api";
+// import {handleUpdateKuantitas} from "./CartTable"
 
 export default function Order() {
-  const subTotal = product.price * product.quantity;
-  const estimatedDelivery = 0;
-  const voucherDiscount = 0;
-  const total = subTotal + estimatedDelivery - voucherDiscount;
+  const defaultProducts = [
+    {
+      id: 1,
+      nama: "product",
+      deskripsi: "Deskripsi produk ",
+      harga: "Rp.0",
+      kuantitas: 0,
+      gambar: "https://tse4.mm.bing.net/th?id=OIP.scjNWB85DXyLTngGoTEE0wHaHa&pid=Api&P=0&h=180",
+    },
+  ];
+
+  const [products, setProducts] = useState(defaultProducts);
+  const [error, setError] = useState(null);
+    
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${API_DUMMY}/api/cart`);
+        setProducts(response.data);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError("Gagal mengambil data produk. Menampilkan produk default.");
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
-    <Card sx={{ maxWidth: 400, boxShadow: 3, borderRadius: 2 }}>
-      <CardContent>
+    <Card 
+      sx={{
+        width: 350, 
+        height: "70vh", 
+        boxShadow: 3, 
+        borderRadius: 2, 
+        display: "flex", 
+        flexDirection: "column"
+      }}
+    >
+      <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <Typography variant="h6" fontWeight="bold">
           Order Summary
         </Typography>
 
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ my: 2 }}>
-          <Box
-            component="img"
-            src={product.image}
-            alt={product.name}
-            sx={{ width: 64, height: 64, borderRadius: 1 }}
-          />
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="subtitle1" fontWeight="bold">
-              {product.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {product.description}
-            </Typography>
-            <Typography variant="body2" fontWeight="bold" sx={{ mt: 1 }}>
-              ${product.price.toFixed(2)} &nbsp; | &nbsp; {product.quantity} item
-            </Typography>
-          </Box>
-          <DeleteOutlineIcon color="error" sx={{ cursor: "pointer" }} />
-        </Stack>
+        {error && (
+          <Typography color="error" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
 
-        <Divider sx={{ my: 2 }} />
+        <Box 
+          sx={{
+            flex: 1, 
+            overflowY: "auto", 
+            maxHeight: "40vh", 
+            mt: 2, 
+            pr: 1
+          }}
+        >
+          {products.length > 0 ? (
+            products.map((product, index) => (
+              <Stack key={index} direction="row" alignItems="center" spacing={2} sx={{ my: 2 }}>
+                <Box
+                  component="img"
+                  src={product.gambar }
+                  alt={product.nama}
+                  sx={{ width: 64, height: 64, borderRadius: 1 }}
+                />
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    {product.nama}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {product.deskripsi}
+                  </Typography>
+                  <Typography variant="body2" fontWeight="bold" sx={{ mt: 1 }}>
+                    Rp{(product.harga || 0).toLocaleString()} &nbsp; | &nbsp; {product.kuantitas || 1} item
+                  </Typography>
+                </Box>
+                <DeleteOutlineIcon color="error" sx={{ cursor: "pointer" }} />
+              </Stack>
+            ))
+          ) : (
+            <Typography sx={{ mt: 2 }}>Tidak ada produk dalam keranjang.</Typography>
+          )}
+        </Box>
 
-        {/* Harga */}
-        <Stack spacing={1}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography>Sub Total</Typography>
-            <Typography fontWeight="bold">${subTotal.toFixed(2)}</Typography>
-          </Stack>
+        <Divider sx={{ my: 1 }} />
 
-          <Stack direction="row" justifyContent="space-between">
-            <Typography>Estimated Delivery</Typography>
-            <Typography fontWeight="bold">${estimatedDelivery}</Typography>
-          </Stack>
-
-          <Stack direction="row" justifyContent="space-between">
-            <Typography>Voucher</Typography>
-            <Typography fontWeight="bold">${voucherDiscount}</Typography>
-          </Stack>
-        </Stack>
-
-        <Divider sx={{ my: 2 }} />
-
-        {/* Total Harga */}
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="h6" fontWeight="bold">Total</Typography>
-          <Typography variant="h6" fontWeight="bold">${total.toFixed(2)}</Typography>
+          <Typography variant="h6" fontWeight="bold">
+            Rp{products.reduce((acc, product) => acc + (product.harga || 0) * (product.kuantitas || 0), 0).toLocaleString()}
+          </Typography>
         </Stack>
 
-        {/* Tombol Checkout & Buy Now */}
-        <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ backgroundColor: "#0066FF" }}
-          >
+        <Stack direction="row" spacing={2} sx={{ mt: 1.5 }}>
+          <Button fullWidth variant="contained" color="primary">
             Process to Checkout
           </Button>
 
-          <Button
-            fullWidth
-            variant="contained"
-            color="error"
-            startIcon={<ShoppingCartIcon />}
-          >
+          <Button fullWidth variant="contained" color="error" startIcon={<ShoppingCartIcon />}>
             Buy Now
           </Button>
         </Stack>

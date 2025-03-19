@@ -92,7 +92,6 @@ export default function ShippingInfo() {
         maxWidth: 600,
         margin: '0 auto',
         padding: 3,
-        backgroundColor: '#fff',
         boxShadow: 3,
         borderRadius: 2
       }}
