@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import ProductCard from "../../component/ProductCard";
@@ -15,7 +14,7 @@ const Product = () => {
   const navigate = useNavigate();
   const outletContext = useOutletContext() || {};
   const { openDrawer = true } = outletContext;
-  const [nama, setNama] = useState([]); 
+  const [nama, setNama] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
@@ -95,7 +94,15 @@ const Product = () => {
   };
 
   return (
-    <Container maxWidth={false} sx={{ textAlign: "center", padding: 1, marginLeft: 5 }}>
+    <Container 
+      maxWidth={false} 
+      sx={{ 
+        minHeight: "100vh", 
+        width: "100vw", 
+        paddingX: 3, 
+        textAlign: "center" 
+      }}
+    >
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
@@ -151,7 +158,7 @@ const Product = () => {
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : filteredNama.length > 0 ? (
-        <Grid container rowSpacing={2} justifyContent="center">
+        <Grid container spacing={2} justifyContent="center">
           {filteredNama.map((item) => (
             <Grid item key={item.id} xs={12} sm={6} md={3}>
               <ProductCard 
