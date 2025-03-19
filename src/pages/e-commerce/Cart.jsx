@@ -1,35 +1,20 @@
-// eslint-disable-next-line no-unused-vars
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import CircularLoader from '../../component/CircularLoader';
-import CheckoutTab from '../../sections/e-commerce/cart/CheckoutTab';
-// import CartEmpty from '../../sections/e-commerce/cart/CartEmpty';
-
-import { useGetCart } from '../../api/Cart';
+import { Grid, Box } from "@mui/material";
+import CheckoutTab from "../../sections/e-commerce/cart/CheckoutTab";
+import Order from "../../sections/e-commerce/cart/Order";
 
 function Cart() {
-  const { cartLoading, cart, cartError } = useGetCart();
-
-  if (cartLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-        <CircularLoader text="Loading cart..." />
-      </Box>
-    );
-  }
-    
-  if (cartError) {
-    return <Typography color="error">Gagal memuat cart: {cartError.message}</Typography>;
-  }
-
-  // if (!cart || !cart.products || cart.products.length === 0) {
-  //   return <CartEmpty/>;
-
-  // }
-
   return (
-    <Box>
-      <CheckoutTab cart={cart} />
+    <Box sx={{ flexGrow: 1, p: 2 }}>
+      <Grid container spacing={2}>
+
+        <Grid item xs={12} md={8}>
+          <CheckoutTab />
+        </Grid>
+
+        <Grid item xs={12} md={4} mt={19}>
+          <Order />
+        </Grid>
+      </Grid>
     </Box>
   );
 }

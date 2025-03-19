@@ -2,7 +2,7 @@
 import React from "react";
 import { Container, Button, Stack } from "@mui/material";
 import CartTable from "./CartTable";
-import Order from "./Order";
+
 
 const Cart = () => {
   return (
@@ -11,7 +11,6 @@ const Cart = () => {
         
         <CartTable sx={{ flex: 2 }} />
 
-        <Order sx={{ flex: 1 }} />
       </Stack>
 
       <Button sx={{ mt: 2 }} variant="contained" color="primary">
