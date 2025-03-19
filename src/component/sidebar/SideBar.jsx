@@ -102,7 +102,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             <ListItemIcon sx={{ color: "white" }}>
               <ShoppingCart />
             </ListItemIcon>
-            {openDrawer && <ListItemText primary="Pesanan" />}
+            {openDrawer && <ListItemText primary="Ordered" />}
           </ListItemButton>
         </ListItem>
 

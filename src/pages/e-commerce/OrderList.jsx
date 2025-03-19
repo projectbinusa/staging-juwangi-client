@@ -62,14 +62,14 @@ const OrderList = () => {
   };
 
   return (
-    <Box p={4} sx={{ backgroundColor: "#ffffff", minHeight: "100vh" }}>
-      <Typography variant="h3" gutterBottom sx={{ color: "#333", fontWeight: "bold" }}>
+    <Box p={4} sx={{ minHeight: "100vh" }}>
+      <Typography variant="h3" gutterBottom sx={{ fontWeight: "bold" }}>
         Order List
       </Typography>
       <TableContainer component={Paper} sx={{ borderRadius: "12px", boxShadow: 3 }}>
         <Table>
           <TableHead>
-            <TableRow sx={{ backgroundColor: "#f0f0f0" }}>
+            <TableRow sx={{ }}>
               <TableCell sx={{ fontSize: "18px", fontWeight: "bold", py: 2 }}>#</TableCell>
               <TableCell sx={{ fontSize: "18px", fontWeight: "bold", py: 2 }}>Order ID</TableCell>
               <TableCell sx={{ fontSize: "18px", fontWeight: "bold", py: 2 }}>Customer</TableCell>
