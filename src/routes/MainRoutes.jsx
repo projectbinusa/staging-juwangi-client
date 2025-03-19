@@ -22,6 +22,7 @@ const Category = lazy(() => import("../component/category/Category"));
 const AddCategory = lazy(() => import("../component/category/AddCategory"));
 const EditCategory = lazy(() => import("../component/category/EditCategory"));
 const OrderList = lazy(() => import("../pages/e-commerce/OrderList"));
+const Analytics = lazy(() => import("../component/Dashboard/Analytics"));
 
 
 const router = createBrowserRouter([
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
             { path: "category", element: <Category /> },
             { path: "*", element: <ErrorPage /> },
             { path: "orders", element: <OrderList /> },
+            { path: "analytics", element: <Analytics /> },
         ],
     },
     { path: "login", element: <Login /> },
