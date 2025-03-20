@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import ProductCard from "../../component/ProductCard";
-import { 
-  Container, Grid, Typography, TextField, Box, Button, CircularProgress, Select, MenuItem 
+import {
+  Container, Grid, Typography, TextField, Box, Button, CircularProgress, Select, MenuItem, Checkbox
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete"; 
+import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -14,22 +14,22 @@ const Product = () => {
   const navigate = useNavigate();
   const outletContext = useOutletContext() || {};
   const { openDrawer = true } = outletContext;
-  const [nama, setNama] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [selectedCategories, setSelectedCategories] = useState(""); 
-  const [categories, setCategories] = useState([]); 
-  const [selectedProducts, setSelectedProducts] = useState([]); 
-  const [deleteMode, setDeleteMode] = useState(false); 
+  const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [deleteMode, setDeleteMode] = useState(false);
 
   useEffect(() => {
-    const fetchNama = async () => {
+    const fetchProducts = async () => {
       try {
         const response = await axios.get(`${API_DUMMY}/api/products`);
-        setNama(response.data);
+        setProducts(response.data);
       } catch (err) {
-        setError("Failed to fetch products");
+        setError("Gagal mengambil data produk");
       } finally {
         setLoading(false);
       }
@@ -40,20 +40,20 @@ const Product = () => {
         const response = await axios.get(`${API_DUMMY}/api/categories`);
         setCategories(response.data);
       } catch (err) {
-        console.error("Failed to fetch categories");
+        console.error("Gagal mengambil kategori");
       }
     };
 
-    fetchNama();
+    fetchProducts();
     fetchCategories();
   }, []);
 
-  const filteredNama = useMemo(() => {
-    return nama.filter((item) =>
+  const filteredProducts = useMemo(() => {
+    return products.filter((item) =>
       item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCategories === "" || item.kategori?.toLowerCase() === selectedCategories.toLowerCase())
+      (selectedCategory === "" || item.kategori?.toLowerCase() === selectedCategory.toLowerCase())
     );
-  }, [nama, searchTerm, selectedCategories]);
+  }, [products, searchTerm, selectedCategory]);
 
   const handleSelectProduct = (id) => {
     setSelectedProducts((prev) =>
@@ -82,9 +82,9 @@ const Product = () => {
       await Promise.all(
         selectedProducts.map((id) => axios.delete(`${API_DUMMY}/api/products/${id}`))
       );
-      setNama(nama.filter((item) => !selectedProducts.includes(item.id)));
+      setProducts(products.filter((item) => !selectedProducts.includes(item.id)));
       setSelectedProducts([]);
-      setDeleteMode(false); 
+      setDeleteMode(false);
 
       Swal.fire("Terhapus!", "Produk berhasil dihapus!", "success");
     } catch (error) {
@@ -94,15 +94,16 @@ const Product = () => {
   };
 
   return (
-    <Container 
-      maxWidth={false} 
-      sx={{ 
-        minHeight: "100vh", 
-        width: "100vw", 
-        paddingX: 3, 
-        textAlign: "center" 
-      }}
-    >
+    <Container
+    maxWidth="md" 
+    sx={{
+      minHeight: "100vh",
+      width: "100%",
+      paddingX: 2, 
+      textAlign: "center",
+      // marginLeft: "50px",
+    }}
+  >
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
@@ -118,8 +119,8 @@ const Product = () => {
           <SearchIcon />
         </Button>
         <Select
-          value={selectedCategories}
-          onChange={(e) => setSelectedCategories(e.target.value)}
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
           displayEmpty
           sx={{ width: "200px", bgcolor: "#f0f0f0", borderRadius: "5px" }}
         >
@@ -130,11 +131,12 @@ const Product = () => {
             </MenuItem>
           ))}
         </Select>
-       
-        <Button 
-          variant="contained" 
-          color={deleteMode ? "secondary" : "error"} 
-          startIcon={<DeleteIcon />} 
+
+        {/* Tombol Hapus Produk */}
+        <Button
+          variant="contained"
+          color={deleteMode ? "secondary" : "error"}
+          startIcon={<DeleteIcon />}
           onClick={() => setDeleteMode(!deleteMode)}
           sx={{ fontWeight: "bold" }}
         >
@@ -142,9 +144,9 @@ const Product = () => {
         </Button>
 
         {deleteMode && selectedProducts.length > 0 && (
-          <Button 
-            variant="contained" 
-            color="error" 
+          <Button
+            variant="contained"
+            color="error"
             onClick={handleDeleteSelected}
             sx={{ fontWeight: "bold" }}
           >
@@ -153,18 +155,23 @@ const Product = () => {
         )}
       </Box>
 
+      {/* Daftar Produk */}
       {loading ? (
         <CircularProgress />
       ) : error ? (
         <Typography color="error">{error}</Typography>
-      ) : filteredNama.length > 0 ? (
+      ) : filteredProducts.length > 0 ? (
         <Grid container spacing={2} justifyContent="center">
-          {filteredNama.map((item) => (
+          {filteredProducts.map((item) => (
             <Grid item key={item.id} xs={12} sm={6} md={3}>
-              <ProductCard 
-                id={item.id} 
-                onSelect={handleSelectProduct} 
-                selected={selectedProducts.includes(item.id)} 
+              <ProductCard
+                id={item.id}
+                nama={item.nama}
+                harga={item.harga}
+                gambar={item.gambar}
+                kategori={item.kategori}
+                onSelect={handleSelectProduct}
+                selected={selectedProducts.includes(item.id)}
                 showCheckbox={deleteMode} 
               />
             </Grid>
