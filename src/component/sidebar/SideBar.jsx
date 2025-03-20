@@ -26,6 +26,7 @@ import {
   ExpandMore,
   Storefront,
   Brightness4,
+  ClassOutlined,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -35,6 +36,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
   const navigate = useNavigate();
   const [openDashboard, setOpenDashboard] = useState(false);
   const [openEcommerce, setOpenEcommerce] = useState(false);
+  const [openInvoice, setOpenInvoice] = useState(false);
   const { mode, toggleTheme } = useContext(ThemeContext);
 
   return (
@@ -61,7 +63,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
       <Divider />
 
       <List>
-        {/* Dashboard dengan Submenu */}
+
         <ListItemButton onClick={() => setOpenDashboard(!openDashboard)} sx={{ pl: openDrawer ? 2 : 1.5 }}>
           <ListItemIcon sx={{ color: "white" }}>
             <AssessmentOutlined />
@@ -77,7 +79,6 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
           </List>
         </Collapse>
 
-        {/* E-commerce dengan Submenu */}
         <ListItemButton onClick={() => setOpenEcommerce(!openEcommerce)} sx={{ pl: openDrawer ? 2 : 1.5 }}>
           <ListItemIcon sx={{ color: "white" }}>
             <Storefront />
@@ -98,6 +99,20 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             </ListItemButton>
           </List>
         </Collapse>
+        <ListItemButton onClick={() => setOpenInvoice(!openInvoice)} sx={{ pl: openDrawer ? 2 : 1.5 }}>
+          <ListItemIcon sx={{ color: "white" }}>
+            <ClassOutlined />
+          </ListItemIcon>
+          {openDrawer && <ListItemText primary="Invoice" />}
+          {openDrawer && (openInvoice ? <ExpandLess /> : <ExpandMore />)}
+        </ListItemButton>
+        <Collapse in={openInvoice && openDrawer} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding sx={{ pl: 4 }}>
+            <ListItemButton onClick={() => navigate("/createinvoice")}> 
+              <ListItemText primary="Create" />
+            </ListItemButton>
+          </List>
+        </Collapse>
 
         <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/orders")}>
@@ -108,7 +123,6 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
           </ListItemButton>
         </ListItem>
 
-        {/* Light/Dark Mode Toggle */}
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon sx={{ color: "white" }}>
