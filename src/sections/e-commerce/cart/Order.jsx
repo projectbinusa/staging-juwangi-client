@@ -4,7 +4,7 @@ import { Box, Button, Card, CardContent, Divider, Stack, Typography } from "@mui
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { API_DUMMY } from "../../../utils/api";
-// import {handleUpdateKuantitas} from "./CartTable"
+import CartEmpty from "./CartEmpty";
 
 export default function Order() {
   const defaultProducts = [
@@ -12,20 +12,26 @@ export default function Order() {
       id: 1,
       nama: "product",
       deskripsi: "Deskripsi produk ",
-      harga: "Rp.0",
-      kuantitas: 0,
+      harga: 0,
+      kuantitas: 1,
       gambar: "https://tse4.mm.bing.net/th?id=OIP.scjNWB85DXyLTngGoTEE0wHaHa&pid=Api&P=0&h=180",
     },
   ];
 
   const [products, setProducts] = useState(defaultProducts);
   const [error, setError] = useState(null);
-    
+  const [isCartEmpty, setIsCartEmpty] = useState(false);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${API_DUMMY}/api/cart`);
-        setProducts(response.data);
+        if (response.data.length === 0) {
+          setIsCartEmpty(true);
+        } else {
+          setProducts(response.data);
+          setIsCartEmpty(false);
+        }
       } catch (err) {
         console.error("Error fetching products:", err);
         setError("Gagal mengambil data produk. Menampilkan produk default.");
@@ -34,6 +40,10 @@ export default function Order() {
 
     fetchProducts();
   }, []);
+
+  if (isCartEmpty) {
+    return <CartEmpty />;
+  }
 
   return (
     <Card 
@@ -66,32 +76,28 @@ export default function Order() {
             pr: 1
           }}
         >
-          {products.length > 0 ? (
-            products.map((product, index) => (
-              <Stack key={index} direction="row" alignItems="center" spacing={2} sx={{ my: 2 }}>
-                <Box
-                  component="img"
-                  src={product.gambar }
-                  alt={product.nama}
-                  sx={{ width: 64, height: 64, borderRadius: 1 }}
-                />
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {product.nama}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {product.deskripsi}
-                  </Typography>
-                  <Typography variant="body2" fontWeight="bold" sx={{ mt: 1 }}>
-                    Rp{(product.harga || 0).toLocaleString()} &nbsp; | &nbsp; {product.kuantitas || 1} item
-                  </Typography>
-                </Box>
-                <DeleteOutlineIcon color="error" sx={{ cursor: "pointer" }} />
-              </Stack>
-            ))
-          ) : (
-            <Typography sx={{ mt: 2 }}>Tidak ada produk dalam keranjang.</Typography>
-          )}
+          {products.map((product, index) => (
+            <Stack key={index} direction="row" alignItems="center" spacing={2} sx={{ my: 2 }}>
+              <Box
+                component="img"
+                src={product.gambar}
+                alt={product.nama}
+                sx={{ width: 64, height: 64, borderRadius: 1 }}
+              />
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {product.nama}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {product.deskripsi}
+                </Typography>
+                <Typography variant="body2" fontWeight="bold" sx={{ mt: 1 }}>
+                  Rp{(product.harga || 0).toLocaleString()} &nbsp; | &nbsp; {product.kuantitas || 1} item
+                </Typography>
+              </Box>
+              <DeleteOutlineIcon color="error" sx={{ cursor: "pointer" }} />
+            </Stack>
+          ))}
         </Box>
 
         <Divider sx={{ my: 1 }} />
@@ -99,7 +105,7 @@ export default function Order() {
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="h6" fontWeight="bold">Total</Typography>
           <Typography variant="h6" fontWeight="bold">
-            Rp{products.reduce((acc, product) => acc + (product.harga || 0) * (product.kuantitas || 0), 0).toLocaleString()}
+            Rp{products.reduce((acc, product) => acc + (product.harga || 0) * (product.kuantitas || 1), 0).toLocaleString()}
           </Typography>
         </Stack>
 
