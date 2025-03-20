@@ -90,12 +90,16 @@ export default function ShippingInfo() {
     <Box
       sx={{
         maxWidth: 600,
-        margin: '0 auto',
+        margin: 'auto',
         padding: 3,
         boxShadow: 3,
-        borderRadius: 2
+        borderRadius: 2,
       }}
     >
+      <Box sx={{
+        height: 300,
+        overflowY: 'auto'
+      }}>
       {savedAddresses.length > 0 && (
         <Box mb={2}>
           {savedAddresses.map((address, index) => (
@@ -109,6 +113,7 @@ export default function ShippingInfo() {
           ))}
         </Box>
       )}
+      </Box>
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
