@@ -26,7 +26,7 @@ const Navbar = ({ toggleDrawer }) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const { mode, toggleTheme } = useContext(ThemeContext);
-  const [avatar] = useState("https://tse4.mm.bing.net/th?id=OIP.dErkv765aE3IKCmV9q5dPQHaHa&pid=Api&P=0&h=180"); 
+  const [avatar] = useState("https://tse1.mm.bing.net/th?id=OIP.fu5mCwl95AHkzT5ibPTsyAHaHa&pid=Api&P=0&h=180"); 
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
