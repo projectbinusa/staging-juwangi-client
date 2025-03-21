@@ -18,6 +18,7 @@ import {
   Person,
   ShoppingCart,
   AssessmentOutlined,
+  AssignmentIndRounded,
   ExitToApp,
   Menu,
   ChevronLeft,
@@ -120,6 +121,15 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
               <ShoppingCart />
             </ListItemIcon>
             {openDrawer && <ListItemText primary="Ordered" />}
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/user")}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <AssignmentIndRounded />
+            </ListItemIcon>
+            {openDrawer && <ListItemText primary="Customer" />}
           </ListItemButton>
         </ListItem>
 
