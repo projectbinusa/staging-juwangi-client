@@ -24,9 +24,10 @@ import { useParams } from "react-router-dom";
 const CreateInvoice = () => {
   const { id } = useParams();
   const [invoice, setInvoice] = useState({
+    invoiceId: Date.now(),
     status: "",
     date: new Date().toISOString().split("T")[0],
-    dueDate: "",
+    duoDate: "",
     from: {},
     to: {},
     items: [{ nama: "", deskripsi: "", jumlah: 1, harga: "" }],
@@ -68,7 +69,7 @@ const CreateInvoice = () => {
     updatedItems[index][field] = value;
     setInvoice({ ...invoice, items: updatedItems });
   };
-
+ 
   const addItem = () => {
     setInvoice({
       ...invoice,
@@ -83,7 +84,7 @@ const CreateInvoice = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post(`${API_DUMMY}/api/order`, invoice);
+      await axios.post(`${API_DUMMY}/api/invoices/create`, invoice);
       alert("Invoice created successfully!");
     } catch (error) {
       alert("Failed to create invoice. Please try again.");
@@ -109,7 +110,7 @@ const CreateInvoice = () => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <TextField label="Invoice ID" fullWidth disabled value={Date.now()} />
+          <TextField  label="Invoice ID" fullWidth disabled value={invoice.invoiceId} />
         </Grid>
         <Grid item xs={6}>
           <Select
@@ -136,7 +137,7 @@ const CreateInvoice = () => {
             label="Due Date"
             type="date"
             fullWidth
-            value={invoice.dueDate}
+            value={invoice.duoDate}
             onChange={(e) => setInvoice({ ...invoice, dueDate: e.target.value })}
           />
         </Grid>

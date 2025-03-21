@@ -25,7 +25,7 @@ const OrderList = lazy(() => import("../pages/e-commerce/OrderList"));
 // const Analytics = lazy(() => import("../component/Dashboard/Analytics"));
 const Grafik = lazy(() => import("../component/Dashboard/Grafik"))
 const CreateInvoice = lazy(() => import("../sections/e-commerce/invoice/CreateInvoice"));
-const Test = lazy(() => import("../test/test"));
+const ListInvoice = lazy(() => import("../sections/e-commerce/invoice/ListInvoice"))
 
 
 const router = createBrowserRouter([
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
             // { path: "analytics", element: <Analytics /> },
             { path: "analytics", element: <Grafik /> },
             { path: "createInvoice", element: <CreateInvoice/>},
-            { path: "test", element: <Test/>}
+            { path: "listinvoice", element: <ListInvoice/>}
         ],
         
     },
