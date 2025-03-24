@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./SideBar";
-import Navbar from "./Navbar";  // 🔥 Import Navbar
+import Navbar from "./Navbar"; 
 import { Box, Toolbar } from "@mui/material";
 
 const Layout = () => {

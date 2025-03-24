@@ -79,6 +79,13 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             </ListItemButton> 
           </List>
         </Collapse>
+        <Collapse in={openDashboard && openDrawer} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding sx={{ pl: 4 }}>
+            <ListItemButton onClick={() => navigate("/data")}> 
+              <ListItemText primary="Data" />
+            </ListItemButton> 
+          </List>
+        </Collapse>
 
         <ListItemButton onClick={() => setOpenEcommerce(!openEcommerce)} sx={{ pl: openDrawer ? 2 : 1.5 }}>
           <ListItemIcon sx={{ color: "white" }}>
@@ -114,6 +121,15 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             </ListItemButton>
           </List>
         </Collapse>
+
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/chart")}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <ShoppingCart />
+            </ListItemIcon>
+            {openDrawer && <ListItemText primary="Chart" />}
+          </ListItemButton>
+        </ListItem>
 
         <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/orders")}>
