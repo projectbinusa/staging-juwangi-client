@@ -135,14 +135,15 @@ const CreateInvoice = () => {
         <Grid item xs={6}>
           <TextField
             label="Due Date"
+            InputLabelProps={{shrink: true}}
             type="date"
             fullWidth
-            value={invoice.duoDate}
+            value={invoice.dueDate}
             onChange={(e) => setInvoice({ ...invoice, dueDate: e.target.value })}
           />
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h6">From:</Typography>
+          <Typography variant="h6">{invoice.formAddress}From:</Typography>
           <Typography>{invoice.from.nama}</Typography>
           <Typography>{invoice.from.alamat}</Typography>
           <Typography>{invoice.from.phone}</Typography>
@@ -150,7 +151,7 @@ const CreateInvoice = () => {
           <Button onClick={() => {setIsSelectingTo(false); setOpen(true)}}>Change</Button>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h6">To:</Typography>
+          <Typography variant="h6">{invoice.toAddress}To:</Typography>
           <Typography>{invoice.to.nama}</Typography>
           <Typography>{invoice.to.alamat}</Typography>
           <Typography>{invoice.to.phone}</Typography>
@@ -219,14 +220,16 @@ const CreateInvoice = () => {
           <Grid item xs={3}>
             <TextField
               label="Item Nama"
+              InputLabelProps={{shrink: true}}
               fullWidth
-              value={item.nama}
+              value={item.product}
               onChange={(e) => handleItemChange(index, "nama", e.target.value)}
             />
           </Grid>
           <Grid item xs={3}>
             <TextField
               label="deskripsi"
+              InputLabelProps={{shrink: true}}
               fullWidth
               value={item.deskripsi}
               onChange={(e) => handleItemChange(index, "deskripsi", e.target.value)}
@@ -235,9 +238,10 @@ const CreateInvoice = () => {
           <Grid item xs={2}>
             <TextField
               label="Jumlah"
+              InputLabelProps={{shrink: true}}
               type="number"
               fullWidth
-              value={item.jumlah}
+              value={item.kuantitas}
               onChange={(e) => handleItemChange(index, "jumlah", e.target.value)}
             />
           </Grid>

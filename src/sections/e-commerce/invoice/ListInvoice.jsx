@@ -70,11 +70,11 @@ const InvoiceTable = () => {
         params.row?.date ? new Date(params.row.date).toLocaleDateString() : "N/A"
     },
     { 
-      field: "duoDate", 
+      field: "dueDate", 
       headerName: "DUE DATE", 
       width: 150,
       valueGetter: (params) => 
-        params.row?.duoDate ? new Date(params.row.duoDate).toLocaleDateString() : "N/A"
+        params.row?.dueDate ? new Date(params.row.dueDate).toLocaleDateString() : "N/A"
     },
     { field: "kuantitas", headerName: "QUANTITY", width: 120 },
     { 
