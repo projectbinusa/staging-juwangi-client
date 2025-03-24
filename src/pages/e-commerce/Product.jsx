@@ -2,7 +2,16 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import ProductCard from "../../component/ProductCard";
 import {
-  Container, Grid, Typography, TextField, Box, Button, CircularProgress, Select, MenuItem, Checkbox
+  Container,
+  Grid,
+  Typography,
+  TextField,
+  Box,
+  Button,
+  CircularProgress,
+  Select,
+  MenuItem,
+  Checkbox,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
@@ -49,9 +58,11 @@ const Product = () => {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    return products.filter((item) =>
-      item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCategory === "" || item.kategori?.toLowerCase() === selectedCategory.toLowerCase())
+    return products.filter(
+      (item) =>
+        item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (selectedCategory === "" ||
+          item.kategori?.toLowerCase() === selectedCategory.toLowerCase())
     );
   }, [products, searchTerm, selectedCategory]);
 
@@ -80,9 +91,13 @@ const Product = () => {
 
     try {
       await Promise.all(
-        selectedProducts.map((id) => axios.delete(`${API_DUMMY}/api/products/${id}`))
+        selectedProducts.map((id) =>
+          axios.delete(`${API_DUMMY}/api/products/${id}`)
+        )
       );
-      setProducts(products.filter((item) => !selectedProducts.includes(item.id)));
+      setProducts(
+        products.filter((item) => !selectedProducts.includes(item.id))
+      );
       setSelectedProducts([]);
       setDeleteMode(false);
 
@@ -95,15 +110,15 @@ const Product = () => {
 
   return (
     <Container
-    maxWidth="md" 
-    sx={{
-      minHeight: "100vh",
-      width: "100%",
-      paddingX: 2, 
-      textAlign: "center",
-      // marginLeft: "50px",
-    }}
-  >
+      maxWidth="md"
+      sx={{
+        minHeight: "100vh",
+        width: "100%",
+        paddingX: 2,
+        textAlign: "center",
+        // marginLeft: "50px",
+      }}
+    >
       <Typography variant="h4" gutterBottom>
         Products
       </Typography>
@@ -172,7 +187,7 @@ const Product = () => {
                 kategori={item.kategori}
                 onSelect={handleSelectProduct}
                 selected={selectedProducts.includes(item.id)}
-                showCheckbox={deleteMode} 
+                showCheckbox={deleteMode}
               />
             </Grid>
           ))}
