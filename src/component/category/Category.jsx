@@ -1,18 +1,27 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from "@mui/material";
+import {
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    IconButton,
+    Typography,
+    Box,
+} from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
-import AddCategory from "./AddCategory";
-import EditCategory from "./EditCategory";
 
 const API_URL = "http://localhost:4322/api/categories";
 
 const CategoryList = () => {
     const [categories, setCategories] = useState([]);
-    const [openAdd, setOpenAdd] = useState(false);
-    const [openEdit, setOpenEdit] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCategories();
@@ -39,27 +48,42 @@ const CategoryList = () => {
     };
 
     return (
-        <div>
-            <h2>Category Management</h2>
-            <Button variant="contained" color="primary" onClick={() => navigator()}>
+        <Box
+            marginLeft="150px"
+           
+        >
+            <Typography variant="h4" gutterBottom>
+                Category Management
+            </Typography>
+
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate("/addcategory")}
+                sx={{ marginBottom: 2 }}
+            >
                 Add Category
             </Button>
-            <TableContainer component={Paper}>
+
+            <TableContainer component={Paper} sx={{ width: "80%", maxWidth: 800 }}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Category</TableCell>
-                            <TableCell>Actions</TableCell>
+                            <TableCell align="center"><b>ID</b></TableCell>
+                            <TableCell align="center"><b>Category</b></TableCell>
+                            <TableCell align="center"><b>Actions</b></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {categories.map((category) => (
                             <TableRow key={category.id}>
-                                <TableCell>{category.id}</TableCell>
-                                <TableCell>{category.kategori}</TableCell>
-                                <TableCell>
-                                    <IconButton color="primary" onClick={() => { setSelectedCategory(category); setOpenEdit(true); }}>
+                                <TableCell align="center">{category.id}</TableCell>
+                                <TableCell align="center">{category.kategori}</TableCell>
+                                <TableCell align="center">
+                                    <IconButton
+                                        color="primary"
+                                        onClick={() => navigate(`/editcategory/${category.id}`)}
+                                    >
                                         <Edit />
                                     </IconButton>
                                     <IconButton color="secondary" onClick={() => handleDelete(category.id)}>
@@ -71,9 +95,7 @@ const CategoryList = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <AddCategory open={openAdd} onClose={() => setOpenAdd(false)} refresh={fetchCategories} />
-            <EditCategory open={openEdit} onClose={() => setOpenEdit(false)} category={selectedCategory} refresh={fetchCategories} />
-        </div>
+        </Box>
     );
 };
 

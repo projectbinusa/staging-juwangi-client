@@ -1,33 +1,40 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
+import axios from "axios";
 
-const EditCategory = ({ open, onClose, category, refresh }) => {
-    const [kategori, setKategori] = useState('');
+const API_URL = "http://localhost:4322/api/categories";
+
+const EditCategory = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [kategori, setKategori] = useState("");
 
     useEffect(() => {
-        if (category) {
-            setKategori(category.kategori || '');
+        fetchCategory();
+    }, []);
+
+    const fetchCategory = async () => {
+        try {
+            const response = await axios.get(`${API_URL}/${id}`);
+            setKategori(response.data.kategori);
+        } catch (error) {
+            console.error("Error fetching category:", error);
         }
-    }, [category]);
+    };
 
     const handleEdit = async () => {
         try {
-            await axios.put(`http://localhost:4322/api/categories/${category.id}`, 
-                null, 
-                { params: { kategori: kategori } }
-            );                        
-            refresh();
-            onClose();
+            await axios.put(`${API_URL}/${id}`, { kategori });
+            navigate("/category");
         } catch (error) {
-            console.error('Error editing category:', error);
+            console.error("Error editing category:", error);
         }
     };
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={true} onClose={() => navigate("/")}>
             <DialogTitle>Edit Category</DialogTitle>
             <DialogContent>
                 <TextField
@@ -39,23 +46,13 @@ const EditCategory = ({ open, onClose, category, refresh }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={() => navigate("/category")}>Cancel</Button>
                 <Button onClick={handleEdit} variant="contained" color="primary">
                     Save
                 </Button>
             </DialogActions>
         </Dialog>
     );
-};
-
-EditCategory.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    category: PropTypes.shape({
-        id: PropTypes.number,
-        kategori: PropTypes.string,
-    }),
-    refresh: PropTypes.func.isRequired,
 };
 
 export default EditCategory;
