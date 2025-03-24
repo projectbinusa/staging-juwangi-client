@@ -1,7 +1,16 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { 
-  Container, Box, Grid, Button, Typography, Divider, TextField, Stack, IconButton, InputAdornment 
+import {
+  Container,
+  Box,
+  Grid,
+  Button,
+  Typography,
+  Divider,
+  TextField,
+  Stack,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -62,16 +71,16 @@ export default function Register() {
         marginLeft: "300px",
         bgcolor: "#fff",
         minHeight: "100vh",
-        py: 5, 
+        py: 5,
       }}
     >
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           width: "100%",
-          maxWidth: { xs: "90%", sm: "400px" }, 
+          maxWidth: { xs: "90%", sm: "400px" },
           bgcolor: "#f5f5f5",
-          px: 3, 
-          py: 4, 
+          px: 3,
+          py: 4,
           borderRadius: 2,
           boxShadow: 3,
         }}
@@ -79,7 +88,11 @@ export default function Register() {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Box sx={{ textAlign: "center" }}>
-              <img src={LogoImage} alt="Logo" style={{ maxWidth: "70px", height: "auto" }} />
+              <img
+                src={LogoImage}
+                alt="Logo"
+                style={{ maxWidth: "70px", height: "auto" }}
+              />
             </Box>
           </Grid>
 
@@ -91,12 +104,12 @@ export default function Register() {
                   fullWidth
                   startIcon={<FacebookIcon />}
                   onClick={() => handleSocialLogin("Facebook")}
-                  sx={{ 
-                    borderColor: "#000", 
-                    color: "#000", 
-                    "&:hover": { borderColor: "#555" }, 
+                  sx={{
+                    borderColor: "#000",
+                    color: "#000",
+                    "&:hover": { borderColor: "#555" },
                     textTransform: "uppercase",
-                    fontSize: { xs: "12px", sm: "14px" }, 
+                    fontSize: { xs: "12px", sm: "14px" },
                   }}
                 >
                   Sign Up with Facebook
@@ -108,12 +121,12 @@ export default function Register() {
                   fullWidth
                   startIcon={<TwitterIcon />}
                   onClick={() => handleSocialLogin("Twitter")}
-                  sx={{ 
-                    borderColor: "#000", 
-                    color: "#000", 
-                    "&:hover": { borderColor: "#555" }, 
+                  sx={{
+                    borderColor: "#000",
+                    color: "#000",
+                    "&:hover": { borderColor: "#555" },
                     textTransform: "uppercase",
-                    fontSize: { xs: "12px", sm: "14px" }, 
+                    fontSize: { xs: "12px", sm: "14px" },
                   }}
                 >
                   Sign Up with Twitter
@@ -125,12 +138,12 @@ export default function Register() {
                   fullWidth
                   startIcon={<GoogleIcon />}
                   onClick={() => handleSocialLogin("Google")}
-                  sx={{ 
-                    borderColor: "#000", 
-                    color: "#000", 
-                    "&:hover": { borderColor: "#555" }, 
+                  sx={{
+                    borderColor: "#000",
+                    color: "#000",
+                    "&:hover": { borderColor: "#555" },
                     textTransform: "uppercase",
-                    fontSize: { xs: "12px", sm: "14px" }, 
+                    fontSize: { xs: "12px", sm: "14px" },
                   }}
                 >
                   Sign Up with Google
@@ -144,13 +157,21 @@ export default function Register() {
           </Grid>
 
           <Grid item xs={12}>
-            <Stack direction="row" justifyContent="space-between" alignItems="baseline">
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="baseline"
+            >
               <Typography variant="h6">Register</Typography>
-              <Typography 
-                component={Link} 
-                to="/login" 
-                variant="body2" 
-                sx={{ textDecoration: "none", color: "#1976D2", fontSize: { xs: "12px", sm: "14px" } }}
+              <Typography
+                component={Link}
+                to="/login"
+                variant="body2"
+                sx={{
+                  textDecoration: "none",
+                  color: "#1976D2",
+                  fontSize: { xs: "12px", sm: "14px" },
+                }}
               >
                 Already have an account?
               </Typography>
@@ -189,7 +210,11 @@ export default function Register() {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
@@ -197,15 +222,15 @@ export default function Register() {
                 }}
               />
 
-              <Button 
-                type="submit" 
-                variant="contained" 
-                fullWidth 
-                sx={{ 
-                  mt: 2, 
-                  bgcolor: "#1976D2", 
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{
+                  mt: 2,
+                  bgcolor: "#1976D2",
                   textTransform: "uppercase",
-                  fontSize: { xs: "14px", sm: "16px" }, 
+                  fontSize: { xs: "14px", sm: "16px" },
                 }}
               >
                 Register

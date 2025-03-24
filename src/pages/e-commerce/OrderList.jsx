@@ -179,7 +179,7 @@ const OrderList = () => {
   };
 
   return (
-    <Box p={4} sx={{ minHeight: "100vh" }}>
+    <Box p={4} sx={{ minHeight: "100vh", maxWidth: "100%" }}>
       <Typography variant="h3" gutterBottom sx={{ fontWeight: "bold" }}>
         Order List
       </Typography>
@@ -404,6 +404,19 @@ const OrderList = () => {
             value={editOrder.address}
             onChange={handleEditChange}
           />
+
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel>Status</InputLabel>
+            <Select
+              name="status"
+              value={editOrder.status}
+              onChange={handleEditChange}
+            >
+              <MenuItem value="Completed">Completed</MenuItem>
+              <MenuItem value="Pending">Pending</MenuItem>
+              <MenuItem value="Cancelled">Cancelled</MenuItem>
+            </Select>
+          </FormControl>
 
           <Button variant="contained" fullWidth onClick={handleSaveEdit}>
             Save

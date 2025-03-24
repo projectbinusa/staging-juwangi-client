@@ -14,6 +14,7 @@ const EditProduct = () => {
     nama: "",
     harga: "",
     deskripsi: "",
+    stok: "",
     gambar: null,
   });
 
@@ -45,28 +46,42 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("nama", product.nama);
-      formData.append("harga", product.harga);
-      formData.append("deskripsi", product.deskripsi);
-      if (product.gambar) {
-        formData.append("gambar", product.gambar);
+      let updatedProduct = {
+        nama: product.nama,
+        harga: product.harga,
+        deskripsi: product.deskripsi,
+        stok: product.stok,
+      };
+
+      if (product.gambar instanceof File) {
+        const reader = new FileReader();
+        reader.readAsDataURL(product.gambar);
+        reader.onloadend = async () => {
+          updatedProduct.gambar = reader.result;
+
+          await axios.put(`${API_DUMMY}/api/products/${id}`, updatedProduct, {
+            headers: { "Content-Type": "application/json" },
+          });
+
+          Swal.fire({
+            title: "Berhasil!",
+            text: "Produk berhasil diperbarui",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => navigate("/products"));
+        };
+      } else {
+        await axios.put(`${API_DUMMY}/api/products/${id}`, updatedProduct, {
+          headers: { "Content-Type": "application/json" },
+        });
+
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Produk berhasil diperbarui",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => navigate("/products"));
       }
-
-      await axios.put(`${API_DUMMY}/api/products/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      Swal.fire({
-        title: "Berhasil!",
-        text: "Produk berhasil diperbarui",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/products");
-        }
-      });
     } catch (err) {
       Swal.fire({
         title: "Gagal!",
@@ -83,14 +98,14 @@ const EditProduct = () => {
   return (
     <Box
       sx={{
-        minHeight: "100vh", 
+        minHeight: "100vh",
         width: "100vw",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         background: "linear-gradient(to right, #74ebd5, #acb6e5)",
-        overflowY: "auto", 
-        padding: 4, 
+        overflowY: "auto",
+        padding: 4,
       }}
     >
       <Box
@@ -136,6 +151,17 @@ const EditProduct = () => {
             margin="normal"
             multiline
             rows={3}
+          />
+
+          <TextField
+            label="Stok"
+            name="stok"
+            type="number"
+            value={product.stok}
+            onChange={handleChange}
+            fullWidth
+            required
+            margin="normal"
           />
 
           <Box sx={{ mt: 2 }}>
