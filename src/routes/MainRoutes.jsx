@@ -48,7 +48,7 @@ const router = createBrowserRouter([
             { path: "admin", element: <AdminList /> },
             { path: "addadmin", element: <AddAdmin /> },
             { path: "addcategory", element: <AddCategory/>},
-            { path: "editcategory", element: <EditCategory/>},
+            { path: "editcategory/:id", element: <EditCategory/>},
             { path: "editadmin/:id", element: <EditAdmin /> },
             { path: "category", element: <Category /> },
             { path: "*", element: <ErrorPage /> },
