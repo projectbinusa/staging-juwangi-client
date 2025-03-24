@@ -112,6 +112,9 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             <ListItemButton onClick={() => navigate("/createinvoice")}> 
               <ListItemText primary="Create" />
             </ListItemButton>
+            <ListItemButton onClick={() => navigate("/listinvoice")}>
+              <ListItemText primary="List " />
+            </ListItemButton>
           </List>
         </Collapse>
 
