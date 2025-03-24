@@ -24,6 +24,8 @@ const EditCategory = lazy(() => import("../component/category/EditCategory"));
 const OrderList = lazy(() => import("../pages/e-commerce/OrderList"));
 const Analytics = lazy(() => import("../component/Dashboard/Analytics"));
 const Grafik = lazy(() => import("../component/Dashboard/Grafik"))
+const Chart = lazy(() => import("../component/chart/Chart"))
+const Data = lazy(() => import("../component/Dashboard/Data"))
 const CreateInvoice = lazy(() => import("../sections/e-commerce/invoice/CreateInvoice"));
 const ListInvoice = lazy(() => import("../sections/e-commerce/invoice/ListInvoice"))
 
@@ -53,6 +55,8 @@ const router = createBrowserRouter([
             { path: "orders", element: <OrderList /> },
             { path: "analytics", element: <Analytics /> },
             { path: "grafik", element: <Grafik /> },
+            { path: "data", element: <Data /> },
+            { path: "chart", element: <Chart /> },
             { path: "createInvoice", element: <CreateInvoice/>},
             { path: "listinvoice", element: <ListInvoice/>}
         ],

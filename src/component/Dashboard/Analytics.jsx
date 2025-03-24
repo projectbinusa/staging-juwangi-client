@@ -203,7 +203,7 @@ const Dashboard = () => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ marginLeft: 20, p: 3, bgcolor: theme.palette.background.default, borderRadius: 2 }}>
+    <Box sx={{ marginLeft: 0, p: 3, bgcolor: theme.palette.background.default, borderRadius: 2 }}>
       <Grid container spacing={3} alignItems="stretch">
         <Grid item xs={12} sm={6} md={3}>
           <AnalyticsCard title="New Orders" type="bar" color="#3b82f6" percentage={30.6} />
