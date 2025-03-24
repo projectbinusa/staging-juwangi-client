@@ -49,7 +49,7 @@ const EditProduct = () => {
       formData.append("nama", product.nama);
       formData.append("harga", product.harga);
       formData.append("deskripsi", product.deskripsi);
-      if (product.gambar) {
+      // if (product.gambar) {
         formData.append("gambar", product.gambar);
       }
 

@@ -23,14 +23,17 @@ import { useParams } from "react-router-dom";
 
 const CreateInvoice = () => {
   const { id } = useParams();
+  const generateInvoiceId = () => {
+    return Math.floor(1000000000 + Math.random() * 9000000000); 
+  };
   const [invoice, setInvoice] = useState({
-    invoiceId: Date.now(),
+    invoiceId: generateInvoiceId(),
     status: "",
     date: new Date().toISOString().split("T")[0],
-    duoDate: "",
+    dueDate: "",
     from: {},
     to: {},
-    items: [{ nama: "", deskripsi: "", jumlah: 1, harga: "" }],
+    items: [{ product: "", deskripsi: "", kuantitas: 1, harga: "" }],
   });
   const [open, setOpen] = useState(false);
   const [addresses, setAddresses] = useState([]);
@@ -48,7 +51,7 @@ const CreateInvoice = () => {
       setInvoice((prev) => ({
         ...prev,
         from: response.data,
-        to: response.data, 
+        to: response.data,
       }));
     } catch (error) {
       console.error("Error fetching order data:", error);
@@ -68,12 +71,15 @@ const CreateInvoice = () => {
     const updatedItems = [...invoice.items];
     updatedItems[index][field] = value;
     setInvoice({ ...invoice, items: updatedItems });
+
+    console.log("Update items", updatedItems);
+
   };
- 
+
   const addItem = () => {
     setInvoice({
       ...invoice,
-      items: [...invoice.items, { nama: "", deskripsi: "", jumlah: 1, harga: "" }],
+      items: [...invoice.items, { product: "", deskripsi: "", kuantitas: 1, harga: "" }],
     });
   };
 
@@ -87,6 +93,7 @@ const CreateInvoice = () => {
       await axios.post(`${API_DUMMY}/api/invoices/create`, invoice);
       alert("Invoice created successfully!");
     } catch (error) {
+      console.error("Error posting invoice:", error.response?.data || error);
       alert("Failed to create invoice. Please try again.");
     }
   };
@@ -110,7 +117,7 @@ const CreateInvoice = () => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <TextField  label="Invoice ID" fullWidth disabled value={invoice.invoiceId} />
+          <TextField label="Invoice ID" fullWidth disabled value={invoice.invoiceId} />
         </Grid>
         <Grid item xs={6}>
           <Select
@@ -135,7 +142,7 @@ const CreateInvoice = () => {
         <Grid item xs={6}>
           <TextField
             label="Due Date"
-            InputLabelProps={{shrink: true}}
+            InputLabelProps={{ shrink: true }}
             type="date"
             fullWidth
             value={invoice.dueDate}
@@ -148,7 +155,7 @@ const CreateInvoice = () => {
           <Typography>{invoice.from.alamat}</Typography>
           <Typography>{invoice.from.phone}</Typography>
           <Typography>{invoice.from.email}</Typography>
-          <Button onClick={() => {setIsSelectingTo(false); setOpen(true)}}>Change</Button>
+          <Button onClick={() => { setIsSelectingTo(false); setOpen(true) }}>Change</Button>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h6">{invoice.toAddress}To:</Typography>
@@ -156,80 +163,80 @@ const CreateInvoice = () => {
           <Typography>{invoice.to.alamat}</Typography>
           <Typography>{invoice.to.phone}</Typography>
           <Typography>{invoice.to.email}</Typography>
-          <Button onClick={() => {setIsSelectingTo(true); setOpen(true)}} variant="contained" sx={{ ml: "500px" }}>+</Button>
+          <Button onClick={() => { setIsSelectingTo(true); setOpen(true) }} variant="contained" sx={{ ml: "500px" }}>+</Button>
         </Grid>
       </Grid>
-      <Dialog open={open} onClose={() =>setOpen(false)} fullWidth>
-      <DialogTitle>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="h6">Select Address</Typography>
-          <Button variant="text" color="primary">
-            + Add New
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
+        <DialogTitle>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Typography variant="h6">Select Address</Typography>
+            <Button variant="text" color="primary">
+              + Add New
+            </Button>
+          </div>
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <List sx={{ maxHeight: "300px", overflowY: "auto" }}>
+            {filteredAddresses.map((addr) => (
+              <ListItem
+                button
+                key={addr.id}
+                onClick={() => handleSelectAddress(addr)}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  borderRadius: "8px",
+                  border: "1px solid #e0e0e0",
+                  mb: 1,
+                  p: 2,
+                }}
+              >
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {addr.nama}
+                </Typography>
+                <Typography variant="body2">{addr.alamat}</Typography>
+                <Typography variant="body2">{addr.phone}</Typography>
+                <Typography variant="body2">{addr.email}</Typography>
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="error">
+            Cancel
           </Button>
-        </div>
-      </DialogTitle>
-      <DialogContent>
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-        <List sx={{ maxHeight: "300px", overflowY: "auto" }}>
-          {filteredAddresses.map((addr) => (
-            <ListItem
-              button
-              key={addr.id}
-              onClick={() => handleSelectAddress(addr)}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                borderRadius: "8px",
-                border: "1px solid #e0e0e0",
-                mb: 1,
-                p: 2,
-              }}
-            >
-              <Typography variant="subtitle1" fontWeight="bold">
-                {addr.nama}
-              </Typography>
-              <Typography variant="body2">{addr.alamat}</Typography>
-              <Typography variant="body2">{addr.phone}</Typography>
-              <Typography variant="body2">{addr.email}</Typography>
-            </ListItem>
-          ))}
-        </List>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpen(false)} color="error">
-          Cancel
-        </Button>
-        <Button variant="contained" color="primary">
-          Add
-        </Button>
-      </DialogActions>
-    </Dialog>
+          <Button variant="contained" color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Typography variant="h6" sx={{ mt: 3 }}>
         Details
       </Typography>
       {invoice.items.map((item, index) => (
-        <Grid container spacing={2} key={index} alignItems="center">
+        <Grid container spacing={2} mt={3} key={index} alignItems="center">
           <Grid item xs={3}>
             <TextField
-              label="Item Nama"
-              InputLabelProps={{shrink: true}}
+              label="product"
+              InputLabelProps={{ shrink: true }}
               fullWidth
               value={item.product}
-              onChange={(e) => handleItemChange(index, "nama", e.target.value)}
+              onChange={(e) => handleItemChange(index, "product", e.target.value)}
             />
           </Grid>
           <Grid item xs={3}>
             <TextField
               label="deskripsi"
-              InputLabelProps={{shrink: true}}
+              InputLabelProps={{ shrink: true }}
               fullWidth
               value={item.deskripsi}
               onChange={(e) => handleItemChange(index, "deskripsi", e.target.value)}
@@ -237,12 +244,12 @@ const CreateInvoice = () => {
           </Grid>
           <Grid item xs={2}>
             <TextField
-              label="Jumlah"
-              InputLabelProps={{shrink: true}}
+              label="kuantitas"
+              InputLabelProps={{ shrink: true }}
               type="number"
               fullWidth
               value={item.kuantitas}
-              onChange={(e) => handleItemChange(index, "jumlah", e.target.value)}
+              onChange={(e) => handleItemChange(index, "kuantitas", e.target.value)}
             />
           </Grid>
           <Grid item xs={2}>
