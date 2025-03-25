@@ -8,7 +8,7 @@ const Cart = () => {
   return (
     <Container sx={{ mt: 4 }}>
       <Stack direction="row" spacing={3} alignItems="flex-start">
-        
+
         <CartTable sx={{ flex: 2 }} />
 
       </Stack>

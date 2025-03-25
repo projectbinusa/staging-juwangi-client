@@ -4,7 +4,7 @@ import { Box, Button, Card, CardContent, Divider, Stack, Typography } from "@mui
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { API_DUMMY } from "../../../utils/api";
-import CartEmpty from "./CartEmpty";
+
 
 export default function Order() {
   const defaultProducts = [
@@ -20,17 +20,16 @@ export default function Order() {
 
   const [products, setProducts] = useState(defaultProducts);
   const [error, setError] = useState(null);
-  const [isCartEmpty, setIsCartEmpty] = useState(false);
+
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${API_DUMMY}/api/cart`);
         if (response.data.length === 0) {
-          setIsCartEmpty(true);
+          defaultProducts(false)
         } else {
           setProducts(response.data);
-          setIsCartEmpty(false);
         }
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -41,9 +40,6 @@ export default function Order() {
     fetchProducts();
   }, []);
 
-  if (isCartEmpty) {
-    return <CartEmpty />;
-  }
 
   return (
     <Card 

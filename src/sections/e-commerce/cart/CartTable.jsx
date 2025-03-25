@@ -31,7 +31,7 @@ function CartTable() {
         const response = await fetch(`${API_DUMMY}/api/cart`);
         if (!response.ok) throw new Error('Gagal mengambil data cart');
         const data = await response.json();
-        setProducts(data.map(item => ({...item,kuantitas: item.kuantitas || 1})));
+        setProducts(data.map(item => ({ ...item, kuantitas: item.kuantitas || 1 })));
       } catch (error) {
         console.error('Error fetching cart:', error);
       }

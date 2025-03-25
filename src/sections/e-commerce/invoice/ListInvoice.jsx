@@ -1,127 +1,105 @@
-import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { Box, Chip, Typography, TextField, MenuItem, Select } from "@mui/material";
 import axios from "axios";
-import { Visibility, Edit, Delete } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 import { API_DUMMY } from "../../../utils/api";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 
-const InvoiceTable = () => {
-  const [invoices, setInvoices] = useState([]);
-  const [users, setUsers] = useState({});
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("user");
+function ListInvoice() {
+  const [invoice, setInvoice] = useState([]);
 
-  useEffect(() => {
-    axios.get(`${API_DUMMY}/api/invoices`)
-      .then(response => {
-        setInvoices(response.data);
+  const getAllInvoice = async () => {
+    try {
+      const res = await axios.get(`${API_DUMMY}/api/invoices`);
+      const invoices = res.data;
 
+      // Ambil user info berdasarkan userId
+      const invoicesWithUser = await Promise.all(
+        invoices.map(async (inv) => {
+          try {
+            const userRes = await axios.get(`${API_DUMMY}/api/user/${inv.userId}`);
+            return { ...inv, userInfo: userRes.data.name }; // Simpan nama user
+          } catch {
+            return { ...inv, userInfo: "Unknown User" };
+          }
+        })
+      );
 
-        response.data.forEach(invoice => {
-          axios.get(`${API_DUMMY}/api/users`)
-            .then(userRes => {
-              setUsers(prevUsers => ({
-                ...prevUsers,
-                [invoice.userId]: userRes.data
-              }));
-            })
-            .catch(error => console.error("Error fetching user:", error));
-        });
-      })
-      .catch(error => console.error("Error fetching invoices:", error));
-  }, []);
-
-  const filteredInvoices = invoices.filter(invoice =>
-    users[invoice.userId]?.nama?.toLowerCase().includes(search.toLowerCase()) ||
-    users[invoice.userId]?.email?.toLowerCase().includes(search.toLowerCase()) ||
-    String(invoice.invoiceId).includes(search)
-  );
-
-  const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case "paid": return "success";
-      case "unpaid": return "primary";
-      case "cancelled": return "error";
-      default: return "default";
+      setInvoice(invoicesWithUser);
+    } catch (err) {
+      alert("Terjadi Kesalahan: " + err);
     }
   };
 
-  const columns = [
-    { field: "invoiceId", headerName: "INVOICE ID", width: 120 },
-    { 
-      field: "user", 
-      headerName: "USER INFO", 
-      width: 200, 
-      renderCell: (params) => {
-        const user = users[params.row.nama];
-        return user ? (
-          <Box>
-            <Typography fontWeight="bold">{user.nama}</Typography>
-            <Typography variant="body2" color="textSecondary">{user.email}</Typography>
-          </Box>
-        ) : <Typography color="textSecondary">Loading...</Typography>;
-      }
-    },
-    { 
-      field: "date", 
-      headerName: "CREATE DATE", 
-      width: 150,
-      valueGetter: (params) => 
-        params.row?.date ? new Date(params.row.date).toLocaleDateString() : "N/A"
-    },
-    { 
-      field: "dueDate", 
-      headerName: "DUE DATE", 
-      width: 150,
-      valueGetter: (params) => 
-        params.row?.dueDate ? new Date(params.row.dueDate).toLocaleDateString() : "N/A"
-    },
-    { field: "kuantitas", headerName: "QUANTITY", width: 120 },
-    { 
-      field: "status", 
-      headerName: "STATUS", 
-      width: 120, 
-      renderCell: (params) => (
-        <Chip label={params.value} color={getStatusColor(params.value)} />
-      )
-    },
-    { 
-      field: "actions", 
-      headerName: "ACTIONS", 
-      width: 150,
-      renderCell: () => (
-        <Box>
-          <Visibility sx={{ cursor: "pointer", mx: 1, color: "gray" }} />
-          <Edit sx={{ cursor: "pointer", mx: 1, color: "blue" }} />
-          <Delete sx={{ cursor: "pointer", mx: 1, color: "red" }} />
-        </Box>
-      )
-    }
-  ];
+  useEffect(() => {
+    getAllInvoice();
+  }, []);
 
   return (
-    <Box sx={{ height: 500, width: "100%", p: 2 }}>
-      <Box display="flex" justifyContent="space-between" mb={2}>
-        <TextField 
-          label="Search records..." 
-          variant="outlined" 
-          size="small" 
-          onChange={(e) => setSearch(e.target.value)} 
-        />
-        <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)} size="small">
-          <MenuItem value="user">Sort by (User Info)</MenuItem>
-          <MenuItem value="date">Sort by (Create Date)</MenuItem>
-        </Select>
-      </Box>
-
-      <DataGrid 
-        rows={filteredInvoices} 
-        columns={columns} 
-        getRowId={(row) => row.invoiceId}
-        pageSize={5}
-      />
-    </Box>
+    <Container component={Paper} sx={{ p: 4, mt: 4 }}>
+      <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+        List Invoice
+      </Typography>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell><Checkbox /></TableCell>
+              <TableCell><b>INVOICE ID</b></TableCell>
+              <TableCell><b>USER INFO</b></TableCell>
+              <TableCell><b>CREATE DATE</b></TableCell>
+              <TableCell><b>DUE DATE</b></TableCell>
+              <TableCell><b>QUANTITY</b></TableCell>
+              <TableCell><b>STATUS</b></TableCell>
+              <TableCell><b>ACTIONS</b></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {invoice.map((item) => (
+              <TableRow key={item.id} hover>
+                <TableCell><Checkbox /></TableCell>
+                <TableCell>{item.invoiceId}</TableCell>
+                <TableCell>{item.userInfo}</TableCell>
+                <TableCell>{new Date(item.createDate).toLocaleDateString()}</TableCell>
+                <TableCell>{new Date(item.dueDate).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  {item.items ? item.items.reduce((total, i) => total + i.quantity, 0) : 0}
+                </TableCell>
+                <TableCell>
+                  <Typography
+                    sx={{
+                      color: item.status === "Paid" ? "green" : "red",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {item.status}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Box sx={{ display: "flex", gap: 1 }}>
+                    <Button variant="contained" color="warning" size="small">Edit</Button>
+                    <Button variant="contained" color="error" size="small">Hapus</Button>
+                    <Button variant="contained" color="primary" size="small">Detail</Button>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
-};
+}
 
-export default InvoiceTable;
+export default ListInvoice;
