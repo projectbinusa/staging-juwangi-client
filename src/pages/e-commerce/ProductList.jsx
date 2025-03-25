@@ -1,200 +1,162 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import ProductCard from "../../component/ProductCard";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import {
-  Container,
-  Grid,
-  Typography,
-  TextField,
   Box,
   Button,
-  CircularProgress,
-  Select,
-  MenuItem,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Paper,
+  Checkbox,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { API_DUMMY } from "../../utils/api";
+import { Search, Edit, Delete, Visibility } from "@mui/icons-material";
 
-const Product = () => {
-  const navigate = useNavigate();
-  const outletContext = useOutletContext() || {};
-  const { openDrawer = true } = outletContext;
-  const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [categories, setCategories] = useState([]);
+const products = [
+  {
+    id: 1,
+    name: "Apple MacBook Pro",
+    category: "Electronics, Laptop",
+    price: "$14.59",
+    quantity: 70,
+    status: "In Stock",
+  },
+  {
+    id: 2,
+    name: "Apple Series 4 GPS A38 MM",
+    category: "Fashion, Watch",
+    price: "$275",
+    quantity: 3,
+    status: "In Stock",
+  },
+  {
+    id: 3,
+    name: "Apple iPhone 13 Mini",
+    category: "Electronics, Iphone",
+    price: "$86.99",
+    quantity: 40,
+    status: "In Stock",
+  },
+  {
+    id: 4,
+    name: "Boat On-Ear Wireless",
+    category: "Electronics, Headphones",
+    price: "$81.99",
+    quantity: 45,
+    status: "Out of Stock",
+  },
+];
+
+const ProductList = () => {
+  const navigate = useNavigate(); // Inisialisasi useNavigate
+  const [search, setSearch] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [deleteMode, setDeleteMode] = useState(false);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${API_DUMMY}/api/products`);
-        setProducts(response.data);
-      } catch (err) {
-        setError("Gagal mengambil data produk");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${API_DUMMY}/api/categories`);
-        setCategories(response.data);
-      } catch (err) {
-        console.error("Gagal mengambil kategori");
-      }
-    };
-
-    fetchProducts();
-    fetchCategories();
-  }, []);
-
-  const filteredProducts = useMemo(() => {
-    return products.filter(
-      (item) =>
-        item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedCategory === "" ||
-          item.kategori?.toLowerCase() === selectedCategory.toLowerCase())
-    );
-  }, [products, searchTerm, selectedCategory]);
-
-  const handleSelectProduct = (id) => {
-    setSelectedProducts((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+  const handleSelectAll = (event) => {
+    if (event.target.checked) {
+      setSelectedProducts(products.map((product) => product.id));
+    } else {
+      setSelectedProducts([]);
+    }
   };
 
-  const handleDeleteSelected = async () => {
-    if (selectedProducts.length === 0) {
-      Swal.fire("Oops!", "Pilih produk terlebih dahulu!", "warning");
-      return;
-    }
-
-    const confirmDelete = await Swal.fire({
-      title: "Yakin ingin menghapus?",
-      text: "Produk yang dihapus tidak dapat dikembalikan!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, hapus!",
-      cancelButtonText: "Batal",
-    });
-
-    if (!confirmDelete.isConfirmed) return;
-
-    try {
-      await Promise.all(
-        selectedProducts.map((id) =>
-          axios.delete(`${API_DUMMY}/api/products/${id}`)
-        )
-      );
-      setProducts(
-        products.filter((item) => !selectedProducts.includes(item.id))
-      );
-      setSelectedProducts([]);
-      setDeleteMode(false);
-
-      Swal.fire("Terhapus!", "Produk berhasil dihapus!", "success");
-    } catch (error) {
-      console.error("Gagal menghapus produk:", error);
-      Swal.fire("Error!", "Gagal menghapus produk!", "error");
-    }
+  const handleSelect = (id) => {
+    setSelectedProducts((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+    );
   };
 
   return (
-    <Container
-      maxWidth={false}
-      sx={{
-        minHeight: "100vh",
-        width: "100%",
-        padding: 2,
-        textAlign: "center",
-        maxWidth: "1300px",
-      }}
-    >
-      <Typography variant="h4" gutterBottom>
-        Products
+    <Box p={3} minHeight="500px" width="1120px">
+      <Typography variant="h4" mb={5}>
+        Product List
       </Typography>
 
-      <Box display="flex" justifyContent="center" gap={3} mb={3}>
-        <TextField
-          variant="outlined"
-          placeholder="Search product..."
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ width: "300px", borderRadius: "5px" }}
+      {/* Search and Add Product */}
+      <Box display="flex" justifyContent="space-between" mb={2}>
+        <OutlinedInput
+          placeholder="Search products..."
+          startAdornment={
+            <InputAdornment position="start">
+              <Search />
+            </InputAdornment>
+          }
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{ width: "300px" }}
         />
-        <Button variant="contained" color="primary">
-          <SearchIcon />
-        </Button>
-        <Select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          displayEmpty
-          sx={{ width: "200px", borderRadius: "5px" }}
-        >
-          <MenuItem value="">All Categories</MenuItem>
-          {categories.map((category) => (
-            <MenuItem key={category.id} value={category.kategori}>
-              {category.kategori}
-            </MenuItem>
-          ))}
-        </Select>
 
-        <Button
-          variant="contained"
-          color={deleteMode ? "secondary" : "error"}
-          startIcon={<DeleteIcon />}
-          onClick={() => setDeleteMode(!deleteMode)}
-          sx={{ fontWeight: "bold" }}
-        >
-          {deleteMode ? "Batal Hapus" : "Hapus Produk"}
+        {/* Tombol Add Product dengan navigasi ke /addproduct */}
+        <Button variant="contained" color="primary" onClick={() => navigate("/addproduct")}>
+          + Add Product
         </Button>
-
-        {deleteMode && selectedProducts.length > 0 && (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleDeleteSelected}
-            sx={{ fontWeight: "bold" }}
-          >
-            Hapus {selectedProducts.length} Produk
-          </Button>
-        )}
       </Box>
 
-      {loading ? (
-        <CircularProgress />
-      ) : error ? (
-        <Typography color="error">{error}</Typography>
-      ) : filteredProducts.length > 0 ? (
-        <Grid container spacing={1} justifyContent="center">
-          {filteredProducts.map((item) => (
-            <Grid item key={item.id} xs={12} sm={6} md={3}>
-              <ProductCard
-                id={item.id}
-                nama={item.nama}
-                harga={item.harga}
-                gambar={item.gambar}
-                kategori={item.kategori}
-                onSelect={handleSelectProduct}
-                selected={selectedProducts.includes(item.id)}
-                showCheckbox={deleteMode}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Typography variant="h6">Tidak ada produk tersedia</Typography>
-      )}
-    </Container>
+      {/* Table */}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  checked={selectedProducts.length === products.length}
+                  onChange={handleSelectAll}
+                />
+              </TableCell>
+              <TableCell>#</TableCell>
+              <TableCell>Product Detail</TableCell>
+              <TableCell>Category</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Quantity</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products.map((product, index) => (
+              <TableRow key={product.id}>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    checked={selectedProducts.includes(product.id)}
+                    onChange={() => handleSelect(product.id)}
+                  />
+                </TableCell>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.category}</TableCell>
+                <TableCell>{product.price}</TableCell>
+                <TableCell>{product.quantity}</TableCell>
+                <TableCell>
+                  <Typography
+                    color={product.status === "In Stock" ? "green" : "red"}
+                  >
+                    {product.status}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <IconButton color="primary">
+                    <Visibility />
+                  </IconButton>
+                  <IconButton color="secondary">
+                    <Edit />
+                  </IconButton>
+                  <IconButton color="error">
+                    <Delete />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 
-export default Product;
+export default ProductList;
