@@ -53,17 +53,13 @@ const Dashboard = () => {
         color: theme.palette.text.primary,
       }}
     >
-      {/* Tabs Navigasi */}
       <Tabs value={0} indicatorColor="primary" textColor="primary">
         <Tab label="Overview" />
         <Tab label="Marketing" />
         <Tab label="Project" />
         <Tab label="Order" />
       </Tabs>
-
-      {/* Kontainer utama - Grafik & Statistik */}
       <Box sx={{ display: "flex", gap: 4, mt: 3, width: "100%", height: "80%" }}>
-        {/* Grafik diperbesar */}
         <Box
           sx={{
             flex: 3,
@@ -91,8 +87,6 @@ const Dashboard = () => {
             </BarChart>
           </ResponsiveContainer>
         </Box>
-
-        {/* Statistik lebih besar */}
         <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
           {stats.map((stat, index) => (
             <Card key={index} sx={{ p: 3, boxShadow: 2, bgcolor: theme.palette.background.paper }}>

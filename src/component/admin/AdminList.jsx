@@ -11,8 +11,10 @@ import {
   TableRow,
   Paper,
   IconButton,
+  Typography,
+  Box,
 } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit, Add } from "@mui/icons-material";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -54,10 +56,7 @@ const AdminList = () => {
       if (result.isConfirmed) {
         try {
           await axios.delete(`${API_DUMMY}/api/admin/${id}`);
-          
-      
           setAdmins((prevAdmins) => prevAdmins.filter((admin) => admin.id !== id));
-
           Swal.fire("Dihapus!", "Admin berhasil dihapus.", "success");
         } catch (error) {
           console.error("Error deleting admin:", error);
@@ -68,16 +67,19 @@ const AdminList = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ marginLeft: "100px" }}>
-      <h2>Daftar Admin</h2>
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ marginBottom: 2 }}
-        onClick={() => navigate("/addadmin")}
-      >
-        + Tambah Admin
-      </Button>
+    <Container maxWidth="md" sx={{ marginLeft: 10 , m: 0 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h4" fontWeight="bold">Daftar Admin</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Add />}
+          onClick={() => navigate("/addadmin")}
+          sx={{ textTransform: "none", fontSize: "16px" }}
+        >
+          Tambah Admin
+        </Button>
+      </Box>
 
       <TextField
         label="Cari Admin"
@@ -86,27 +88,28 @@ const AdminList = () => {
         margin="normal"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        sx={{ mb: 2 }}
       />
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>#</TableCell>
-              <TableCell>Nama</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Aksi</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>#</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Nama</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>Aksi</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {admins
               .filter((admin) => admin.username.toLowerCase().includes(search.toLowerCase()))
               .map((admin, index) => (
-                <TableRow key={admin.id}>
+                <TableRow key={admin.id} hover>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{admin.username}</TableCell>
                   <TableCell>{admin.email}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     <IconButton color="warning" onClick={() => navigate(`/editadmin/${admin.id}`)}>
                       <Edit />
                     </IconButton>

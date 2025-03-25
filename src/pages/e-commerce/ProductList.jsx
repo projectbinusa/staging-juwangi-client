@@ -110,19 +110,20 @@ const Product = () => {
 
   return (
     <Container
-      maxWidth="lg" // Menggunakan ukuran bawaan Material-UI agar responsif
+      maxWidth={false}
       sx={{
         minHeight: "100vh",
         width: "100%",
-        padding: 3,
+        padding: 2,
         textAlign: "center",
+        maxWidth: "1300px",
       }}
     >
-      <Typography variant="h4" marginLeft="150px" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         Products
       </Typography>
 
-      <Box display="flex" marginLeft="250px" gap={3} mb={3}>
+      <Box display="flex" justifyContent="center" gap={3} mb={3}>
         <TextField
           variant="outlined"
           placeholder="Search product..."
@@ -173,7 +174,7 @@ const Product = () => {
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : filteredProducts.length > 0 ? (
-        <Grid container spacing={25} justifyContent="center">
+        <Grid container spacing={1} justifyContent="center">
           {filteredProducts.map((item) => (
             <Grid item key={item.id} xs={12} sm={6} md={3}>
               <ProductCard

@@ -7,7 +7,7 @@ import { ThemeContextProvider } from "../ThemeContext";
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Product = lazy(() => import("../pages/e-commerce/Product"));
-const ErrorPage = lazy(() => import("../notfound/NotFound"));
+const NotFound = lazy(() => import("../notfound/NotFound"));
 const ListUser = lazy(() => import("../component/user/ListUser"));
 const AddUser = lazy(() => import("../component/user/AddUser"));
 const ViewUser = lazy(() => import("../component/user/ViewUser"));
@@ -23,11 +23,13 @@ const AddCategory = lazy(() => import("../component/category/AddCategory"));
 const EditCategory = lazy(() => import("../component/category/EditCategory"));
 const OrderList = lazy(() => import("../pages/e-commerce/OrderList"));
 const Analytics = lazy(() => import("../component/Dashboard/Analytics"));
-const Grafik = lazy(() => import("../component/Dashboard/Grafik"))
-const Chart = lazy(() => import("../component/chart/Chart"))
-const Data = lazy(() => import("../component/Dashboard/Data"))
+const Grafik = lazy(() => import("../component/Dashboard/Grafik"));
+const Chart = lazy(() => import("../component/chart/Chart"));
+const Data = lazy(() => import("../component/Dashboard/Data"));
 const CreateInvoice = lazy(() => import("../sections/e-commerce/invoice/CreateInvoice"));
-const ListInvoice = lazy(() => import("../sections/e-commerce/invoice/ListInvoice"))
+const ListInvoice = lazy(() => import("../sections/e-commerce/invoice/ListInvoice"));
+const ProductList = lazy(() => import("../pages/e-commerce/ProductList"));
+
 
 
 const router = createBrowserRouter([
@@ -39,7 +41,7 @@ const router = createBrowserRouter([
             </ThemeContextProvider>
         ),
         children: [
-            { path: "products", element: <Product /> },
+            { path: "productlist", element: <ProductList />},
             { path: "user", element: <ListUser /> },
             { path: "adduser", element: <AddUser /> },
             { path: "viewuser/:id", element: <ViewUser /> },
@@ -51,7 +53,6 @@ const router = createBrowserRouter([
             { path: "editcategory/:id", element: <EditCategory/>},
             { path: "editadmin/:id", element: <EditAdmin /> },
             { path: "category", element: <Category /> },
-            { path: "*", element: <ErrorPage /> },
             { path: "orders", element: <OrderList /> },
             { path: "analytics", element: <Analytics /> },
             { path: "grafik", element: <Grafik /> },
@@ -64,8 +65,10 @@ const router = createBrowserRouter([
     },
     { path: "login", element: <Login /> },
     { path: "register", element: <Register /> },
+    { path: "products", element: <Product /> },
     { path: "addproduct", element: <AddProduct /> },
     { path: "editproduct/:id", element: <EditProduct /> },
+    { path: "*", element: <NotFound /> },
 ]);
 
 export default router;

@@ -71,7 +71,7 @@ export default function Register() {
         marginLeft: "300px",
         bgcolor: "#fff",
         minHeight: "100vh",
-        py: 5,
+        py: 1,
       }}
     >
       <Box
@@ -186,6 +186,7 @@ export default function Register() {
                 name="username"
                 margin="normal"
                 variant="outlined"
+                size="small"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -195,6 +196,7 @@ export default function Register() {
                 name="email"
                 margin="normal"
                 variant="outlined"
+                size="small"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -204,6 +206,7 @@ export default function Register() {
                 name="password"
                 margin="normal"
                 variant="outlined"
+                size="small"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
