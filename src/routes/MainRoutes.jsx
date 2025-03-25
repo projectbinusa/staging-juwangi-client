@@ -23,11 +23,13 @@ const AddCategory = lazy(() => import("../component/category/AddCategory"));
 const EditCategory = lazy(() => import("../component/category/EditCategory"));
 const OrderList = lazy(() => import("../pages/e-commerce/OrderList"));
 const Analytics = lazy(() => import("../component/Dashboard/Analytics"));
-const Grafik = lazy(() => import("../component/Dashboard/Grafik"))
-const Chart = lazy(() => import("../component/chart/Chart"))
-const Data = lazy(() => import("../component/Dashboard/Data"))
+const Grafik = lazy(() => import("../component/Dashboard/Grafik"));
+const Chart = lazy(() => import("../component/chart/Chart"));
+const Data = lazy(() => import("../component/Dashboard/Data"));
 const CreateInvoice = lazy(() => import("../sections/e-commerce/invoice/CreateInvoice"));
-const ListInvoice = lazy(() => import("../sections/e-commerce/invoice/ListInvoice"))
+const ListInvoice = lazy(() => import("../sections/e-commerce/invoice/ListInvoice"));
+const ProductList = lazy(() => import("../pages/e-commerce/ProductList"));
+
 
 
 const router = createBrowserRouter([
@@ -39,7 +41,7 @@ const router = createBrowserRouter([
             </ThemeContextProvider>
         ),
         children: [
-            { path: "products", element: <Product /> },
+            { path: "productlist", element: <ProductList />},
             { path: "user", element: <ListUser /> },
             { path: "adduser", element: <AddUser /> },
             { path: "viewuser/:id", element: <ViewUser /> },
@@ -63,6 +65,7 @@ const router = createBrowserRouter([
     },
     { path: "login", element: <Login /> },
     { path: "register", element: <Register /> },
+    { path: "products", element: <Product /> },
     { path: "addproduct", element: <AddProduct /> },
     { path: "editproduct/:id", element: <EditProduct /> },
     { path: "*", element: <NotFound /> },
