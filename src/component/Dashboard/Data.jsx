@@ -20,8 +20,6 @@ const DataPage = () => {
         Data
       </Typography>
       <Grid container spacing={3}>
-
-        {/* My Task */}
         <Grid item xs={12} md={4}>
           <Card sx={{ backgroundColor: theme.palette.background.paper }}>
             <CardContent>
@@ -36,8 +34,6 @@ const DataPage = () => {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Job Card */}
         <Grid item xs={12} md={4}>
           <Card sx={{ backgroundColor: theme.palette.background.paper }}>
             <CardContent>
@@ -64,8 +60,6 @@ const DataPage = () => {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Team Members */}
         <Grid item xs={12} md={4}>
           <Card sx={{ backgroundColor: theme.palette.background.paper }}>
             <CardContent>
@@ -82,8 +76,6 @@ const DataPage = () => {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Products Table */}
         <Grid item xs={12} md={8}>
           <Card sx={{ backgroundColor: theme.palette.background.paper }}>
             <CardContent>
@@ -103,7 +95,6 @@ const DataPage = () => {
                   }}
                 />
               </Grid>
-              {/* Product List */}
               {["Iphone 15 pro max", "Xiaomi 15 Ultra", "Vivo X200 Pro", "Oppo Find X8 pro"].map((name, index) => (
                 <Card key={index} sx={{ backgroundColor: theme.palette.action.hover, marginTop: 2, padding: 2, display: "flex", justifyContent: "space-between" }}>
                   <Typography fontWeight="bold">{name}</Typography>
@@ -113,8 +104,6 @@ const DataPage = () => {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Monthly Revenue */}
         <Grid item xs={12} md={4}>
           <Card sx={{ backgroundColor: theme.palette.background.paper }}>
             <CardContent>

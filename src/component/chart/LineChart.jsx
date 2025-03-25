@@ -28,7 +28,6 @@ const ChartPage = () => {
 
   return (
     <Grid container spacing={2} sx={{ backgroundColor: isDarkMode ? "#121212" : "#ffffff", color: textColor, p: 2 }}>
-      {/* Repeat Customer Rate */}
       <Grid item xs={12} md={8}>
         <Card sx={{ backgroundColor: bgColor }}>
           <CardContent>
@@ -45,8 +44,6 @@ const ChartPage = () => {
           </CardContent>
         </Card>
       </Grid>
-      
-      {/* New Orders & New Users */}
       <Grid item xs={12} md={4}>
         <Card sx={{ backgroundColor: bgColor, mb: 2 }}>
           <CardContent>
@@ -77,8 +74,6 @@ const ChartPage = () => {
           </CardContent>
         </Card>
       </Grid>
-
-      {/* Project Overview */}
       <Grid item xs={12}>
         <Card sx={{ backgroundColor: bgColor, display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
           <Typography variant="h6" color={textColor}>Project Overview</Typography>
