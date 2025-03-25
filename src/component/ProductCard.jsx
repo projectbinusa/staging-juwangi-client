@@ -1,10 +1,7 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-import { Card, CardMedia, CardContent, Typography, Button, Checkbox, Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import {
-  Card,
+  Card as MuiCard,
   CardMedia,
   CardContent,
   Typography,
@@ -13,7 +10,6 @@ import {
   Box,
 } from "@mui/material";
 import { ShoppingBagOutlined } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import axios from "axios";
 import { API_DUMMY } from "../utils/api";
@@ -23,12 +19,10 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const theme = useTheme();
 
-  const theme = useThe
-  const addToCart = async (productId) => {
+  const addToCart = async (produtsId) => {
     try {
-      await axios.post(`${API_DUMMY}/api/cart/add/${productId}`);
       await axios.post(`${API_DUMMY}/api/cart/add/${produtsId}`);
       Swal.fire({
         icon: "success",
@@ -58,26 +52,12 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
     fetchProduct();
   }, [id]);
 
-  const handleEdit = () => {
-    navigate(`/editproduct/${id}`);
-  };
-
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-    <Card
+    <MuiCard
       sx={{
-        maxWidth: 230,
-        bgcolor: "#fff",
-        color: "#000",
-        p: 1,
-        boxShadow: 3,
-        borderRadius: "10px",
-        transition: "all 0.3s ease-in-out",
-        position: "relative",
-        "&:hover": { boxShadow: 6, transform: "scale(1.02)" },
-
         width: 260,
         p: 2,
         boxShadow: theme.palette.mode === "dark" ? 5 : 2,
@@ -85,7 +65,7 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
         transition: "all 0.3s ease-in-out",
         position: "relative",
         bgcolor: theme.palette.background.paper,
-        "&:hover": { boxShadow: 10, transform: "scale(1.03)" },
+        "&:hover": { boxShadow: 20, transform: "scale(1.03)" },
       }}
     >
       {showCheckbox && (
@@ -96,17 +76,6 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
         />
       )}
 
-      <CardMedia
-        component="img"
-        height="150"
-        image={product?.gambar || ""}
-        alt={product?.nama || "Product Image"}
-        sx={{
-          borderRadius: "10px",
-          transition: "transform 0.3s ease-in-out",
-          "&:hover": { transform: "scale(1.08)" },
-        }}
-      />
       {product?.gambar &&
       product.gambar !== "string" &&
       product.gambar.trim() !== "" ? (
@@ -114,7 +83,7 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
           component="img"
           sx={{
             width: 80,
-            height: 160,
+            height: 170,
             borderRadius: "12px",
             transition: "transform 0.3s ease-in-out",
             "&:hover": { transform: "scale(1.05)" },
@@ -150,11 +119,6 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
           {product?.nama || "Nama Produk"}
         </Typography>
 
-        <Typography variant="body2" sx={{ color: "#3f51b5", fontWeight: "bold", mt: 1 }}>
-          {product?.kategori || "Kategori tidak tersedia"}
-        </Typography>
-
-        <Typography variant="body2" sx={{ fontWeight: "bold", color: "#4caf50", mt: 1 }}>
         <Typography
           variant="h6"
           sx={{
@@ -190,7 +154,7 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
           Stok: {product?.stok > 0 ? product.stok : "Habis"}
         </Typography>
 
-        <Box mt={2} display="flex" flexDirection="column" gap={1}>
+        <Box mt={2}>
           <Button
             variant="contained"
             fullWidth
@@ -208,27 +172,9 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
           >
             Add To Cart
           </Button>
-
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleEdit}
-            sx={{
-              bgcolor: "#ff9800",
-              color: "white",
-              borderRadius: "8px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "8px",
-              transition: "all 0.3s ease-in-out",
-              "&:hover": { bgcolor: "#f57c00", transform: "scale(1.05)" },
-            }}
-          >
-            Edit
-          </Button>
         </Box>
       </CardContent>
-    </Card>
+    </MuiCard>
   );
 };
 
