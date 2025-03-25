@@ -21,6 +21,7 @@ import {
   AssignmentIndRounded,
   ExitToApp,
   Menu,
+  BarChart,     
   ChevronLeft,
   AccountCircle,
   ExpandLess,
@@ -128,7 +129,7 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
         <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/chart")}>
             <ListItemIcon sx={{ color: "white" }}>
-              <ShoppingCart />
+              <BarChart />
             </ListItemIcon>
             {openDrawer && <ListItemText primary="Chart" />}
           </ListItemButton>
