@@ -100,6 +100,9 @@ const Sidebar = ({ openDrawer, setOpenDrawer }) => {
             <ListItemButton onClick={() => navigate("/products")}> 
               <ListItemText primary="Produk" />
             </ListItemButton>
+            <ListItemButton onClick={() => navigate("/productlist")}> 
+              <ListItemText primary="Produk List" />
+            </ListItemButton>
             <ListItemButton onClick={() => navigate("/addproduct")}> 
               <ListItemText primary="Tambah Produk" />
             </ListItemButton>

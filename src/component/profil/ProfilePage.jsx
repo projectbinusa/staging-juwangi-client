@@ -13,10 +13,7 @@ const ProfilePage = () => {
 
   return (
     <Box display="flex" gap={2} sx={{ bgcolor: mode === "dark" ? "#121212" : "#f5f5f5", minHeight: "100vh" }}>
-      {/* Sidebar */}
       <SideProfile setActiveTab={setActiveTab} activeTab={activeTab} />
-
-      {/* Main Content */}
       <Card
         sx={{
           flex: 1,
@@ -45,8 +42,6 @@ const ProfilePage = () => {
           <Tab label="Change Password" value="change-password" />
           <Tab label="Payment" value="payment" />
         </Tabs>
-
-        {/* Konten berdasarkan tab aktif */}
         <Box mt={2}>
           {activeTab === "personal" && <PersonalInformation />}
           {activeTab === "settings" && <Setting />}

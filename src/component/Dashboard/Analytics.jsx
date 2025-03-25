@@ -27,9 +27,8 @@ import {
 import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
 import CachedIcon from "@mui/icons-material/Cached";
 import PropTypes from "prop-types";
-import Grafik from "./Grafik"; // Import Komponen Grafik
+import Grafik from "./Grafik"; 
 
-// Dummy Data
 const sampleData = [
   { name: "Jan", value: 30 },
   { name: "Feb", value: 50 },
@@ -45,8 +44,6 @@ const scatterData = [
   { x: 4, y: 35 },
   { x: 5, y: 20 },
 ];
-
-// **Komponen Kartu Analytics**
 const AnalyticsCard = ({ title, type, color, percentage }) => {
   const theme = useTheme();
 
@@ -136,8 +133,6 @@ const AnalyticsCard = ({ title, type, color, percentage }) => {
     </Card>
   );
 };
-
-// **Komponen Kartu Penyimpanan Dropbox**
 const StorageCard = () => {
   const theme = useTheme();
   return (
@@ -165,8 +160,6 @@ const StorageCard = () => {
     </Card>
   );
 };
-
-// **Komponen Kartu Balance**
 const BalanceCard = () => {
   const theme = useTheme();
   return (
@@ -197,11 +190,8 @@ const BalanceCard = () => {
     </Card>
   );
 };
-
-// **🔥 Komponen Utama Dashboard**
 const Dashboard = () => {
   const theme = useTheme();
-
   return (
     <Box sx={{ marginLeft: 0, p: 3, bgcolor: theme.palette.background.default, borderRadius: 2 }}>
       <Grid container spacing={3} alignItems="stretch">

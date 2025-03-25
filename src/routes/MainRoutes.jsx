@@ -7,7 +7,7 @@ import { ThemeContextProvider } from "../ThemeContext";
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Product = lazy(() => import("../pages/e-commerce/Product"));
-const ErrorPage = lazy(() => import("../notfound/NotFound"));
+const NotFound = lazy(() => import("../notfound/NotFound"));
 const ListUser = lazy(() => import("../component/user/ListUser"));
 const AddUser = lazy(() => import("../component/user/AddUser"));
 const ViewUser = lazy(() => import("../component/user/ViewUser"));
@@ -51,7 +51,6 @@ const router = createBrowserRouter([
             { path: "editcategory/:id", element: <EditCategory/>},
             { path: "editadmin/:id", element: <EditAdmin /> },
             { path: "category", element: <Category /> },
-            { path: "*", element: <ErrorPage /> },
             { path: "orders", element: <OrderList /> },
             { path: "analytics", element: <Analytics /> },
             { path: "grafik", element: <Grafik /> },
@@ -66,6 +65,7 @@ const router = createBrowserRouter([
     { path: "register", element: <Register /> },
     { path: "addproduct", element: <AddProduct /> },
     { path: "editproduct/:id", element: <EditProduct /> },
+    { path: "*", element: <NotFound /> },
 ]);
 
 export default router;

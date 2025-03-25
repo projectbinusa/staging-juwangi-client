@@ -43,7 +43,12 @@ const Settings = () => {
         </ListItem>
       </List>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, gap: 1 }}>
-        <Button variant="outlined">Cancel</Button>
+        <Button 
+          variant="contained" 
+          sx={{ backgroundColor: "#d32f2f", color: "#fff", "&:hover": { backgroundColor: "#b71c1c" } }}
+        >
+          Cancel
+        </Button>
         <Button variant="contained" color="primary">Save</Button>
       </Box>
     </Card>
