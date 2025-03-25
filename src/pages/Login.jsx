@@ -45,32 +45,34 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post(`${API_DUMMY}/api/users/login`, {
         email: email,
         password: password,
       });
-  
-      console.log("Response Data:", response.data); // Tambahkan ini
-  
+
+      console.log("Response Data:", response.data);
+
       Swal.fire({
         icon: "success",
         title: "Berhasil Login!!",
         showConfirmButton: false,
         timer: 1500,
       });
-  
+
       setTimeout(() => {
         navigate("/products");
       }, 1500);
     } catch (error) {
-      console.log("Error:", error.response?.data || error.message); // Tambahkan ini
-      
+      console.log("Error:", error.response?.data || error.message);
+
       Swal.fire({
         icon: "error",
         title: "Login Gagal!",
-        text: error.response?.data?.message || "Periksa kembali email dan password Anda.",
+        text:
+          error.response?.data?.message ||
+          "Periksa kembali email dan password Anda.",
       });
     }
   };
@@ -82,17 +84,17 @@ export default function Login() {
       sx={{
         width: "100vw",
         height: "100vh",
-        bgcolor: "#fff", // Mode terang (putih)
+        bgcolor: "#fff",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "#000", // Teks hitam
+        color: "#000",
       }}
     >
       <Box
         sx={{
           width: { xs: "90%", sm: "400px" },
-          bgcolor: "#f5f5f5", // Background form abu muda
+          bgcolor: "#f5f5f5",
           p: 3,
           borderRadius: 2,
           boxShadow: 3,
@@ -167,7 +169,11 @@ export default function Login() {
           </Grid>
 
           <Grid item xs={12}>
-            <Stack direction="row" justifyContent="space-between" alignItems="baseline">
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="baseline"
+            >
               <Typography variant="h5">Login</Typography>
               <Typography
                 component={Link}
@@ -190,13 +196,13 @@ export default function Login() {
                 variant="outlined"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                InputLabelProps={{ style: { color: "#333" } }} // Label abu gelap
+                InputLabelProps={{ style: { color: "#333" } }}
                 sx={{
-                  input: { color: "#000" }, // Teks hitam
+                  input: { color: "#000" },
                   "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#333" }, // Border abu gelap
-                    "&:hover fieldset": { borderColor: "#1976D2" }, // Hover biru standar
-                    "&.Mui-focused fieldset": { borderColor: "#1976D2" }, // Fokus biru standar
+                    "& fieldset": { borderColor: "#333" },
+                    "&:hover fieldset": { borderColor: "#1976D2" },
+                    "&.Mui-focused fieldset": { borderColor: "#1976D2" },
                   },
                 }}
               />
@@ -209,7 +215,7 @@ export default function Login() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                InputLabelProps={{ style: { color: "#333" } }} // Label abu gelap
+                InputLabelProps={{ style: { color: "#333" } }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -226,16 +232,21 @@ export default function Login() {
                   ),
                 }}
                 sx={{
-                  input: { color: "#000" }, // Teks hitam
+                  input: { color: "#000" },
                   "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#333" }, // Border abu gelap
-                    "&:hover fieldset": { borderColor: "#1976D2" }, // Hover biru standar
-                    "&.Mui-focused fieldset": { borderColor: "#1976D2" }, // Fokus biru standar
+                    "& fieldset": { borderColor: "#333" },
+                    "&:hover fieldset": { borderColor: "#1976D2" },
+                    "&.Mui-focused fieldset": { borderColor: "#1976D2" },
                   },
                 }}
               />
 
-              <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, bgcolor: "#1976D2" }}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{ mt: 2, bgcolor: "#1976D2" }}
+              >
                 Login
               </Button>
             </Box>

@@ -4,18 +4,22 @@ import axios from "axios";
 import { uploadImageToS3 } from "../../utils/UploadToS3";
 import { API_DUMMY } from "../../utils/api";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export default function Add() {
+  const navigate = useNavigate();
+
   const [nama, setNama] = useState("");
   const [harga, setHarga] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
+  const [stok, setStok] = useState("");
   const [gambar, setGambar] = useState(null);
   const [preview, setPreview] = useState(null);
 
   const addData = async (e) => {
     e.preventDefault();
 
-    if (!nama || !harga || !deskripsi) {
+    if (!nama || !harga || !deskripsi || !stok) {
       Swal.fire({
         icon: "warning",
         title: "Mohon isi semua field!",
@@ -33,6 +37,7 @@ export default function Add() {
         nama,
         harga,
         deskripsi,
+        stok,
         gambar: image,
       });
 
@@ -41,7 +46,7 @@ export default function Add() {
         title: "Produk berhasil ditambahkan!",
         confirmButtonText: "OK",
       }).then(() => {
-        window.location.reload();
+        navigate("/products");
       });
     } catch (error) {
       console.log(error);
@@ -69,14 +74,14 @@ export default function Add() {
   return (
     <Box
       sx={{
-        minHeight: "100vh", 
+        minHeight: "100vh",
         width: "100vw",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         background: "linear-gradient(to right, #74ebd5, #acb6e5)",
         overflowY: "auto",
-        padding: 4, 
+        padding: 4,
       }}
     >
       <Container
@@ -129,6 +134,15 @@ export default function Add() {
             rows={3}
             value={deskripsi}
             onChange={(e) => setDeskripsi(e.target.value)}
+          />
+
+          <TextField
+            label="Stok"
+            variant="outlined"
+            fullWidth
+            type="number"
+            value={stok}
+            onChange={(e) => setStok(e.target.value)}
           />
 
           <Box>
