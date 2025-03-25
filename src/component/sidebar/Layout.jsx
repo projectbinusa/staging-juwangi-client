@@ -15,7 +15,7 @@ const Layout = () => {
       <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
         <Navbar toggleDrawer={() => setOpenDrawer(!openDrawer)} /> 
         <Toolbar />
-        <Outlet />
+        <Outlet context={{ openDrawer }} />
       </Box>
     </Box>
   );

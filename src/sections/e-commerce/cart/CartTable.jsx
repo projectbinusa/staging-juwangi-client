@@ -64,10 +64,9 @@ function CartTable() {
     );
   };
 
-  if (!products.length) return <CartEmpty />;
 
   return (
-    <TableContainer component={Paper} sx={{ marginTop: 2, boxShadow: 3, width: '100%' }}>
+    <TableContainer component={Paper} sx={{  boxShadow: 3 }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -98,7 +97,7 @@ function CartTable() {
               </TableCell>
               <TableCell>
                 <Box display="flex" alignItems="center">
-                  <img src={item.gambar} alt={item.nama} style={{ width: 200, height: 50, borderRadius: 5, marginRight: 10 }} />
+                  <img src={item.gambar} alt={item.nama} style={{ width: 200, height: 50, borderRadius: 5, }} />
                   <Box>
                     <Typography fontWeight="bold">{item.nama}</Typography>
                     <Typography variant="body2" color="textSecondary">{item.deskripsi}</Typography>
