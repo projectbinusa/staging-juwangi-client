@@ -1,33 +1,34 @@
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Card, CardMedia, CardContent, Typography, Button, Checkbox, Box } from "@mui/material";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_DUMMY } from "../utils/api";
 import Swal from "sweetalert2";
 
-const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {  
+const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  const addToCart = async (produtsId) => {
+  const addToCart = async (productId) => {
     try {
-      await axios.post(`${API_DUMMY}/api/cart/add/${produtsId}`);
-      Swal.fire ({
+      await axios.post(`${API_DUMMY}/api/cart/add/${productId}`);
+      Swal.fire({
         icon: "success",
-        title: "Berhasil menambahkan peoduct ke keranjang",
-        timer: 1500
+        title: "Berhasil menambahkan produk ke keranjang",
+        timer: 1500,
       });
     } catch (err) {
-      Swal.fire ({
+      Swal.fire({
         icon: "warning",
-        title: "Gagal menambahkan product ke keranjang",
-        timer: 1500
-      })
+        title: "Gagal menambahkan produk ke keranjang",
+        timer: 1500,
+      });
     }
-  }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -44,24 +45,24 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
   }, [id]);
 
   const handleEdit = () => {
-    navigate(`/editproduct/${id}`); 
+    navigate(`/editproduct/${id}`);
   };
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-    <Card 
-      sx={{ 
-        maxWidth: 230, 
-        bgcolor: "#fff", 
-        color: "#000", 
-        p: 1, 
+    <Card
+      sx={{
+        maxWidth: 230,
+        bgcolor: "#fff",
+        color: "#000",
+        p: 1,
         boxShadow: 3,
         borderRadius: "10px",
         transition: "all 0.3s ease-in-out",
         position: "relative",
-        "&:hover": { boxShadow: 6, transform: "scale(1.02)" }
+        "&:hover": { boxShadow: 6, transform: "scale(1.02)" },
       }}
     >
       {showCheckbox && (
@@ -77,8 +78,8 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
         height="150"
         image={product?.gambar || ""}
         alt={product?.nama || "Product Image"}
-        sx={{ 
-          borderRadius: "10px", 
+        sx={{
+          borderRadius: "10px",
           transition: "transform 0.3s ease-in-out",
           "&:hover": { transform: "scale(1.08)" },
         }}
@@ -87,6 +88,10 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
       <CardContent>
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
           {product?.nama || "Nama Produk"}
+        </Typography>
+
+        <Typography variant="body2" sx={{ color: "#3f51b5", fontWeight: "bold", mt: 1 }}>
+          {product?.kategori || "Kategori tidak tersedia"}
         </Typography>
 
         <Typography variant="body2" sx={{ fontWeight: "bold", color: "#4caf50", mt: 1 }}>
