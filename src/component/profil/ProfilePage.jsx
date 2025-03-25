@@ -5,7 +5,7 @@ import SideProfile from "./SideProfile";
 import PersonalInformation from "./PersonalInformation";
 import ChangePassword from "./ChangePassword";
 import Setting from "./Setting";
-// import Payment from "./Payment";
+import Payment from "./Payment";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("personal"); 
@@ -51,7 +51,7 @@ const ProfilePage = () => {
           {activeTab === "personal" && <PersonalInformation />}
           {activeTab === "settings" && <Setting />}
           {activeTab === "change-password" && <ChangePassword />}
-          {/* {activeTab === "payment" && <Payment />} */}
+          {activeTab === "payment" && <Payment />}
         </Box>
       </Card>
     </Box>

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import ProductCard from "../../component/ProductCard";
@@ -11,7 +12,6 @@ import {
   CircularProgress,
   Select,
   MenuItem,
-  Checkbox,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
@@ -110,13 +110,13 @@ const Product = () => {
 
   return (
     <Container
-      maxWidth="md"
+      maxWidth={false}
       sx={{
         minHeight: "100vh",
         width: "100%",
-        paddingX: 2,
+        padding: 2,
         textAlign: "center",
-        // marginLeft: "50px",
+        maxWidth: "1300px",
       }}
     >
       <Typography variant="h4" gutterBottom>
@@ -128,7 +128,7 @@ const Product = () => {
           variant="outlined"
           placeholder="Search product..."
           onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ width: "300px", bgcolor: "#f0f0f0", borderRadius: "5px" }}
+          sx={{ width: "300px", borderRadius: "5px" }}
         />
         <Button variant="contained" color="primary">
           <SearchIcon />
@@ -137,7 +137,7 @@ const Product = () => {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
           displayEmpty
-          sx={{ width: "200px", bgcolor: "#f0f0f0", borderRadius: "5px" }}
+          sx={{ width: "200px", borderRadius: "5px" }}
         >
           <MenuItem value="">All Categories</MenuItem>
           {categories.map((category) => (
@@ -147,7 +147,6 @@ const Product = () => {
           ))}
         </Select>
 
-        {/* Tombol Hapus Produk */}
         <Button
           variant="contained"
           color={deleteMode ? "secondary" : "error"}
@@ -170,13 +169,12 @@ const Product = () => {
         )}
       </Box>
 
-      {/* Daftar Produk */}
       {loading ? (
         <CircularProgress />
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : filteredProducts.length > 0 ? (
-        <Grid container spacing={2} justifyContent="center">
+        <Grid container spacing={1} justifyContent="center">
           {filteredProducts.map((item) => (
             <Grid item key={item.id} xs={12} sm={6} md={3}>
               <ProductCard

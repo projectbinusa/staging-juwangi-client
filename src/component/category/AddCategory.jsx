@@ -1,25 +1,26 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
-import axios from 'axios';
-import { API_DUMMY } from '../../utils/api';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
+import axios from "axios";
 
-const AddCategory = ({ open, onClose, refresh }) => {
-    const [kategori, setKategori] = useState('');
+const API_URL = "http://localhost:4322/api/categories";
+
+const AddCategory = () => {
+    const [kategori, setKategori] = useState("");
+    const navigate = useNavigate();
 
     const handleAdd = async () => {
         try {
-            await axios.post(`${API_DUMMY}/api/categories, { kategori }`);
-            refresh();
-            onClose();
+            await axios.post(API_URL, { kategori });
+            navigate("/category"); 
         } catch (error) {
-            console.error('Error adding category:', error);
+            console.error("Error adding category:", error);
         }
     };
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={true} onClose={() => navigate("/")}>
             <DialogTitle>Add Category</DialogTitle>
             <DialogContent>
                 <TextField
@@ -31,19 +32,13 @@ const AddCategory = ({ open, onClose, refresh }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={() => navigate("/")}>Cancel</Button>
                 <Button onClick={handleAdd} variant="contained" color="primary">
                     Add
                 </Button>
             </DialogActions>
         </Dialog>
     );
-};
-
-AddCategory.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    refresh: PropTypes.func.isRequired,
 };
 
 export default AddCategory;
