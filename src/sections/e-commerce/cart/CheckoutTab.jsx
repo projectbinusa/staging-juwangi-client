@@ -13,7 +13,7 @@ const CheckoutTab = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 3 }}>
+    <Container sx={{ py: 3 }}>
       <Typography variant="h4" gutterBottom>
         Checkout
       </Typography>

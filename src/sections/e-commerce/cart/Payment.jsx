@@ -18,7 +18,13 @@ const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("creditCard");
 
   return (
-    <Card component={Paper} sx={{ mt: 2, boxShadow: 3, p: 3, borderRadius: 2 ,maxWidth: 600}}>
+    <Card sx={{ 
+      maxWidth: 800,
+      margin: 'auto',
+      padding: 3,
+      boxShadow: 3,
+      borderRadius: 2, 
+      }}>
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Payment Method
       </Typography>

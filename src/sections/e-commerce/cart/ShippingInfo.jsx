@@ -89,7 +89,7 @@ export default function ShippingInfo() {
   return (
     <Box
       sx={{
-        maxWidth: 600,
+        maxWidth: 800,
         margin: 'auto',
         padding: 3,
         boxShadow: 3,
