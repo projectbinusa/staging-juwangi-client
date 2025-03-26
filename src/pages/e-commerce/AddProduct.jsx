@@ -46,7 +46,7 @@ export default function Add() {
         title: "Produk berhasil ditambahkan!",
         confirmButtonText: "OK",
       }).then(() => {
-        navigate("/products");
+        navigate("/productlist");
       });
     } catch (error) {
       console.log(error);
