@@ -6,10 +6,10 @@ import CartTable from "./CartTable";
 
 const Cart = () => {
   return (
-    <Container sx={{ mt: 4 }}>
-      <Stack direction="row" spacing={3} alignItems="flex-start">
+    <Container>
+      <Stack direction="row" alignItems="flex-start">
 
-        <CartTable sx={{ flex: 2 }} />
+        <CartTable  />
 
       </Stack>
 

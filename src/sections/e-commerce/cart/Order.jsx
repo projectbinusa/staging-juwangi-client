@@ -44,7 +44,8 @@ export default function Order() {
   return (
     <Card 
       sx={{
-        width: 350, 
+        width: 300, 
+        marginRight: 60,
         height: "70vh", 
         boxShadow: 3, 
         borderRadius: 2, 
@@ -52,7 +53,9 @@ export default function Order() {
         flexDirection: "column"
       }}
     >
-      <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <CardContent
+        sx={{ flex: 1, display: "flex", flexDirection: "column" }}
+        >
         <Typography variant="h6" fontWeight="bold">
           Order Summary
         </Typography>
