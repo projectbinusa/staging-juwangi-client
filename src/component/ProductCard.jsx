@@ -21,9 +21,11 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
   const [error, setError] = useState(null);
   const theme = useTheme();
 
-  const addToCart = async (produtsId) => {
+  const addToCart = async () => {
+    if (!product) return;
+
     try {
-      await axios.post(`${API_DUMMY}/api/cart/add/${productId}`);
+      await axios.post(`${API_DUMMY}/api/cart/add/${product.id}`);
       Swal.fire({
         icon: "success",
         title: "Berhasil menambahkan produk ke keranjang",
@@ -158,7 +160,7 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
           <Button
             variant="contained"
             fullWidth
-            onClick={() => addToCart(product.id)}
+            onClick={addToCart}
             sx={{
               bgcolor: "#2196f3",
               color: "white",
