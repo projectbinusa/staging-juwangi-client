@@ -168,7 +168,7 @@ const OrderList = () => {
   const handleSaveEdit = () => {
     const updatedOrder = {
       ...editOrder,
-      total: `$${Number(editOrder.items) * 50}.00`, // Hitung ulang total harga
+      total: `$${Number(editOrder.items) * 50}.00`,
     };
 
     setOrders(
