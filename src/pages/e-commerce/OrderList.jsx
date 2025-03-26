@@ -222,17 +222,19 @@ const OrderList = () => {
         <Table>
           <TableHead>
             <TableRow>
-              {deleteMode && <TableCell>Pilih</TableCell>}
-              <TableCell>#</TableCell>
-              <TableCell>Order ID</TableCell>
-              <TableCell>Customer</TableCell>
-              <TableCell>Items</TableCell>
-              <TableCell>Total Price</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Payment</TableCell>
-              <TableCell>Address</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
+              {deleteMode && (
+                <TableCell sx={{ fontWeight: "bold" }}>Pilih</TableCell>
+              )}
+              <TableCell sx={{ fontWeight: "bold" }}>#</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Order ID</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Customer</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Items</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Total Price</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Payment</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Address</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

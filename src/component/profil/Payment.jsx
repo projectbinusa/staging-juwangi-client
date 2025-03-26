@@ -100,7 +100,7 @@ const PaymentPage = () => {
       )}
 
       <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between" }}>
-        <Button variant="text" style={{ color: "red" }}>
+      <Button variant="contained" style={{ backgroundColor: "#d32f2f", color: "#fff" }}>
           Cancel
         </Button>
         <Button variant="contained" style={{ backgroundColor: "#4a90e2", color: "#fff" }}>

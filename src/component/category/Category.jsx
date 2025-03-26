@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 import {
     Button,
     Table,
@@ -37,21 +38,30 @@ const CategoryList = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to delete this category?")) {
-            try {
-                await axios.delete(`${API_URL}/${id}`);
-                fetchCategories();
-            } catch (error) {
-                console.error("Error deleting category:", error);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`${API_URL}/${id}`);
+                    fetchCategories();
+                    Swal.fire("Deleted!", "The category has been deleted.", "success");
+                } catch (error) {
+                    console.error("Error deleting category:", error);
+                    Swal.fire("Error!", "Failed to delete category.", "error");
+                }
             }
-        }
+        });
     };
 
     return (
-        <Box
-            marginLeft="150px"
-           
-        >
+        <Box marginLeft="150px">
             <Typography variant="h4" gutterBottom>
                 Category Management
             </Typography>

@@ -35,7 +35,6 @@ const SideProfile = ({ setActiveTab, activeTab }) => {
         borderRadius: 3,
       }}
     >
-      {/* Avatar & Info */}
       <Box sx={{ textAlign: "center" }}>
         <Avatar
           src="https://tse1.mm.bing.net/th?id=OIP.fu5mCwl95AHkzT5ibPTsyAHaHa&pid=Api&P=0&h=180"
@@ -53,8 +52,6 @@ const SideProfile = ({ setActiveTab, activeTab }) => {
         <Typography variant="body2" color="text.secondary">
           Full Stack Developer
         </Typography>
-
-        {/* Media Sosial */}
         <Box sx={{ display: "flex", justifyContent: "center", gap: 1, mt: 1 }}>
           <IconButton>
             <GoogleIcon sx={{ color: "#DB4437" }} />
@@ -67,8 +64,6 @@ const SideProfile = ({ setActiveTab, activeTab }) => {
           </IconButton>
         </Box>
       </Box>
-
-      {/* Statistik */}
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={4}>
           <Typography variant="h6">86</Typography>
@@ -89,8 +84,6 @@ const SideProfile = ({ setActiveTab, activeTab }) => {
           </Typography>
         </Grid>
       </Grid>
-
-      {/* Menu Sidebar */}
       <List>
         {[
           { text: "Personal Information", icon: <PersonIcon />, key: "personal" },
