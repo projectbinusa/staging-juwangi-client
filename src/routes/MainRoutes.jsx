@@ -13,7 +13,6 @@ const AddUser = lazy(() => import("../component/user/AddUser"));
 const ViewUser = lazy(() => import("../component/user/ViewUser"));
 const Cart = lazy(() => import("../pages/e-commerce/Cart"));
 const AddProduct = lazy(() => import("../pages/e-commerce/AddProduct"));
-const EditProduct = lazy(() => import("../pages/e-commerce/EditProduct"));
 const ProfilePage = lazy(() => import("../component/profil/ProfilePage"));
 const AdminList = lazy(() => import("../component/admin/AdminList"));
 const AddAdmin = lazy(() => import("../component/admin/AddAdmin"));
@@ -67,7 +66,6 @@ const router = createBrowserRouter([
     { path: "login", element: <Login /> },
     { path: "register", element: <Register /> },
     { path: "products", element: <Product /> },
-    { path: "editproduct/:id", element: <EditProduct /> },
     { path: "*", element: <NotFound /> },
 ]);
 
