@@ -75,12 +75,9 @@ export default function Add() {
     <Box
       sx={{
         minHeight: "100vh",
-        width: "100vw",
+        minWidth: "900px",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(to right, #74ebd5, #acb6e5)",
-        overflowY: "auto",
+        marginLeft: "230px",
         padding: 4,
       }}
     >
@@ -88,14 +85,13 @@ export default function Add() {
         maxWidth="md"
         sx={{
           p: 4,
-          bgcolor: "#fff",
           borderRadius: 3,
           boxShadow: 4,
           textAlign: "center",
           animation: "fadeIn 0.5s ease-in-out",
         }}
       >
-        <Typography variant="h4" fontWeight="bold" gutterBottom color="#333">
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
           Tambah Produk
         </Typography>
 
@@ -155,7 +151,6 @@ export default function Add() {
                 flexDirection: "column",
                 alignItems: "center",
                 padding: "10px",
-                backgroundColor: "#f8f9fa",
                 borderRadius: "5px",
                 border: "1px dashed #333",
               }}
@@ -191,7 +186,7 @@ export default function Add() {
               fontSize: "16px",
               fontWeight: "bold",
               borderRadius: "8px",
-              "&:hover": { bgcolor: "#1565C0" },
+              "&:hover": {},
             }}
           >
             Tambah Produk
