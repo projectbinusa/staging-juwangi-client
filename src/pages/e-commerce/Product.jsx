@@ -13,9 +13,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
-import Swal from "sweetalert2";
 import axios from "axios";
 import { API_DUMMY } from "../../utils/api";
 
@@ -29,8 +27,6 @@ const Product = () => {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [deleteMode, setDeleteMode] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -66,51 +62,9 @@ const Product = () => {
     );
   }, [products, searchTerm, selectedCategory]);
 
-  const handleSelectProduct = (id) => {
-    setSelectedProducts((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
-  const handleDeleteSelected = async () => {
-    if (selectedProducts.length === 0) {
-      Swal.fire("Oops!", "Pilih produk terlebih dahulu!", "warning");
-      return;
-    }
-
-    const confirmDelete = await Swal.fire({
-      title: "Yakin ingin menghapus?",
-      text: "Produk yang dihapus tidak dapat dikembalikan!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, hapus!",
-      cancelButtonText: "Batal",
-    });
-
-    if (!confirmDelete.isConfirmed) return;
-
-    try {
-      await Promise.all(
-        selectedProducts.map((id) =>
-          axios.delete(`${API_DUMMY}/api/products/${id}`)
-        )
-      );
-      setProducts(
-        products.filter((item) => !selectedProducts.includes(item.id))
-      );
-      setSelectedProducts([]);
-      setDeleteMode(false);
-
-      Swal.fire("Terhapus!", "Produk berhasil dihapus!", "success");
-    } catch (error) {
-      console.error("Gagal menghapus produk:", error);
-      Swal.fire("Error!", "Gagal menghapus produk!", "error");
-    }
-  };
-
   return (
     <Container
-      maxWidth="lg" // Menggunakan ukuran bawaan Material-UI agar responsif
+      maxWidth="lg"
       sx={{
         minHeight: "100vh",
         width: "100%",
@@ -122,50 +76,39 @@ const Product = () => {
         Products
       </Typography>
 
-      <Box display="flex" marginLeft="250px" gap={3} mb={3}>
-        <TextField
-          variant="outlined"
-          placeholder="Search product..."
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ width: "300px", borderRadius: "5px" }}
-        />
-        <Button variant="contained" color="primary">
-          <SearchIcon />
-        </Button>
-        <Select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          displayEmpty
-          sx={{ width: "200px", borderRadius: "5px" }}
-        >
-          <MenuItem value="">All Categories</MenuItem>
-          {categories.map((category) => (
-            <MenuItem key={category.id} value={category.kategori}>
-              {category.kategori}
-            </MenuItem>
-          ))}
-        </Select>
-
-        <Button
-          variant="contained"
-          color={deleteMode ? "secondary" : "error"}
-          startIcon={<DeleteIcon />}
-          onClick={() => setDeleteMode(!deleteMode)}
-          sx={{ fontWeight: "bold" }}
-        >
-          {deleteMode ? "Batal Hapus" : "Hapus Produk"}
-        </Button>
-
-        {deleteMode && selectedProducts.length > 0 && (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleDeleteSelected}
-            sx={{ fontWeight: "bold" }}
-          >
-            Hapus {selectedProducts.length} Produk
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Box display="flex" gap={2}>
+          <TextField
+            variant="outlined"
+            placeholder="Search product..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ width: "300px", borderRadius: "5px" }}
+          />
+          <Button variant="contained" color="primary">
+            <SearchIcon />
           </Button>
-        )}
+        </Box>
+
+        <Box>
+          <Select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            displayEmpty
+            sx={{ width: "200px", marginRight: "-80px", borderRadius: "5px" }}
+          >
+            <MenuItem value="">All Categories</MenuItem>
+            {categories.map((category) => (
+              <MenuItem key={category.id} value={category.kategori}>
+                {category.kategori}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
       </Box>
 
       {loading ? (
@@ -182,9 +125,6 @@ const Product = () => {
                 harga={item.harga}
                 gambar={item.gambar}
                 kategori={item.kategori}
-                onSelect={handleSelectProduct}
-                selected={selectedProducts.includes(item.id)}
-                showCheckbox={deleteMode}
               />
             </Grid>
           ))}
