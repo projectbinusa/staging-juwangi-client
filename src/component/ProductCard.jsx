@@ -25,7 +25,7 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
     if (!product) return;
 
     try {
-      await axios.post(`${API_DUMMY}/api/cart/add/${product.id}`);
+      await axios.post(`${API_DUMMY}/api/cart/add/${produtsId}`);
       Swal.fire({
         icon: "success",
         title: "Berhasil menambahkan produk ke keranjang",
