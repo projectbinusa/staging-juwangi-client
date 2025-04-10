@@ -19,10 +19,11 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { API_DUMMY } from "../../../utils/api";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 
 const CreateInvoice = () => {
   const { id } = useParams();
+  const { openDrawer } = useOutletContext(); 
   const generateInvoiceId = () => {
     return Math.floor(1000000000 + Math.random() * 9000000000); 
   };
@@ -111,7 +112,7 @@ const CreateInvoice = () => {
   );
 
   return (
-    <Container component={Paper} sx={{ p: 4, mt: 4 }}>
+    <Container component={Paper} sx={{ p: 4, m: 10 ,maxWidth: "100%" ,marginLeft: openDrawer ? "80px" : "160px",  }}>
       <Typography variant="h4" gutterBottom>
         New Invoice
       </Typography>

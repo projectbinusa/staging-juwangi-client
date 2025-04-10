@@ -15,10 +15,12 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useOutletContext } from "react-router-dom";
+import { bool } from "prop-types";
 
 function ListInvoice() {
   const [invoice, setInvoice] = useState([]);
-
+   const { openDrawer } = useOutletContext(); 
   const getAllInvoice = async () => {
     try {
       const res = await axios.get(`${API_DUMMY}/api/invoices`);
@@ -47,7 +49,24 @@ function ListInvoice() {
   }, []);
 
   return (
-    <Container component={Paper} sx={{ p: 4, mt: 4 }}>
+    <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      width: "100%",
+      minHeight: "100vh",
+      paddingTop: "20px",
+    }}>
+    <Container
+        component={Paper}
+        sx={{
+          p: 4,
+          mb: 5,
+          width: "90%",
+          maxWidth: "1200px",
+          marginLeft: openDrawer ? "250px" : "300px",
+          color: "white",
+        }}
+      >
       <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
         List Invoice
       </Typography>
@@ -99,6 +118,7 @@ function ListInvoice() {
         </Table>
       </TableContainer>
     </Container>
+    </Box>
   );
 }
 
