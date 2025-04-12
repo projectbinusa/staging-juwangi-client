@@ -13,6 +13,9 @@ import {
   IconButton,
   Typography,
   Box,
+  Card,
+  CardContent,
+  Divider,
 } from "@mui/material";
 import { Delete, Edit, Add } from "@mui/icons-material";
 import axios from "axios";
@@ -67,62 +70,78 @@ const AdminList = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ marginLeft: 10 , m: 0 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4" fontWeight="bold">Daftar Admin</Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<Add />}
-          onClick={() => navigate("/addadmin")}
-          sx={{ textTransform: "none", fontSize: "16px" }}
-        >
-          Tambah Admin
-        </Button>
-      </Box>
-
-      <TextField
-        label="Cari Admin"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        sx={{ mb: 2 }}
-      />
-
-      <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>#</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Nama</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
-              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>Aksi</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {admins
-              .filter((admin) => admin.username.toLowerCase().includes(search.toLowerCase()))
-              .map((admin, index) => (
-                <TableRow key={admin.id} hover>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{admin.username}</TableCell>
-                  <TableCell>{admin.email}</TableCell>
-                  <TableCell align="center">
-                    <IconButton color="warning" onClick={() => navigate(`/editadmin/${admin.id}`)}>
-                      <Edit />
-                    </IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(admin.id)}>
-                      <Delete />
-                    </IconButton>
-                  </TableCell>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Box sx={{ ml: 40 }}> 
+      <Typography variant="h4" fontWeight="bold" mb={3}>
+        Daftar Admin
+      </Typography>
+  
+      <Card elevation={3} sx={{ borderRadius: 3 }}>
+        <CardContent>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} gap={2}>
+            <TextField
+              label="Cari Admin"
+              variant="outlined"
+              fullWidth
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<Add />}
+              onClick={() => navigate("/addadmin")}
+              sx={{ whiteSpace: "nowrap", textTransform: "none", px: 3, py: 1.8, borderRadius: 2 }}
+            >
+              Tambah Admin
+            </Button>
+          </Box>
+  
+          <Divider sx={{ mb: 2 }} />
+  
+          <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: "none" }}>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+                  <TableCell sx={{ fontWeight: "bold" }}>#</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Nama</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
+                  <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>Aksi</TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
+              </TableHead>
+              <TableBody>
+                {admins
+                  .filter((admin) => admin.username.toLowerCase().includes(search.toLowerCase()))
+                  .map((admin, index) => (
+                    <TableRow key={admin.id} hover>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{admin.username}</TableCell>
+                      <TableCell>{admin.email}</TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          color="warning"
+                          onClick={() => navigate(`/editadmin/${admin.id}`)}
+                          sx={{ mx: 1 }}
+                        >
+                          <Edit />
+                        </IconButton>
+                        <IconButton
+                          color="error"
+                          onClick={() => handleDelete(admin.id)}
+                          sx={{ mx: 1 }}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </CardContent>
+      </Card>
+    </Box>
+  </Container>  
   );
 };
 

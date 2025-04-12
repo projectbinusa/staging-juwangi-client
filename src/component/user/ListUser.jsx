@@ -14,9 +14,11 @@ import {
   IconButton,
   Typography,
   Box,
-  useTheme,
+  Avatar,
+  MenuItem,
+  Select,
 } from "@mui/material";
-import { Delete, Visibility } from "@mui/icons-material";
+import { Delete, Visibility, Edit } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -27,8 +29,7 @@ const ListUser = () => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-  const theme = useTheme(); 
-  const { mode } = useContext(ThemeContext); 
+  const { mode } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchUsers();
@@ -41,14 +42,11 @@ const ListUser = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("Data dari API:", response.data);
-
       if (Array.isArray(response.data)) {
         setUsers(response.data);
       } else if (Array.isArray(response.data.data)) {
         setUsers(response.data.data);
       } else {
-        console.error("Format data API tidak sesuai");
         setUsers([]);
       }
     } catch (error) {
@@ -84,66 +82,59 @@ const ListUser = () => {
     });
   };
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Verified":
+        return "#4caf50";
+      case "Pending":
+        return "#ff9800";
+      case "Rejected":
+        return "#f44336";
+      default:
+        return "#9e9e9e";
+    }
+  };
+
   return (
     <Container maxWidth="lg">
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        marginLeft="50px"
-        textAlign="center"
-        sx={{ mt: 4, color: theme.palette.text.primary }}
-      >
-        <Typography variant="h4" fontWeight="bold" sx={{ marginBottom: 2 }}>
-          List User
-        </Typography>
-
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            marginBottom: 2,
-            backgroundColor: theme.palette.primary.main,
-            "&:hover": { backgroundColor: theme.palette.primary.dark },
-          }}
-          onClick={() => navigate("/adduser")}
+      <Box sx={{ mt: 4 }} marginLeft="250px">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={2}
         >
-          + Add User
-        </Button>
+          <TextField
+            placeholder="Search 100 records..."
+            variant="outlined"
+            size="small"
+            sx={{ width: 300 }}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Box display="flex" gap={2} alignItems="center">
+            <Select size="small" value="#" displayEmpty>
+              <MenuItem value="#">Sort by (#)</MenuItem>
+            </Select>
+            <Button
+              variant="contained"
+              onClick={() => navigate("/adduser")}
+              sx={{
+                borderRadius: 2,
+                fontWeight: "bold",
+              }}
+            >
+              + Add Customer
+            </Button>
+          </Box>
+        </Box>
 
-        <TextField
-          label="Search users..."
-          variant="outlined"
-          fullWidth
-          sx={{
-            maxWidth: 500,
-            marginBottom: 2,
-            borderRadius: "8px",
-            "& input": {
-              textAlign: "center",
-              color: theme.palette.text.primary,
-            },
-          }}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <TableContainer
-          component={Paper}
-          sx={{
-            width: "100%",
-            overflowX: "auto",
-            maxWidth: 900,
-            borderRadius: "12px",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-            backgroundColor: theme.palette.background.paper,
-          }}
-        >
+        <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
           <Table>
             <TableHead>
-              <TableRow sx={{ backgroundColor: theme.palette.primary.main }}>
-                {["#", "Name", "Email", "Contact", "Age", "Country", "Status", "Actions"].map(
+              <TableRow>
+                {["#", "CUSTOMER NAME", "CONTACT", "AGE", "COUNTRY", "STATUS", "ACTIONS"].map(
                   (header, index) => (
-                    <TableCell key={index} align="center" sx={{ color: "white", fontWeight: "bold" }}>
+                    <TableCell key={index} align="center" sx={{ fontWeight: "bold" }}>
                       {header}
                     </TableCell>
                   )
@@ -153,41 +144,45 @@ const ListUser = () => {
             <TableBody>
               {users
                 .filter((user) =>
-                  user.username.toLowerCase().includes(search.toLowerCase())
+                  user.username?.toLowerCase().includes(search.toLowerCase())
                 )
                 .map((user, index) => (
                   <TableRow
                     key={user.id}
                     sx={{
-                      backgroundColor: mode === "dark" ? "#424242" : "white",
-                      color: theme.palette.text.primary,
                       "&:hover": {
-                        backgroundColor: mode === "dark" ? "#616161" : "#f5f5f5",
+                        backgroundColor: mode === "dark" ? "#333" : "#f9f9f9",
                       },
                       transition: "background-color 0.3s ease",
                     }}
                   >
                     <TableCell align="center">{index + 1}</TableCell>
-                    <TableCell align="center">{user.username}</TableCell>
-                    <TableCell align="center">{user.email}</TableCell>
                     <TableCell align="center">
-                      {user.kontak || <Typography color="gray">N/A</Typography>}
+                      <Box display="flex" alignItems="center" gap={2}>
+                        <Avatar
+                          alt={user.username}
+                          src={`https://i.pravatar.cc/150?img=${index + 1}`}
+                        />
+                        <Box textAlign="left">
+                          <Typography fontWeight="bold">{user.username}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {user.email}
+                          </Typography>
+                        </Box>
+                      </Box>
                     </TableCell>
-                    <TableCell align="center">
-                      {user.umur ? user.umur : <Typography color="gray">N/A</Typography>}
-                    </TableCell>
-                    <TableCell align="center">
-                      {user.negara ? user.negara : <Typography color="gray">N/A</Typography>}
-                    </TableCell>
+                    <TableCell align="center">{user.kontak || "N/A"}</TableCell>
+                    <TableCell align="center">{user.umur || "N/A"}</TableCell>
+                    <TableCell align="center">{user.negara || "N/A"}</TableCell>
                     <TableCell align="center">
                       <Box
                         sx={{
                           display: "inline-block",
-                          padding: "4px 10px",
-                          borderRadius: "8px",
-                          backgroundColor:
-                            user.status === "Active" ? "#4caf50" : "#9e9e9e",
+                          px: 2,
+                          py: 0.5,
+                          borderRadius: 2,
                           color: "white",
+                          backgroundColor: getStatusColor(user.status),
                           fontWeight: "bold",
                           fontSize: "12px",
                         }}
@@ -198,15 +193,19 @@ const ListUser = () => {
                     <TableCell align="center">
                       <IconButton
                         color="primary"
-                        onClick={() => navigate(`/viewuser/${user.id}`)}
-                        sx={{ "&:hover": { color: theme.palette.primary.dark } }}
+                        onClick={() => navigate(`/viewUser/${user.id}`)}
                       >
                         <Visibility fontSize="small" />
                       </IconButton>
                       <IconButton
+                        color="secondary"
+                        onClick={() => navigate(`/edituser/${user.id}`)}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                      <IconButton
                         color="error"
                         onClick={() => handleDelete(user.id)}
-                        sx={{ "&:hover": { color: theme.palette.error.dark } }}
                       >
                         <Delete fontSize="small" />
                       </IconButton>
