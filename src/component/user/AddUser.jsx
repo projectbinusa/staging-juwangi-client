@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Container,
   TextField,
@@ -10,6 +9,7 @@ import {
   FormControl,
   Typography,
   Box,
+  Paper,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -35,7 +35,10 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user.username || !user.email || !user.password || !user.kontak || !user.umur || !user.negara) {
+    const requiredFields = ["username", "email", "password", "kontak", "umur", "negara"];
+    const isEmpty = requiredFields.some((field) => !user[field]);
+
+    if (isEmpty) {
       Swal.fire({
         icon: "warning",
         title: "Oops...",
@@ -55,13 +58,10 @@ const AddUser = () => {
       });
 
       setTimeout(() => {
-        navigate("/user"); 
+        navigate("/user");
       }, 2000);
-      
     } catch (err) {
       console.error("Error adding user:", err);
-
-   
       Swal.fire({
         icon: "error",
         title: "Gagal menambahkan user!",
@@ -71,88 +71,105 @@ const AddUser = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", mt: 4 }}>
-      <Typography variant="h4" sx={{ marginBottom: 2 }}>
-        Add New User
-      </Typography>
+    <Container maxWidth="md"  sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
+      <Paper elevation={4} sx={{ p: 4, borderRadius: 4, width: "100%", maxWidth: 600 }}>
+        <Typography variant="h5" fontWeight="bold" gutterBottom textAlign="center" color="text.primary">
+           Tambah User Baru
+        </Typography>
 
-      <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-        <TextField
-          label="Name"
-          name="username"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={user.username}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Email"
-          type="email"
-          name="email"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={user.email}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          name="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={user.password}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Kontak"
-          name="kontak"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={user.kontak}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Umur"
-          name="umur"
-          type="number"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={user.umur}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Negara"
-          name="negara"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={user.negara}
-          onChange={handleChange}
-        />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Username"
+            name="username"
+            fullWidth
+            margin="normal"
+            value={user.username}
+            onChange={handleChange}
+            variant="outlined"
+          />
+          <TextField
+            label="Email"
+            type="email"
+            name="email"
+            fullWidth
+            margin="normal"
+            value={user.email}
+            onChange={handleChange}
+            variant="outlined"
+          />
+          <TextField
+            label="Password"
+            type="password"
+            name="password"
+            fullWidth
+            margin="normal"
+            value={user.password}
+            onChange={handleChange}
+            variant="outlined"
+          />
+          <TextField
+            label="Kontak"
+            name="kontak"
+            fullWidth
+            margin="normal"
+            value={user.kontak}
+            onChange={handleChange}
+            variant="outlined"
+          />
+          <TextField
+            label="Umur"
+            type="number"
+            name="umur"
+            fullWidth
+            margin="normal"
+            value={user.umur}
+            onChange={handleChange}
+            variant="outlined"
+          />
+          <TextField
+            label="Negara"
+            name="negara"
+            fullWidth
+            margin="normal"
+            value={user.negara}
+            onChange={handleChange}
+            variant="outlined"
+          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Status</InputLabel>
+            <Select name="status" value={user.status} onChange={handleChange} label="Status">
+              <MenuItem value="Pending">Pelajar</MenuItem>
+              <MenuItem value="Verified">Remaja</MenuItem>
+              <MenuItem value="Rejected">Lansia</MenuItem>
+            </Select>
+          </FormControl>
 
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Status</InputLabel>
-          <Select name="status" value={user.status} onChange={handleChange}>
-            <MenuItem value="Pending">Pelajar</MenuItem>
-            <MenuItem value="Verified">Remaja</MenuItem>
-            <MenuItem value="Rejected">Lansia</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Box sx={{ display: "flex", gap: 2, justifyContent: "center", marginTop: 2 }}>
-          <Button variant="contained" color="primary" type="submit">
-            Save User
-          </Button>
-          <Button variant="outlined" color="secondary" onClick={() => navigate("/user")}>
-            Cancel
-          </Button>
-        </Box>
-      </form>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => navigate("/user")}
+              sx={{
+                borderRadius: 2,
+                px: 4,
+              }}
+            >
+              Kembali
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{
+                borderRadius: 2,
+                px: 4,
+              }}
+            >
+              Simpan
+            </Button>
+          </Box>
+        </form>
+      </Paper>
     </Container>
   );
 };
