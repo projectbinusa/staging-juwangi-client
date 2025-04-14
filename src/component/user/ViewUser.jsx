@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Container,
   Typography,
@@ -8,10 +8,14 @@ import {
   Button,
   CircularProgress,
   Box,
+  Divider,
+  Avatar,
+  Stack,
 } from "@mui/material";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_DUMMY } from "../../utils/api";
+     import { ThemeContext } from "../../ThemeContext";
 
 const ViewUser = () => {
   const { id } = useParams();
@@ -19,6 +23,7 @@ const ViewUser = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const { mode } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchUser();
@@ -50,56 +55,104 @@ const ViewUser = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Typography variant="h4" sx={{ marginBottom: 2, textAlign: "center" }}>
-        User Details
-      </Typography>
+    <Container maxWidth="md" sx={{ mt: 6 }}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        marginLeft="380px"
+        sx={{
+          backgroundColor: mode === "dark" ? "#121212" : "#fff",
+          color: mode === "dark" ? "#fff" : "#000",
+          minHeight: "100vh",
+        }}
+      >
+        <Box sx={{ width: "100%", maxWidth: 600 }}>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            textAlign="center"
+            mb={3}
+            color={mode === "dark" ? "primary.light" : "primary.main"}
+          >
+            Detail Pengguna
+          </Typography>
 
-      {error && (
-        <Typography color="error" sx={{ textAlign: "center" }}>
-          {error}
-        </Typography>
-      )}
+          {error && (
+            <Typography color="error" textAlign="center">
+              {error}
+            </Typography>
+          )}
 
-      {loading ? (
-        <Box display="flex" justifyContent="center">
-          <CircularProgress />
+          {loading ? (
+            <Box display="flex" justifyContent="center">
+              <CircularProgress />
+            </Box>
+          ) : user ? (
+            <Card
+              sx={{
+                borderRadius: 4,
+                boxShadow: 6,
+                backgroundColor: mode === "dark" ? "#333" : "#f9f9f9",
+                color: mode === "dark" ? "#fff" : "#000",
+              }}
+            >
+              <CardContent>
+                <Stack direction="column" alignItems="center" spacing={2}>
+                  <Avatar
+                    alt={user.username}
+                    src={`https://i.pravatar.cc/150?img=${parseInt(id) % 70 || 1}`}
+                    sx={{ width: 80, height: 80 }}
+                  />
+                  <Typography variant="h6" fontWeight="bold">
+                    {user.username}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    ID Pengguna: {id}
+                  </Typography>
+                </Stack>
+
+                <Divider sx={{ my: 3, borderColor: mode === "dark" ? "#fff" : "#000" }} />
+
+                <Box px={2}>
+                  <Typography mb={1}>
+                    <strong>Email:</strong> {user.email || "N/A"}
+                  </Typography>
+                  <Typography mb={1}>
+                    <strong>Kontak:</strong> {user.kontak || "N/A"}
+                  </Typography>
+                  <Typography mb={1}>
+                    <strong>Umur:</strong> {user.umur || "N/A"}
+                  </Typography>
+                  <Typography mb={1}>
+                    <strong>Negara:</strong> {user.negara || "N/A"}
+                  </Typography>
+                  <Typography>
+                    <strong>Status:</strong> {user.status || "N/A"}
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          ) : (
+            <Typography textAlign="center">User tidak ditemukan.</Typography>
+          )}
+
+          <Box display="flex" justifyContent="center" mt={4}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/user")}
+              sx={{
+                px: 5,
+                py: 1.5,
+                borderRadius: 3,
+                backgroundColor: mode === "dark" ? "#1976d2" : "#3f51b5",
+                color: "#fff",
+              }}
+            >
+              Kembali ke Daftar
+            </Button>
+          </Box>
         </Box>
-      ) : user ? (
-        <Card sx={{ maxWidth: 500, mx: "auto", p: 2, boxShadow: 3 }}>
-          <CardContent>
-            <Typography variant="h6">
-              <strong>Name:</strong> {user.username || "N/A"}
-            </Typography>
-            <Typography>
-              <strong>Email:</strong> {user.email || "N/A"}
-            </Typography>
-            <Typography>
-              <strong>Contact:</strong> {user.kontak || "N/A"}
-            </Typography>
-            <Typography>
-              <strong>Age:</strong> {user.umur || "N/A"}
-            </Typography>
-            <Typography>
-              <strong>Country:</strong> {user.negara || "N/A"}
-            </Typography>
-            <Typography>
-              <strong>Status:</strong> {user.status || "N/A"}
-            </Typography>
-          </CardContent>
-        </Card>
-      ) : (
-        <Typography textAlign="center">User not found.</Typography>
-      )}
-
-      <Box display="flex" justifyContent="center" mt={3}>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => navigate("/user")}
-        >
-          Back to List
-        </Button>
       </Box>
     </Container>
   );
