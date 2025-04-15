@@ -27,6 +27,7 @@ import {
 import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
 import CachedIcon from "@mui/icons-material/Cached";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom"; // Tambahan penting
 import Grafik from "./Grafik"; 
 
 const sampleData = [
@@ -44,8 +45,10 @@ const scatterData = [
   { x: 4, y: 35 },
   { x: 5, y: 20 },
 ];
-const AnalyticsCard = ({ title, type, color, percentage }) => {
+
+const AnalyticsCard = ({ title, type, color, percentage, detailPath }) => {
   const theme = useTheme();
+  const navigate = useNavigate(); 
 
   return (
     <Card
@@ -120,6 +123,7 @@ const AnalyticsCard = ({ title, type, color, percentage }) => {
         <Button
           variant="outlined"
           fullWidth
+          onClick={() => navigate("/negative")}
           sx={{
             mt: 1,
             borderRadius: 2,
@@ -133,6 +137,15 @@ const AnalyticsCard = ({ title, type, color, percentage }) => {
     </Card>
   );
 };
+
+AnalyticsCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["bar", "line", "scatter"]).isRequired,
+  color: PropTypes.string.isRequired,
+  percentage: PropTypes.number.isRequired,
+  detailPath: PropTypes.string.isRequired,
+};
+
 const StorageCard = () => {
   const theme = useTheme();
   return (
@@ -160,6 +173,7 @@ const StorageCard = () => {
     </Card>
   );
 };
+
 const BalanceCard = () => {
   const theme = useTheme();
   return (
@@ -190,19 +204,20 @@ const BalanceCard = () => {
     </Card>
   );
 };
+
 const Dashboard = () => {
   const theme = useTheme();
   return (
     <Box sx={{ marginLeft: 0, p: 3, bgcolor: theme.palette.background.default, borderRadius: 2 }}>
       <Grid container spacing={3} alignItems="stretch">
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsCard title="New Orders" type="bar" color="#3b82f6" percentage={30.6} />
+          <AnalyticsCard title="New Orders" type="bar" color="#3b82f6" percentage={30.6} detailPath="/analytics/new-orders" />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsCard title="New Users" type="line" color="#22c55e" percentage={30.6} />
+          <AnalyticsCard title="New Users" type="line" color="#22c55e" percentage={30.6} detailPath="/analytics/new-users" />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsCard title="New Users" type="scatter" color="#f97316" percentage={-30.6} />
+          <AnalyticsCard title="New Users" type="scatter" color="#f97316" percentage={-30.6} detailPath="/analytics/new-users" />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Box sx={{ display: "flex", flexDirection: "column", height: "100%", gap: 2 }}>
@@ -217,13 +232,5 @@ const Dashboard = () => {
     </Box>
   );
 };
-
-AnalyticsCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["bar", "line", "scatter"]).isRequired,
-  color: PropTypes.string.isRequired,
-  percentage: PropTypes.number.isRequired,
-};
-
 
 export default Dashboard;

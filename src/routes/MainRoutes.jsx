@@ -28,6 +28,7 @@ const Data = lazy(() => import("../component/Dashboard/Data"));
 const CreateInvoice = lazy(() => import("../sections/e-commerce/invoice/CreateInvoice"));
 const ListInvoice = lazy(() => import("../sections/e-commerce/invoice/ListInvoice"));
 const ProductList = lazy(() => import("../pages/e-commerce/ProductList"));
+const NewUserNegative = lazy(() => import("../component/viewmore/NewUserNegative"));
 
 
 
@@ -60,7 +61,8 @@ const router = createBrowserRouter([
             { path: "data", element: <Data /> },
             { path: "chart", element: <Chart /> },
             { path: "createInvoice", element: <CreateInvoice/>},
-            { path: "listinvoice", element: <ListInvoice/>}
+            { path: "listinvoice", element: <ListInvoice/>},
+            { path: "negative", element: <NewUserNegative/>},
         ],
         
     },
