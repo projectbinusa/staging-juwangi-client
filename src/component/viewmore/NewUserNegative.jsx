@@ -1,9 +1,8 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Container,
   Typography,
-  Box,
   Table,
   TableBody,
   TableCell,
@@ -11,32 +10,49 @@ import {
   TableHead,
   TableRow,
   Paper,
-  CircularProgress,
+  Chip,
 } from "@mui/material";
-import axios from "axios";
-import { API_DUMMY } from "../../utils/api";
+
+const dummyUsers = [
+  {
+    id: 1,
+    username: "johndoe",
+    email: "johndoe@example.com",
+    joined_at: "2025-04-10",
+    status: "active",
+  },
+  {
+    id: 2,
+    username: "janedoe",
+    email: "janedoe@example.com",
+    joined_at: "2025-04-11",
+    status: "pending",
+  },
+  {
+    id: 3,
+    username: "alicesmith",
+    email: "alice@example.com",
+    joined_at: "2025-04-09",
+    status: "inactive",
+  },
+  {
+    id: 4,
+    username: "bobbuilder",
+    email: "bob@example.com",
+    joined_at: "2025-04-08",
+    status: "active",
+  },
+];
 
 const ViewMoreNewUsers = () => {
-  const [newUsers, setNewUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchNewUsers();
-  }, []);
-
-  const fetchNewUsers = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get(`${API_DUMMY}/api/new-users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setNewUsers(res.data.data || []);
-    } catch (error) {
-      console.error("Error fetching new users:", error);
-    } finally {
-      setLoading(false);
-    }
+  const renderStatusChip = (status) => {
+    const color =
+      status === "active"
+        ? "success"
+        : status === "pending"
+        ? "warning"
+        : "error";
+    return <Chip label={status} color={color} variant="outlined" size="small" />;
   };
 
   return (
@@ -45,36 +61,47 @@ const ViewMoreNewUsers = () => {
         Detail New Users
       </Typography>
 
-      {loading ? (
-        <Box display="flex" justifyContent="center" mt={5}>
-          <CircularProgress />
-        </Box>
-      ) : (
-        <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>#</TableCell>
-                <TableCell>Username</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Joined Date</TableCell>
-                <TableCell>Status</TableCell>
+      <TableContainer
+        component={Paper}
+        sx={{
+          borderRadius: 3,
+          boxShadow: 3,
+          mt: 2,
+          backgroundColor: "background.paper",
+        }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+              <TableCell sx={{ fontWeight: "bold" }}>#</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Username</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Joined Date</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {dummyUsers.map((user, index) => (
+              <TableRow
+                key={user.id}
+                hover
+                sx={{
+                  transition: "background-color 0.2s",
+                  "&:hover": {
+                    backgroundColor: "#f0f0f0",
+                  },
+                }}
+              >
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.joined_at || "N/A"}</TableCell>
+                <TableCell>{renderStatusChip(user.status)}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {newUsers.map((user, index) => (
-                <TableRow key={user.id}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.joined_at || "N/A"}</TableCell>
-                  <TableCell>{user.status}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Container>
   );
 };

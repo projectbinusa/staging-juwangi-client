@@ -1,9 +1,45 @@
-import { useContext } from "react";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { useContext, useState } from "react";
+import {
+  Box,
+  Grid,
+  TextField,
+  Typography,
+  Button,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Autocomplete,
+} from "@mui/material";
+import Swal from "sweetalert2";
 import { ThemeContext } from "../../ThemeContext";
 
+const countries = ["India", "United States", "Germany", "Indonesia", "Japan"];
+
 const PersonalInformation = () => {
-  const { mode } = useContext(ThemeContext); 
+  const { mode } = useContext(ThemeContext);
+
+  const [gender, setGender] = useState("male");
+  const [country, setCountry] = useState("India");
+
+  const handleSave = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved",
+      text: "Your personal information has been updated.",
+      confirmButtonColor: "#1976d2",
+    });
+  };
+
+  const handleReset = () => {
+    Swal.fire({
+      icon: "warning",
+      title: "Reset Form",
+      text: "All unsaved changes will be lost.",
+      showCancelButton: true,
+      confirmButtonText: "Reset",
+      confirmButtonColor: "#d32f2f",
+    });
+  };
 
   return (
     <Box
@@ -15,7 +51,10 @@ const PersonalInformation = () => {
         color: mode === "dark" ? "white" : "black",
       }}
     >
-      <Typography variant="h6" sx={{ mb: 2 }}>Personal Information</Typography>
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        Personal Information
+      </Typography>
+
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <TextField
@@ -89,7 +128,43 @@ const PersonalInformation = () => {
             }}
           />
         </Grid>
+
+        {/* Gender */}
+        <Grid item xs={12} md={6}>
+          <Typography sx={{ mb: 1 }}>Gender</Typography>
+          <RadioGroup
+            row
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <FormControlLabel value="male" control={<Radio />} label="Male" />
+            <FormControlLabel value="female" control={<Radio />} label="Female" />
+            <FormControlLabel value="other" control={<Radio />} label="Other" />
+          </RadioGroup>
+        </Grid>
+
+        {/* Country */}
+        <Grid item xs={12} md={6}>
+          <Autocomplete
+            options={countries}
+            value={country}
+            onChange={(e, val) => setCountry(val)}
+            renderInput={(params) => (
+              <TextField {...params} label="Country" />
+            )}
+          />
+        </Grid>
       </Grid>
+
+      {/* Buttons */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3, gap: 2 }}>
+        <Button variant="outlined" color="error" onClick={handleReset}>
+          Reset
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleSave}>
+          Save
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Card,
@@ -20,16 +20,45 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { ThemeContext } from "../../ThemeContext";
-const data = [
-  { name: "Jan", netProfit: 70, revenue: 40 },
-  { name: "Feb", netProfit: 80, revenue: 50 },
-  { name: "Mar", netProfit: 100, revenue: 60 },
-  { name: "Apr", netProfit: 85, revenue: 50 },
-  { name: "May", netProfit: 90, revenue: 55 },
-  { name: "Jun", netProfit: 100, revenue: 50 },
-  { name: "Jul", netProfit: 85, revenue: 60 },
-];
+
+const chartData = {
+  overview: [
+    { name: "Jan", netProfit: 70, revenue: 40 },
+    { name: "Feb", netProfit: 80, revenue: 50 },
+    { name: "Mar", netProfit: 100, revenue: 60 },
+    { name: "Apr", netProfit: 85, revenue: 50 },
+    { name: "May", netProfit: 90, revenue: 55 },
+    { name: "Jun", netProfit: 100, revenue: 50 },
+    { name: "Jul", netProfit: 85, revenue: 60 },
+  ],
+  marketing: [
+    { name: "Jan", netProfit: 60, revenue: 35 },
+    { name: "Feb", netProfit: 75, revenue: 45 },
+    { name: "Mar", netProfit: 85, revenue: 55 },
+    { name: "Apr", netProfit: 95, revenue: 65 },
+    { name: "May", netProfit: 80, revenue: 50 },
+    { name: "Jun", netProfit: 90, revenue: 55 },
+    { name: "Jul", netProfit: 70, revenue: 45 },
+  ],
+  project: [
+    { name: "Jan", netProfit: 50, revenue: 30 },
+    { name: "Feb", netProfit: 60, revenue: 40 },
+    { name: "Mar", netProfit: 70, revenue: 50 },
+    { name: "Apr", netProfit: 80, revenue: 60 },
+    { name: "May", netProfit: 90, revenue: 70 },
+    { name: "Jun", netProfit: 85, revenue: 65 },
+    { name: "Jul", netProfit: 75, revenue: 55 },
+  ],
+  order: [
+    { name: "Jan", netProfit: 55, revenue: 25 },
+    { name: "Feb", netProfit: 65, revenue: 35 },
+    { name: "Mar", netProfit: 95, revenue: 45 },
+    { name: "Apr", netProfit: 85, revenue: 60 },
+    { name: "May", netProfit: 90, revenue: 70 },
+    { name: "Jun", netProfit: 100, revenue: 60 },
+    { name: "Jul", netProfit: 95, revenue: 55 },
+  ],
+};
 
 const stats = [
   { label: "Total Sales", value: "1,800", change: "-245", percentage: "10.6%", color: "red" },
@@ -40,8 +69,11 @@ const stats = [
 
 const Dashboard = () => {
   const theme = useTheme();
-  // eslint-disable-next-line no-unused-vars
-  const { mode } = useContext(ThemeContext);
+  const [selectedTab, setSelectedTab] = useState("overview");
+
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
 
   return (
     <Box
@@ -53,12 +85,19 @@ const Dashboard = () => {
         color: theme.palette.text.primary,
       }}
     >
-      <Tabs value={0} indicatorColor="primary" textColor="primary">
-        <Tab label="Overview" />
-        <Tab label="Marketing" />
-        <Tab label="Project" />
-        <Tab label="Order" />
+      <Tabs
+        value={selectedTab}
+        onChange={handleTabChange}
+        indicatorColor="primary"
+        textColor="primary"
+        sx={{ mb: 2 }}
+      >
+        <Tab label="Overview" value="overview" />
+        <Tab label="Marketing" value="marketing" />
+        <Tab label="Project" value="project" />
+        <Tab label="Order" value="order" />
       </Tabs>
+
       <Box sx={{ display: "flex", gap: 4, mt: 3, width: "100%", height: "80%" }}>
         <Box
           sx={{
@@ -76,8 +115,9 @@ const Dashboard = () => {
               <MenuItem value="Weekly">Weekly</MenuItem>
             </Select>
           </Box>
+
           <ResponsiveContainer width="100%" height={470}>
-            <BarChart data={data}>
+            <BarChart data={chartData[selectedTab]}>
               <XAxis dataKey="name" stroke={theme.palette.text.primary} />
               <YAxis stroke={theme.palette.text.primary} />
               <Tooltip />
@@ -87,6 +127,7 @@ const Dashboard = () => {
             </BarChart>
           </ResponsiveContainer>
         </Box>
+
         <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
           {stats.map((stat, index) => (
             <Card key={index} sx={{ p: 3, boxShadow: 2, bgcolor: theme.palette.background.paper }}>

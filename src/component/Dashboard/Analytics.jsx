@@ -46,7 +46,7 @@ const scatterData = [
   { x: 5, y: 20 },
 ];
 
-const AnalyticsCard = ({ title, type, color, percentage, detailPath }) => {
+const AnalyticsCard = ({ title, type, color, percentage }) => {
   const theme = useTheme();
   const navigate = useNavigate(); 
 
