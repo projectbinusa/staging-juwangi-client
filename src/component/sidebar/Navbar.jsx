@@ -1,3 +1,4 @@
+// components/Navbar.js
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useContext } from "react";
 import {
@@ -8,13 +9,14 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../ThemeContext";
+import { useProfile } from "../profil/ProfileContext";
 import PropTypes from "prop-types";
 
 const Navbar = ({ toggleDrawer }) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const { mode, toggleTheme } = useContext(ThemeContext);
-  const [avatar] = useState("https://tse1.mm.bing.net/th?id=OIP.fu5mCwl95AHkzT5ibPTsyAHaHa&pid=Api&P=0&h=180");
+  const { profileImage } = useProfile(); 
 
   return (
     <AppBar
@@ -40,7 +42,7 @@ const Navbar = ({ toggleDrawer }) => {
           </IconButton>
           <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
             <Avatar
-              src={avatar}
+              src={profileImage} // Avatar yang menggunakan data dari context
               sx={{
                 border: `2px solid ${mode === "dark" ? "#555" : "#1976D2"}`,
                 boxShadow: "0 2px 6px rgba(0,0,0,0.2)",

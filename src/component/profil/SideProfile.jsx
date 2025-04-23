@@ -1,4 +1,5 @@
-import { useContext } from "react";
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../ThemeContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -13,6 +14,12 @@ import {
   IconButton,
   useTheme,
   Divider,
+  Modal,
+  Button,
+  Input,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -22,13 +29,29 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Facebook, Apple } from "@mui/icons-material";
 import GoogleIcon from "@mui/icons-material/Google";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
+import ShieldIcon from "@mui/icons-material/Shield";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
+import { useProfile } from "../profil/ProfileContext";
 
 const SideProfile = ({ setActiveTab, activeTab }) => {
   const theme = useTheme();
   const { mode, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
+  const { profileImage, setProfileImage } = useProfile();
+
+  const [openModal, setOpenModal] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState("");
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleAvatarChange = () => {
+    if (avatarUrl) {
+      setProfileImage(avatarUrl);
+    }
+    handleCloseModal();
+  };
 
   const handleItemClick = (key) => {
     if (key === "toggle-theme") {
@@ -57,6 +80,7 @@ const SideProfile = ({ setActiveTab, activeTab }) => {
     { text: "Settings", icon: <SettingsIcon />, key: "settings" },
     { text: "Change Password", icon: <LockIcon />, key: "change-password" },
     { text: "Payment", icon: <PaymentIcon />, key: "payment" },
+    { text: "Privacy", icon: <ShieldIcon />, key: "privacy" }, 
   ];
 
   const extraItems = [
@@ -78,14 +102,19 @@ const SideProfile = ({ setActiveTab, activeTab }) => {
     >
       <Box sx={{ textAlign: "center" }}>
         <Avatar
-          src="https://tse1.mm.bing.net/th?id=OIP.fu5mCwl95AHkzT5ibPTsyAHaHa&pid=Api&P=0&h=180"
+          src={
+            profileImage ||
+            "https://tse1.mm.bing.net/th?id=OIP.fu5mCwl95AHkzT5ibPTsyAHaHa&pid=Api&P=0&h=180"
+          }
           sx={{
             width: 80,
             height: 80,
             mx: "auto",
             mb: 1,
             border: `2px solid ${theme.palette.divider}`,
+            cursor: "pointer",
           }}
+          onClick={handleOpenModal}
         />
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           Francois
@@ -173,6 +202,39 @@ const SideProfile = ({ setActiveTab, activeTab }) => {
           </ListItem>
         ))}
       </List>
+
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            p: 3,
+            width: 300,
+            boxShadow: 24,
+          }}
+        >
+          <DialogTitle>Change Avatar</DialogTitle>
+          <DialogContent>
+            <Input
+              type="url"
+              placeholder="Enter image URL"
+              value={avatarUrl}
+              onChange={(e) => setAvatarUrl(e.target.value)}
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button onClick={handleAvatarChange} color="primary">
+              Save
+            </Button>
+          </DialogActions>
+        </Box>
+      </Modal>
     </Box>
   );
 };

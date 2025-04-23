@@ -71,7 +71,7 @@ const AdminList = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-    <Box sx={{ ml: 40 }}> 
+    <Box sx={{ ml: 6 }}> 
       <Typography variant="h4" fontWeight="bold" mb={3}>
         Daftar Admin
       </Typography>

@@ -6,13 +6,21 @@ import PersonalInformation from "./PersonalInformation";
 import ChangePassword from "./ChangePassword";
 import Setting from "./Setting";
 import Payment from "./Payment";
+import Privacy from "./PrivacySettings";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("personal"); 
   const { mode } = useContext(ThemeContext); 
 
   return (
-    <Box display="flex" gap={2} sx={{ bgcolor: mode === "dark" ? "#121212" : "#f5f5f5", minHeight: "100vh" }}>
+    <Box
+      display="flex"
+      gap={2}
+      sx={{
+        bgcolor: mode === "dark" ? "#121212" : "#f5f5f5",
+        minHeight: "100vh",
+      }}
+    >
       <SideProfile setActiveTab={setActiveTab} activeTab={activeTab} />
       <Card
         sx={{
@@ -41,12 +49,15 @@ const ProfilePage = () => {
           <Tab label="Settings" value="settings" />
           <Tab label="Change Password" value="change-password" />
           <Tab label="Payment" value="payment" />
+          <Tab label="Privacy" value="privacy" /> 
         </Tabs>
+
         <Box mt={2}>
           {activeTab === "personal" && <PersonalInformation />}
           {activeTab === "settings" && <Setting />}
           {activeTab === "change-password" && <ChangePassword />}
           {activeTab === "payment" && <Payment />}
+          {activeTab === "privacy" && <Privacy />} 
         </Box>
       </Card>
     </Box>

@@ -97,7 +97,7 @@ const ListUser = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ mt: 4 }} marginLeft="250px">
+      <Box sx={{ mt: 4 }} marginLeft="10px">
         <Box
           display="flex"
           justifyContent="space-between"
