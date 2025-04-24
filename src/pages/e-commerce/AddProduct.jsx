@@ -10,6 +10,7 @@ export default function Add() {
   const navigate = useNavigate();
 
   const [nama, setNama] = useState("");
+  const [kategori, setKategori] = useState("");
   const [harga, setHarga] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [stok, setStok] = useState("");
@@ -19,7 +20,7 @@ export default function Add() {
   const addData = async (e) => {
     e.preventDefault();
 
-    if (!nama || !harga || !deskripsi || !stok) {
+    if (!nama || !kategori || !harga || !deskripsi || !stok) {
       Swal.fire({
         icon: "warning",
         title: "Mohon isi semua field!",
@@ -35,6 +36,7 @@ export default function Add() {
 
       await axios.post(`${API_DUMMY}/api/products/add`, {
         nama,
+        kategori,
         harga,
         deskripsi,
         stok,
@@ -77,7 +79,7 @@ export default function Add() {
         minHeight: "100vh",
         minWidth: "900px",
         display: "flex",
-        marginLeft: "230px",
+        marginLeft: "29px",
         padding: 4,
       }}
     >
@@ -111,6 +113,14 @@ export default function Add() {
             fullWidth
             value={nama}
             onChange={(e) => setNama(e.target.value)}
+          />
+
+          <TextField
+            label="Kategori"
+            variant="outlined"
+            fullWidth
+            value={kategori}
+            onChange={(e) => setKategori(e.target.value)}
           />
 
           <TextField
@@ -186,7 +196,6 @@ export default function Add() {
               fontSize: "16px",
               fontWeight: "bold",
               borderRadius: "8px",
-              "&:hover": {},
             }}
           >
             Tambah Produk

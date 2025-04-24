@@ -63,12 +63,12 @@ const router = createBrowserRouter([
             { path: "createInvoice", element: <CreateInvoice/>},
             { path: "listinvoice", element: <ListInvoice/>},
             { path: "negative", element: <NewUserNegative/>},
+            { path: "products", element: <Product /> },
         ],
         
     },
     { path: "login", element: <Login /> },
     { path: "register", element: <Register /> },
-    { path: "products", element: <Product /> },
     { path: "*", element: <NotFound /> },
 ]);
 

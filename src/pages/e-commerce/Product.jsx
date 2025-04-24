@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
 import ProductCard from "../../component/ProductCard";
 import {
   Container,
@@ -8,19 +7,16 @@ import {
   Typography,
   TextField,
   Box,
-  Button,
   CircularProgress,
   Select,
   MenuItem,
+  InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { API_DUMMY } from "../../utils/api";
 
 const Product = () => {
-  const navigate = useNavigate();
-  const outletContext = useOutletContext() || {};
-  const { openDrawer = true } = outletContext;
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -32,8 +28,9 @@ const Product = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${API_DUMMY}/api/products`);
+        console.log(" Data Produk:", response.data);
         setProducts(response.data);
-      } catch (err) {
+      } catch {
         setError("Gagal mengambil data produk");
       } finally {
         setLoading(false);
@@ -43,8 +40,9 @@ const Product = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(`${API_DUMMY}/api/categories`);
+        console.log(" Data Kategori:", response.data);
         setCategories(response.data);
-      } catch (err) {
+      } catch {
         console.error("Gagal mengambil kategori");
       }
     };
@@ -54,71 +52,77 @@ const Product = () => {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    return products.filter(
-      (item) =>
-        item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedCategory === "" ||
-          item.kategori?.toLowerCase() === selectedCategory.toLowerCase())
-    );
+    return products.filter((item) => {
+      const cocokNama = item.nama?.toLowerCase().includes(searchTerm.toLowerCase());
+      const cocokKategori =
+        selectedCategory === "" ||
+        item.kategori?.toLowerCase() === selectedCategory.toLowerCase();
+      return cocokNama && cocokKategori;
+    });
   }, [products, searchTerm, selectedCategory]);
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{
-        minHeight: "100vh",
-        width: "100%",
-        padding: 3,
-        textAlign: "center",
-      }}
-    >
-      <Typography variant="h4" marginLeft="150px" gutterBottom>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Typography variant="h4" fontWeight="bold" gutterBottom textAlign="center">
         Products
       </Typography>
 
       <Box
         display="flex"
+        flexDirection={{ xs: "column", md: "row" }}
         justifyContent="space-between"
-        alignItems="center"
-        mb={3}
+        alignItems={{ xs: "stretch", md: "center" }}
+        gap={2}
+        mb={4}
       >
-        <Box display="flex" gap={2}>
+        <Box display="flex" gap={2} flex={1}>
           <TextField
             variant="outlined"
             placeholder="Search product..."
+            fullWidth
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ width: "300px", borderRadius: "5px" }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ backgroundColor: "#f9f9f9", borderRadius: "10px" }}
           />
-          <Button variant="contained" color="primary">
-            <SearchIcon />
-          </Button>
         </Box>
 
-        <Box>
-          <Select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            displayEmpty
-            sx={{ width: "200px", marginRight: "-80px", borderRadius: "5px" }}
-          >
-            <MenuItem value="">All Categories</MenuItem>
-            {categories.map((category) => (
-              <MenuItem key={category.id} value={category.kategori}>
-                {category.kategori}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
+        <Select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          displayEmpty
+          sx={{
+            minWidth: "200px",
+            backgroundColor: "#f9f9f9",
+            borderRadius: "10px",
+          }}
+        >
+          <MenuItem value="">All Categories</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.id} value={category.kategori}>
+              {category.kategori}
+            </MenuItem>
+          ))}
+        </Select>
       </Box>
 
       {loading ? (
-        <CircularProgress />
+        <Box display="flex" justifyContent="center" mt={6}>
+          <CircularProgress />
+        </Box>
       ) : error ? (
-        <Typography color="error">{error}</Typography>
+        <Typography color="error" textAlign="center">
+          {error}
+        </Typography>
       ) : filteredProducts.length > 0 ? (
-        <Grid container spacing={25} justifyContent="center">
+        <Grid container spacing={4}>
           {filteredProducts.map((item) => (
-            <Grid item key={item.id} xs={12} sm={6} md={3}>
+            <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
               <ProductCard
                 id={item.id}
                 nama={item.nama}
@@ -130,7 +134,9 @@ const Product = () => {
           ))}
         </Grid>
       ) : (
-        <Typography variant="h6">Tidak ada produk tersedia</Typography>
+        <Typography variant="h6" textAlign="center">
+          Tidak ada produk tersedia
+        </Typography>
       )}
     </Container>
   );

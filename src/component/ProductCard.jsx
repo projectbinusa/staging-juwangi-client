@@ -14,24 +14,24 @@ import { useTheme } from "@mui/material/styles";
 import axios from "axios";
 import { API_DUMMY } from "../utils/api";
 import Swal from "sweetalert2";
+import PropTypes from "prop-types";
 
 const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const theme = useTheme();
 
   const addToCart = async () => {
     if (!product) return;
 
     try {
-      await axios.post(`${API_DUMMY}/api/cart/add/${produtsId}`);
+      await axios.post(`${API_DUMMY}/api/cart/add/${id}`);
       Swal.fire({
         icon: "success",
         title: "Berhasil menambahkan produk ke keranjang",
         timer: 1500,
       });
-    } catch (err) {
+    } catch {
       Swal.fire({
         icon: "warning",
         title: "Gagal menambahkan produk ke keranjang",
@@ -45,8 +45,8 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
       try {
         const response = await axios.get(`${API_DUMMY}/api/products/${id}`);
         setProduct(response.data);
-      } catch (err) {
-        setError("Failed to fetch product");
+      } catch {
+        console.error("Gagal mengambil produk");
       } finally {
         setLoading(false);
       }
@@ -55,7 +55,6 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
   }, [id]);
 
   if (loading) return <Typography>Loading...</Typography>;
-  if (error) return <Typography color="error">{error}</Typography>;
 
   return (
     <MuiCard
@@ -156,6 +155,18 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
           Stok: {product?.stok > 0 ? product.stok : "Habis"}
         </Typography>
 
+        <Typography
+          variant="body2"
+          sx={{
+            mt: 1,
+            fontStyle: "italic",
+            textAlign: "center",
+            color: "#616161",
+          }}
+        >
+          Kategori: {product?.kategori || "Tidak diketahui"}
+        </Typography>
+
         <Box mt={2}>
           <Button
             variant="contained"
@@ -178,6 +189,13 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
       </CardContent>
     </MuiCard>
   );
+};
+
+ProductCard.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onSelect: PropTypes.func,
+  selected: PropTypes.bool,
+  showCheckbox: PropTypes.bool,
 };
 
 export default ProductCard;
