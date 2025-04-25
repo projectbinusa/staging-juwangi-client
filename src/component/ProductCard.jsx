@@ -60,12 +60,16 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
     <MuiCard
       sx={{
         width: 260,
+        height: 460,
         p: 2,
         boxShadow: theme.palette.mode === "dark" ? 5 : 2,
         borderRadius: "12px",
         transition: "all 0.3s ease-in-out",
         position: "relative",
         bgcolor: theme.palette.background.paper,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
         "&:hover": { boxShadow: 20, transform: "scale(1.03)" },
       }}
     >
@@ -83,11 +87,11 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
         <CardMedia
           component="img"
           sx={{
-            width: 80,
-            height: 170,
+            width: "100%",
+            height: 160,
             borderRadius: "12px",
-            transition: "transform 0.3s ease-in-out",
-            "&:hover": { transform: "scale(1.05)" },
+            objectFit: "contain",
+            mb: 1,
           }}
           image={product.gambar}
           alt={product.nama}
@@ -102,19 +106,29 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
             justifyContent: "center",
             bgcolor: theme.palette.mode === "dark" ? "#424242" : "#eeeeee",
             borderRadius: "12px",
+            mb: 1,
           }}
         >
           <ShoppingBagOutlined sx={{ fontSize: 80, color: "#9e9e9e" }} />
         </Box>
       )}
 
-      <CardContent>
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          paddingBottom: "8px !important",
+        }}
+      >
         <Typography
           variant="h6"
           sx={{
             fontWeight: "bold",
             color: theme.palette.text.primary,
             textAlign: "center",
+            minHeight: 48,
           }}
         >
           {product?.nama || "Nama Produk"}
@@ -138,6 +152,7 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
             textAlign: "center",
             color: theme.palette.text.secondary,
             mt: 1,
+            minHeight: 30,
           }}
         >
           {product?.deskripsi || "Tidak ada deskripsi"}
@@ -166,27 +181,27 @@ const ProductCard = ({ id, onSelect, selected, showCheckbox }) => {
         >
           Kategori: {product?.kategori || "Tidak diketahui"}
         </Typography>
-
-        <Box mt={2}>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={addToCart}
-            sx={{
-              bgcolor: "#2196f3",
-              color: "white",
-              borderRadius: "8px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "8px",
-              transition: "all 0.3s ease-in-out",
-              "&:hover": { bgcolor: "#1976d2", transform: "scale(1.05)" },
-            }}
-          >
-            Add To Cart
-          </Button>
-        </Box>
       </CardContent>
+
+      <Box mt={2}>
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={addToCart}
+          sx={{
+            bgcolor: "#2196f3",
+            color: "white",
+            borderRadius: "8px",
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "8px",
+            transition: "all 0.3s ease-in-out",
+            "&:hover": { bgcolor: "#1976d2", transform: "scale(1.05)" },
+          }}
+        >
+          Add To Cart
+        </Button>
+      </Box>
     </MuiCard>
   );
 };
