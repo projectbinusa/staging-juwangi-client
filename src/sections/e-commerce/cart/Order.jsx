@@ -1,17 +1,18 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { Box, Button, Card, CardContent, Divider, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { API_DUMMY } from "../../../utils/api";
-
 
 export default function Order() {
   const defaultProducts = [
     {
       id: 1,
       nama: "product",
-      deskripsi: "Deskripsi produk ",
+      deskripsi: "Deskripsi produk",
       harga: 0,
       kuantitas: 1,
       gambar: "https://tse4.mm.bing.net/th?id=OIP.scjNWB85DXyLTngGoTEE0wHaHa&pid=Api&P=0&h=180",
@@ -21,13 +22,12 @@ export default function Order() {
   const [products, setProducts] = useState(defaultProducts);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${API_DUMMY}/api/cart`);
         if (response.data.length === 0) {
-          defaultProducts(false)
+          setProducts([]);
         } else {
           setProducts(response.data);
         }
@@ -40,22 +40,43 @@ export default function Order() {
     fetchProducts();
   }, []);
 
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Yakin mau hapus?",
+      text: "Produk akan dihapus dari keranjang!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${API_DUMMY}/api/cart/delete/${id}`);
+          setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+          Swal.fire("Dihapus!", "Produk berhasil dihapus.", "success");
+        } catch (error) {
+          console.error("Gagal menghapus produk:", error);
+          Swal.fire("Error!", "Gagal menghapus produk.", "error");
+        }
+      }
+    });
+  };
 
   return (
-    <Card 
+    <Card
       sx={{
-        width: 300, 
+        width: 300,
         marginRight: 60,
-        height: "70vh", 
-        boxShadow: 3, 
-        borderRadius: 2, 
-        display: "flex", 
-        flexDirection: "column"
+        height: "70vh",
+        boxShadow: 3,
+        borderRadius: 2,
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <CardContent
-        sx={{ flex: 1, display: "flex", flexDirection: "column" }}
-        >
+      <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <Typography variant="h6" fontWeight="bold">
           Order Summary
         </Typography>
@@ -66,17 +87,17 @@ export default function Order() {
           </Typography>
         )}
 
-        <Box 
+        <Box
           sx={{
-            flex: 1, 
-            overflowY: "auto", 
-            maxHeight: "40vh", 
-            mt: 2, 
-            pr: 1
+            flex: 1,
+            overflowY: "auto",
+            maxHeight: "40vh",
+            mt: 2,
+            pr: 1,
           }}
         >
-          {products.map((product, index) => (
-            <Stack key={index} direction="row" alignItems="center" spacing={2} sx={{ my: 2 }}>
+          {products.map((product) => (
+            <Stack key={product.id} direction="row" alignItems="center" spacing={2} sx={{ my: 2 }}>
               <Box
                 component="img"
                 src={product.gambar}
@@ -94,7 +115,11 @@ export default function Order() {
                   Rp{(product.harga || 0).toLocaleString()} &nbsp; | &nbsp; {product.kuantitas || 1} item
                 </Typography>
               </Box>
-              <DeleteOutlineIcon color="error" sx={{ cursor: "pointer" }} />
+              <DeleteOutlineIcon
+                color="error"
+                sx={{ cursor: "pointer" }}
+                onClick={() => handleDelete(product.id)}
+              />
             </Stack>
           ))}
         </Box>
@@ -102,9 +127,15 @@ export default function Order() {
         <Divider sx={{ my: 1 }} />
 
         <Stack direction="row" justifyContent="space-between">
-          <Typography variant="h6" fontWeight="bold">Total</Typography>
           <Typography variant="h6" fontWeight="bold">
-            Rp{products.reduce((acc, product) => acc + (product.harga || 0) * (product.kuantitas || 1), 0).toLocaleString()}
+            Total
+          </Typography>
+          <Typography variant="h6" fontWeight="bold">
+            Rp
+            {products.reduce(
+              (acc, product) => acc + (product.harga || 0) * (product.kuantitas || 1),
+              0
+            ).toLocaleString()}
           </Typography>
         </Stack>
 

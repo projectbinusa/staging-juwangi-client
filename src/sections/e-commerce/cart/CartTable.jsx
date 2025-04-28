@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import {
   TableContainer,
@@ -24,7 +25,6 @@ function CartTable() {
   const [products, setProducts] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
 
-
   useEffect(() => {
     const fetchCartData = async () => {
       try {
@@ -42,7 +42,7 @@ function CartTable() {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API_DUMMY}/api/cart/${id}`, { method: 'DELETE' });
+      await fetch(`${API_DUMMY}/api/cart/delete/${id}`, { method: 'DELETE' });
       setProducts(products.filter((item) => item.id !== id));
       setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
       Swal.fire({ icon: 'success', title: 'Barang berhasil dihapus!', timer: 1500 });
@@ -64,9 +64,12 @@ function CartTable() {
     );
   };
 
+  if (products.length === 0) {
+    return <CartEmpty />;
+  }
 
   return (
-    <TableContainer component={Paper} sx={{  boxShadow: 3 }}>
+    <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -97,7 +100,11 @@ function CartTable() {
               </TableCell>
               <TableCell>
                 <Box display="flex" alignItems="center">
-                  <img src={item.gambar} alt={item.nama} style={{ width: 200, height: 50, borderRadius: 5, }} />
+                  <img
+                    src={item.gambar}
+                    alt={item.nama}
+                    style={{ width: 200, height: 50, borderRadius: 5, marginRight: 10 }}
+                  />
                   <Box>
                     <Typography fontWeight="bold">{item.nama}</Typography>
                     <Typography variant="body2" color="textSecondary">{item.deskripsi}</Typography>
@@ -118,9 +125,15 @@ function CartTable() {
                   </IconButton>
                 </Box>
               </TableCell>
-              <TableCell fontWeight="bold">Rp{(item.harga * item.kuantitas).toLocaleString()}</TableCell>
+              <TableCell>
+                <Typography fontWeight="bold">
+                  Rp{(item.harga * item.kuantitas).toLocaleString()}
+                </Typography>
+              </TableCell>
               <TableCell align="center">
-                <Button variant="text" color="error" onClick={() => handleDelete(item.id)} startIcon={<DeleteIcon />}>Hapus</Button>
+                <Button variant="text" color="error" onClick={() => handleDelete(item.id)} startIcon={<DeleteIcon />}>
+                  Hapus
+                </Button>
               </TableCell>
             </TableRow>
           ))}
